@@ -17,11 +17,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/InProgress",
+            "outputPath": "_dist/angular-app",
             "index": "app/index.html",
             "main": "app/main.ts",
             "polyfills": "app/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
+            "tsConfig": "app/tsconfig.json",
             "aot": true,
             "assets": [
               "app/favicon.ico",
@@ -36,8 +36,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "app/environments/environment.ts",
-                  "with": "app/environments/environment.prod.ts"
+                  "replace": "app/global/environment.ts",
+                  "with": "app/global/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -84,7 +84,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "tsconfig.app.json"
+              "app/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -92,6 +92,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "InProgress"
+    }
+  },
+  "defaultProject": "InProgress",
+  "cli": {
+    "analytics": false
+  }
 }
