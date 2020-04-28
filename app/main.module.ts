@@ -15,4 +15,5 @@ import { RootComponent } from './root/root.component';
   providers: [],
   bootstrap: [RootComponent]
 })
+
 export class MainModule { }

@@ -5,11 +5,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "electron": "ng build --base-href ./ && tsc --p electron && electron ."
+    "build": "ng build",    
+    "lint": "ng lint",    
+    "electron-build": "ng build --base-href ./ && tsc --p electron",
+    "electron-start": "ng build --base-href ./ && tsc --p electron && electron .",
+    "electron-compile": "tsc --p electron"
   },
   "private": true,
   "dependencies": {

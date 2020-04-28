@@ -19,5 +19,13 @@
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
-  }
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^8.2.3",
+    "typescript": "~3.8.3"
+  },
 }
