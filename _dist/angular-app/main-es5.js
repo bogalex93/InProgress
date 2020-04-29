@@ -1,3 +1,17 @@
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (typeof call === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -243,33 +257,89 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
     /*! @angular/core */
     "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
     /* harmony import */
 
 
-    var _global_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    var _global_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
     /*! ./global/environment */
     "./app/global/environment.ts");
     /* harmony import */
 
 
-    var _main_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var crossover_crossover_ipc_renderer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    /*! crossover/crossover-ipc.renderer */
+    "./crossover/crossover-ipc.renderer.ts");
+    /* harmony import */
+
+
+    var crossover_crossover_channels__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! crossover/crossover.channels */
+    "./crossover/crossover.channels.ts");
+    /* harmony import */
+
+
+    var _main_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
     /*! ./main.module */
     "./app/main.module.ts");
     /* harmony import */
 
 
-    var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
     /*! @angular/platform-browser */
     "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/platform-browser.js");
 
-    if (_global_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].production) {
-      Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
+    if (_global_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].production) {
+      Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["enableProdMode"])();
     }
 
-    _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["platformBrowser"]().bootstrapModule(_main_module__WEBPACK_IMPORTED_MODULE_2__["MainModule"])["catch"](function (err) {
+    function takeScreenShot(screenMeta) {
+      return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var maxDimension, thumbSize, options, sources, image;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                maxDimension = Math.max(screenMeta.width, screenMeta.height);
+                thumbSize = {
+                  width: maxDimension * window.devicePixelRatio,
+                  height: maxDimension * window.devicePixelRatio
+                };
+                options = {
+                  types: ['screen'],
+                  thumbnailSize: thumbSize
+                };
+                _context.next = 5;
+                return crossover_crossover_ipc_renderer__WEBPACK_IMPORTED_MODULE_3__["CrossoverRenderer"].electron.desktopCapturer.getSources(options);
+
+              case 5:
+                sources = _context.sent;
+                image = sources[0].thumbnail.toDataURL();
+                document.body.style.background = "url(\"".concat(image, "\") top right no-repeat");
+                document.body.style.backgroundAttachment = "fixed";
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+    }
+
+    crossover_crossover_ipc_renderer__WEBPACK_IMPORTED_MODULE_3__["CrossoverRenderer"].subscribe(crossover_crossover_channels__WEBPACK_IMPORTED_MODULE_4__["InitializationEvents"], function (e, m) {
+      return takeScreenShot(m);
+    });
+
+    _angular_platform_browser__WEBPACK_IMPORTED_MODULE_6__["platformBrowser"]().bootstrapModule(_main_module__WEBPACK_IMPORTED_MODULE_5__["MainModule"])["catch"](function (err) {
       return console.error(err);
     });
     /***/
@@ -307,12 +377,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
     /*! @angular/core */
     "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-    /* harmony import */
-
-
-    var _shared_services_electron_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-    /*! ../shared/services/electron.service */
-    "./app/shared/services/electron.service.ts");
 
     var RootComponent = /*#__PURE__*/function () {
       function RootComponent() {
@@ -324,50 +388,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(RootComponent, [{
         key: "ngAfterViewInit",
         value: function ngAfterViewInit() {
-          this.takeScreenShot();
-        }
-      }, {
-        key: "takeScreenShot",
-        value: function takeScreenShot() {
-          return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-            var thumbSize, options, sources, image, determineScreenShotSize;
-            return regeneratorRuntime.wrap(function _callee$(_context) {
+          return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
               while (1) {
-                switch (_context.prev = _context.next) {
+                switch (_context2.prev = _context2.next) {
                   case 0:
-                    determineScreenShotSize = function _determineScreenShotS() {
-                      var width = 2560;
-                      var height = 1440;
-                      var maxDimension = Math.max(width, height);
-                      return {
-                        width: maxDimension * window.devicePixelRatio,
-                        height: maxDimension * window.devicePixelRatio
-                      };
-                    };
-
-                    // var sources = await this.electronService.desktopCapturer.getSources({ types: ['window','screen'] });
-                    //let source = sources[0];
-                    //  console.log(sources);
-                    thumbSize = determineScreenShotSize();
-                    options = {
-                      types: ['screen'],
-                      thumbnailSize: thumbSize
-                    };
-                    _context.next = 5;
-                    return _shared_services_electron_service__WEBPACK_IMPORTED_MODULE_2__["electron"].desktopCapturer.getSources(options);
-
-                  case 5:
-                    sources = _context.sent;
-                    image = sources[0].thumbnail.toDataURL();
-                    document.body.style.background = "url(\"".concat(image, "\") top right no-repeat");
-                    document.body.style.backgroundAttachment = "fixed";
-
-                  case 9:
                   case "end":
-                    return _context.stop();
+                    return _context2.stop();
                 }
               }
-            }, _callee);
+            }, _callee2);
           }));
         }
       }]);
@@ -382,16 +412,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     RootComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({
       type: RootComponent,
       selectors: [["app-root"]],
-      decls: 1,
-      vars: 1,
+      decls: 2,
+      vars: 2,
       consts: [[3, "innerText"]],
       template: function RootComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](0, "span", 0);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](1, "span", 0);
         }
 
         if (rf & 2) {
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("innerText", ctx.title);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("innerText", ctx.screenMeta);
         }
       },
       styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJhcHAvcm9vdC9yb290LmNvbXBvbmVudC5zY3NzIn0= */"]
@@ -415,161 +451,153 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   },
 
   /***/
-  "./app/shared/services/electron.service.ts":
-  /*!*************************************************!*\
-    !*** ./app/shared/services/electron.service.ts ***!
-    \*************************************************/
+  "./crossover/crossover-ipc.renderer.ts":
+  /*!*********************************************!*\
+    !*** ./crossover/crossover-ipc.renderer.ts ***!
+    \*********************************************/
 
-  /*! exports provided: electron, ElectronService */
+  /*! exports provided: CrossoverRenderer */
 
   /***/
-  function appSharedServicesElectronServiceTs(module, __webpack_exports__, __webpack_require__) {
+  function crossoverCrossoverIpcRendererTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
     /* harmony export (binding) */
 
 
-    __webpack_require__.d(__webpack_exports__, "electron", function () {
-      return electron;
-    });
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "ElectronService", function () {
-      return ElectronService;
+    __webpack_require__.d(__webpack_exports__, "CrossoverRenderer", function () {
+      return CrossoverRenderer;
     });
     /* harmony import */
 
 
-    var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-    /*! @angular/core */
-    "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
 
     var electron = window.require('electron');
 
-    var ElectronService = /*#__PURE__*/function () {
-      function ElectronService() {
-        _classCallCheck(this, ElectronService);
-
-        this.electron = electron;
+    var CrossoverRenderer = /*#__PURE__*/function () {
+      function CrossoverRenderer() {
+        _classCallCheck(this, CrossoverRenderer);
       }
-      /**
-       * determines if SPA is running in Electron
-       */
 
+      _createClass(CrossoverRenderer, null, [{
+        key: "send",
+        value: function send(channel, model) {
+          var channelName = new channel().constructor.name;
+          electron.ipcRenderer.send(channelName, model);
+        }
+      }, {
+        key: "subscribe",
+        value: function subscribe(channel, listener) {
+          var channelName = new channel().constructor.name;
+          electron.ipcRenderer.on(channelName, listener);
+        }
+      }, {
+        key: "unsubscribe",
+        value: function unsubscribe(channel, listener) {
+          var channelName = new channel().constructor.name;
+          electron.ipcRenderer.removeListener(channelName, listener);
+        }
+      }, {
+        key: "get",
+        value: function get(channel, model) {
+          return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+            var channelName, result;
+            return regeneratorRuntime.wrap(function _callee3$(_context3) {
+              while (1) {
+                switch (_context3.prev = _context3.next) {
+                  case 0:
+                    channelName = new channel().constructor.name;
+                    _context3.next = 3;
+                    return electron.ipcRenderer.invoke(channelName, model);
 
-      _createClass(ElectronService, [{
-        key: "isElectronApp",
-        get: function get() {
-          return !!window.navigator.userAgent.match(/Electron/);
-        }
-      }, {
-        key: "isMacOS",
-        get: function get() {
-          return this.isElectronApp && process.platform === 'darwin';
-        }
-      }, {
-        key: "isWindows",
-        get: function get() {
-          return this.isElectronApp && process.platform === 'win32';
-        }
-      }, {
-        key: "isLinux",
-        get: function get() {
-          return this.isElectronApp && process.platform === 'linux';
-        }
-      }, {
-        key: "isX86",
-        get: function get() {
-          return this.isElectronApp && process.arch === 'ia32';
-        }
-      }, {
-        key: "isX64",
-        get: function get() {
-          return this.isElectronApp && process.arch === 'x64';
-        }
-      }, {
-        key: "isArm",
-        get: function get() {
-          return this.isElectronApp && process.arch === 'arm';
-        }
-      }, {
-        key: "desktopCapturer",
-        get: function get() {
-          return this.electron ? this.electron.desktopCapturer : null;
-        }
-      }, {
-        key: "ipcRenderer",
-        get: function get() {
-          return this.electron ? this.electron.ipcRenderer : null;
-        }
-      }, {
-        key: "remote",
-        get: function get() {
-          return this.electron ? this.electron.remote : null;
-        }
-      }, {
-        key: "webFrame",
-        get: function get() {
-          return this.electron ? this.electron.webFrame : null;
-        }
-      }, {
-        key: "clipboard",
-        get: function get() {
-          return this.electron ? this.electron.clipboard : null;
-        }
-      }, {
-        key: "crashReporter",
-        get: function get() {
-          return this.electron ? this.electron.crashReporter : null;
-        }
-      }, {
-        key: "process",
-        get: function get() {
-          return this.remote ? this.remote.process : null;
-        }
-      }, {
-        key: "nativeImage",
-        get: function get() {
-          return this.electron ? this.electron.nativeImage : null;
-        }
-      }, {
-        key: "screen",
-        get: function get() {
-          return this.electron ? this.remote.screen : null;
-        }
-      }, {
-        key: "shell",
-        get: function get() {
-          return this.electron ? this.electron.shell : null;
+                  case 3:
+                    result = _context3.sent;
+                    return _context3.abrupt("return", result);
+
+                  case 5:
+                  case "end":
+                    return _context3.stop();
+                }
+              }
+            }, _callee3);
+          }));
         }
       }]);
 
-      return ElectronService;
+      return CrossoverRenderer;
     }();
 
-    ElectronService.ɵfac = function ElectronService_Factory(t) {
-      return new (t || ElectronService)();
+    CrossoverRenderer.electron = electron;
+    /***/
+  },
+
+  /***/
+  "./crossover/crossover.channels.ts":
+  /*!*****************************************!*\
+    !*** ./crossover/crossover.channels.ts ***!
+    \*****************************************/
+
+  /*! exports provided: CrossoverChannel, WindowEvents, InitializationEvents */
+
+  /***/
+  function crossoverCrossoverChannelsTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "CrossoverChannel", function () {
+      return CrossoverChannel;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "WindowEvents", function () {
+      return WindowEvents;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "InitializationEvents", function () {
+      return InitializationEvents;
+    });
+
+    var CrossoverChannel = function CrossoverChannel() {
+      _classCallCheck(this, CrossoverChannel);
     };
 
-    ElectronService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
-      token: ElectronService,
-      factory: ElectronService.ɵfac,
-      providedIn: 'root'
-    });
-    /*@__PURE__*/
+    var WindowEvents = /*#__PURE__*/function (_CrossoverChannel) {
+      _inherits(WindowEvents, _CrossoverChannel);
 
-    (function () {
-      _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ElectronService, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
-        args: [{
-          providedIn: 'root'
-        }]
-      }], function () {
-        return [];
-      }, null);
-    })();
+      var _super = _createSuper(WindowEvents);
+
+      function WindowEvents() {
+        _classCallCheck(this, WindowEvents);
+
+        return _super.apply(this, arguments);
+      }
+
+      return WindowEvents;
+    }(CrossoverChannel);
+
+    var InitializationEvents = /*#__PURE__*/function (_CrossoverChannel2) {
+      _inherits(InitializationEvents, _CrossoverChannel2);
+
+      var _super2 = _createSuper(InitializationEvents);
+
+      function InitializationEvents() {
+        _classCallCheck(this, InitializationEvents);
+
+        return _super2.apply(this, arguments);
+      }
+
+      return InitializationEvents;
+    }(CrossoverChannel);
     /***/
 
   },

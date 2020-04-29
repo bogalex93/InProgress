@@ -140,18 +140,39 @@ MainModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjecto
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _global_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./global/environment */ "./app/global/environment.ts");
-/* harmony import */ var _main_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./main.module */ "./app/main.module.ts");
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/platform-browser.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _global_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./global/environment */ "./app/global/environment.ts");
+/* harmony import */ var crossover_crossover_ipc_renderer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! crossover/crossover-ipc.renderer */ "./crossover/crossover-ipc.renderer.ts");
+/* harmony import */ var crossover_crossover_channels__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! crossover/crossover.channels */ "./crossover/crossover.channels.ts");
+/* harmony import */ var _main_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./main.module */ "./app/main.module.ts");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/platform-browser.js");
 
 
 
 
-if (_global_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].production) {
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
+
+
+
+if (_global_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].production) {
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["enableProdMode"])();
 }
-_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["platformBrowser"]().bootstrapModule(_main_module__WEBPACK_IMPORTED_MODULE_2__["MainModule"])
+function takeScreenShot(screenMeta) {
+    return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+        const maxDimension = Math.max(screenMeta.width, screenMeta.height);
+        const thumbSize = {
+            width: maxDimension * window.devicePixelRatio,
+            height: maxDimension * window.devicePixelRatio
+        };
+        let options = { types: ['screen'], thumbnailSize: thumbSize };
+        var sources = yield crossover_crossover_ipc_renderer__WEBPACK_IMPORTED_MODULE_3__["CrossoverRenderer"].electron.desktopCapturer.getSources(options);
+        var image = sources[0].thumbnail.toDataURL();
+        document.body.style.background = `url("${image}") top right no-repeat`;
+        document.body.style.backgroundAttachment = "fixed";
+    });
+}
+crossover_crossover_ipc_renderer__WEBPACK_IMPORTED_MODULE_3__["CrossoverRenderer"].subscribe(crossover_crossover_channels__WEBPACK_IMPORTED_MODULE_4__["InitializationEvents"], (e, m) => takeScreenShot(m));
+_angular_platform_browser__WEBPACK_IMPORTED_MODULE_6__["platformBrowser"]().bootstrapModule(_main_module__WEBPACK_IMPORTED_MODULE_5__["MainModule"])
     .catch(err => console.error(err));
 
 
@@ -169,8 +190,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RootComponent", function() { return RootComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _shared_services_electron_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/services/electron.service */ "./app/shared/services/electron.service.ts");
-
 
 
 
@@ -179,36 +198,18 @@ class RootComponent {
         this.title = "it works";
     }
     ngAfterViewInit() {
-        this.takeScreenShot();
-    }
-    takeScreenShot() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            // var sources = await this.electronService.desktopCapturer.getSources({ types: ['window','screen'] });
-            //let source = sources[0];
-            //  console.log(sources);
-            const thumbSize = determineScreenShotSize();
-            let options = { types: ['screen'], thumbnailSize: thumbSize };
-            var sources = yield _shared_services_electron_service__WEBPACK_IMPORTED_MODULE_2__["electron"].desktopCapturer.getSources(options);
-            var image = sources[0].thumbnail.toDataURL();
-            document.body.style.background = `url("${image}") top right no-repeat`;
-            document.body.style.backgroundAttachment = "fixed";
-            function determineScreenShotSize() {
-                const width = 2560;
-                const height = 1440;
-                const maxDimension = Math.max(width, height);
-                return {
-                    width: maxDimension * window.devicePixelRatio,
-                    height: maxDimension * window.devicePixelRatio
-                };
-            }
         });
     }
 }
 RootComponent.ɵfac = function RootComponent_Factory(t) { return new (t || RootComponent)(); };
-RootComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: RootComponent, selectors: [["app-root"]], decls: 1, vars: 1, consts: [[3, "innerText"]], template: function RootComponent_Template(rf, ctx) { if (rf & 1) {
+RootComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: RootComponent, selectors: [["app-root"]], decls: 2, vars: 2, consts: [[3, "innerText"]], template: function RootComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](0, "span", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](1, "span", 0);
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("innerText", ctx.title);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("innerText", ctx.screenMeta);
     } }, styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJhcHAvcm9vdC9yb290LmNvbXBvbmVudC5zY3NzIn0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](RootComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"],
@@ -222,86 +223,63 @@ RootComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComp
 
 /***/ }),
 
-/***/ "./app/shared/services/electron.service.ts":
-/*!*************************************************!*\
-  !*** ./app/shared/services/electron.service.ts ***!
-  \*************************************************/
-/*! exports provided: electron, ElectronService */
+/***/ "./crossover/crossover-ipc.renderer.ts":
+/*!*********************************************!*\
+  !*** ./crossover/crossover-ipc.renderer.ts ***!
+  \*********************************************/
+/*! exports provided: CrossoverRenderer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "electron", function() { return electron; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ElectronService", function() { return ElectronService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CrossoverRenderer", function() { return CrossoverRenderer; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 
 const electron = window.require('electron');
-class ElectronService {
-    constructor() {
-        this.electron = electron;
+class CrossoverRenderer {
+    static send(channel, model) {
+        var channelName = new channel().constructor.name;
+        electron.ipcRenderer.send(channelName, model);
     }
-    /**
-     * determines if SPA is running in Electron
-     */
-    get isElectronApp() {
-        return !!window.navigator.userAgent.match(/Electron/);
+    static subscribe(channel, listener) {
+        var channelName = new channel().constructor.name;
+        electron.ipcRenderer.on(channelName, listener);
     }
-    get isMacOS() {
-        return this.isElectronApp && process.platform === 'darwin';
+    static unsubscribe(channel, listener) {
+        var channelName = new channel().constructor.name;
+        electron.ipcRenderer.removeListener(channelName, listener);
     }
-    get isWindows() {
-        return this.isElectronApp && process.platform === 'win32';
-    }
-    get isLinux() {
-        return this.isElectronApp && process.platform === 'linux';
-    }
-    get isX86() {
-        return this.isElectronApp && process.arch === 'ia32';
-    }
-    get isX64() {
-        return this.isElectronApp && process.arch === 'x64';
-    }
-    get isArm() {
-        return this.isElectronApp && process.arch === 'arm';
-    }
-    get desktopCapturer() {
-        return this.electron ? this.electron.desktopCapturer : null;
-    }
-    get ipcRenderer() {
-        return this.electron ? this.electron.ipcRenderer : null;
-    }
-    get remote() {
-        return this.electron ? this.electron.remote : null;
-    }
-    get webFrame() {
-        return this.electron ? this.electron.webFrame : null;
-    }
-    get clipboard() {
-        return this.electron ? this.electron.clipboard : null;
-    }
-    get crashReporter() {
-        return this.electron ? this.electron.crashReporter : null;
-    }
-    get process() {
-        return this.remote ? this.remote.process : null;
-    }
-    get nativeImage() {
-        return this.electron ? this.electron.nativeImage : null;
-    }
-    get screen() {
-        return this.electron ? this.remote.screen : null;
-    }
-    get shell() {
-        return this.electron ? this.electron.shell : null;
+    static get(channel, model) {
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            var channelName = new channel().constructor.name;
+            var result = yield electron.ipcRenderer.invoke(channelName, model);
+            return result;
+        });
     }
 }
-ElectronService.ɵfac = function ElectronService_Factory(t) { return new (t || ElectronService)(); };
-ElectronService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: ElectronService, factory: ElectronService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ElectronService, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
-        args: [{ providedIn: 'root' }]
-    }], function () { return []; }, null); })();
+CrossoverRenderer.electron = electron;
+
+
+/***/ }),
+
+/***/ "./crossover/crossover.channels.ts":
+/*!*****************************************!*\
+  !*** ./crossover/crossover.channels.ts ***!
+  \*****************************************/
+/*! exports provided: CrossoverChannel, WindowEvents, InitializationEvents */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CrossoverChannel", function() { return CrossoverChannel; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WindowEvents", function() { return WindowEvents; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InitializationEvents", function() { return InitializationEvents; });
+class CrossoverChannel {
+}
+class WindowEvents extends CrossoverChannel {
+}
+class InitializationEvents extends CrossoverChannel {
+}
 
 
 /***/ }),

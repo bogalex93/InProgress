@@ -49,13 +49,13 @@
 
     exports = ___CSS_LOADER_API_IMPORT___(true); // Module
 
-    exports.push([module.i, "html,\nbody {\n  height: 1440px;\n  overflow: hidden;\n  -webkit-backdrop-filter: blur(8px);\n          backdrop-filter: blur(8px);\n}", "", {
+    exports.push([module.i, "html,\nbody {\n  height: 1440px;\n  overflow: hidden;\n  -webkit-backdrop-filter: blur(5px);\n          backdrop-filter: blur(5px);\n}", "", {
       "version": 3,
       "sources": ["D:\\Projects\\InProgress/app\\styles.scss", "styles.scss"],
       "names": [],
       "mappings": "AAAA;;EAEI,cAAA;EACA,gBAAA;EACA,kCAAA;UAAA,0BAAA;ACCJ",
       "file": "styles.scss",
-      "sourcesContent": ["html, \nbody {\n    height: 1440px;\n    overflow: hidden;    \n    backdrop-filter: blur(8px);\n}", "html,\nbody {\n  height: 1440px;\n  overflow: hidden;\n  backdrop-filter: blur(8px);\n}"]
+      "sourcesContent": ["html, \nbody {\n    height: 1440px;\n    overflow: hidden;    \n    backdrop-filter: blur(5px);\n}", "html,\nbody {\n  height: 1440px;\n  overflow: hidden;\n  backdrop-filter: blur(5px);\n}"]
     }]); // Exports
 
     module.exports = exports;

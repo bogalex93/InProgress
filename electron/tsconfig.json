@@ -2,7 +2,7 @@
     "compileOnSave": false,
     "compilerOptions": {
         "baseUrl": "./",
-        "outDir": "../_dist/electron",
+        "outDir": "../_dist/",
         "sourceMap": true,
         "declaration": false,
         "module": "commonjs",
@@ -17,5 +17,11 @@
             "es2018",
             "dom"
         ]
-    }
+    },    
+    "include": [ 
+        "**/*",           
+        "../crossover/crossover-ipc.main.ts",
+        "../crossover/crossover.channels.ts",
+        "../crossover/crossover.models.ts",    
+    ]
 }

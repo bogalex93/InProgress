@@ -9,6 +9,9 @@
     "./polyfills.ts"
   ],
   "include": [
-    "./**/*.d.ts"
+    "./**/*.d.ts",
+    "../crossover/crossover-ipc.renderer.ts",
+    "../crossover/crossover.channels.ts",
+    "../crossover/crossover.models.ts"
   ]
 }
