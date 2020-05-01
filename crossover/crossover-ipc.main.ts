@@ -14,7 +14,7 @@ export class CrossoverMain {
         ipcMain.handle(channelName, listener);
     }
 
-    static send<TChannel extends CrossoverChannel>(channel: NoParamConstructor<TChannel>, window: BrowserWindow, model: CrossoverModel) {
+    static send<TChannel extends CrossoverChannel>(channel: NoParamConstructor<TChannel>, window: BrowserWindow, model?: CrossoverModel) {
         var channelName = new channel().constructor.name;
         window.webContents.send(channelName, model);
     }
@@ -22,4 +22,4 @@ export class CrossoverMain {
 
 interface NoParamConstructor<T> {
     new(): T;
-}
+}    

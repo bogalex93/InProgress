@@ -5,6 +5,7 @@ var path = require("path");
 var url = require("url");
 var crossover_ipc_main_1 = require("../crossover/crossover-ipc.main");
 var crossover_channels_1 = require("../crossover/crossover.channels");
+var vibrancy = require("electron-acrylic-window");
 var win;
 var display;
 electron_1.app.allowRendererProcessReuse = true;
@@ -13,7 +14,7 @@ function createWindow() {
     display = electron_1.screen.getPrimaryDisplay();
     var width = windowSizes[display.bounds.width] || 300;
     var webPreferences = { nodeIntegration: true };
-    var windowOptions = { width: width, height: display.workArea.height, transparent: true, frame: false, skipTaskbar: false, y: 0, x: display.bounds.width - width, webPreferences: webPreferences, show: false };
+    var windowOptions = { width: width, height: display.workArea.height - 40, transparent: true, frame: false, skipTaskbar: false, y: 20, x: display.bounds.width - (width + 10), webPreferences: webPreferences, show: false, minimizable: false };
     var urlOptions = { pathname: path.join(__dirname, "../angular-app/index.html"), protocol: 'file:', slashes: true };
     var appPath = url.format(urlOptions);
     win = new electron_1.BrowserWindow(windowOptions);
@@ -21,13 +22,16 @@ function createWindow() {
     win.on('closed', function () { return win = null; });
     //win.webContents.openDevTools();
     win.once("ready-to-show", resolveScreenMeta);
+    //win.on("maximize", resolveScreenMeta);
+    vibrancy.setVibrancy(win);
 }
 ;
 function resolveScreenMeta() {
-    var test = "" + crossover_channels_1.InitializationEvents;
     var model = { width: display.bounds.width, height: display.bounds.height };
     crossover_ipc_main_1.CrossoverMain.send(crossover_channels_1.InitializationEvents, win, model);
-    win.show();
+    if (!win.isVisible()) {
+        win.show();
+    }
 }
 var windowSizes = {
     '3840': 495,

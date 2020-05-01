@@ -1,0 +1,48 @@
+.container{
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;   
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.7);    
+    padding: 22px;
+    overflow-y: auto;
+}
+
+.note{
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    color:  white; // rgb(37, 37, 37);
+    background-color: rgba(37, 37, 37, 0.7);   
+    text-rendering: optimizelegibility;
+    text-shadow: 0 0 3px rgba(37, 37, 37, .8);    
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    &:not(:first-child){
+        margin-top: 15px;
+    }
+    border-radius: 10px;
+
+    .title-container{
+        display: flex;
+        justify-content: space-between;
+        .title{
+            margin: 0;
+        }
+        .date{
+            line-height: 22px;
+            font-size: 14px;
+            color: #007acc;
+            font-weight: 600;
+        }
+    }
+    .description{
+        padding-top: 20px;
+    }
+
+    &.success{
+        
+    }
+}
