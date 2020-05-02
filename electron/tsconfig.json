@@ -1,5 +1,5 @@
 {
-    "compileOnSave": false,
+    "compileOnSave": true,
     "compilerOptions": {
         "baseUrl": "./",
         "outDir": "../_dist/",
@@ -15,7 +15,7 @@
         ],
         "lib": [
             "es2018",
-            "dom"
+            "DOM"
         ]
     },    
     "include": [ 

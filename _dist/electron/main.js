@@ -12,7 +12,7 @@ electron_1.app.allowRendererProcessReuse = true;
 electron_1.app.on('ready', createWindow);
 function createWindow() {
     display = electron_1.screen.getPrimaryDisplay();
-    var width = windowSizes[display.bounds.width] || 300;
+    var width = 1200; //windowSizes[display.bounds.width] || 300;
     var webPreferences = { nodeIntegration: true };
     var windowOptions = { width: width, height: display.workArea.height - 40, transparent: true, frame: false, skipTaskbar: false, y: 20, x: display.bounds.width - (width + 10), webPreferences: webPreferences, show: false, minimizable: false };
     var urlOptions = { pathname: path.join(__dirname, "../angular-app/index.html"), protocol: 'file:', slashes: true };
@@ -20,7 +20,7 @@ function createWindow() {
     win = new electron_1.BrowserWindow(windowOptions);
     win.loadURL(appPath);
     win.on('closed', function () { return win = null; });
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
     win.once("ready-to-show", resolveScreenMeta);
     //win.on("maximize", resolveScreenMeta);
     vibrancy.setVibrancy(win);
@@ -28,7 +28,7 @@ function createWindow() {
 ;
 function resolveScreenMeta() {
     var model = { width: display.bounds.width, height: display.bounds.height };
-    crossover_ipc_main_1.CrossoverMain.send(crossover_channels_1.InitializationEvents, win, model);
+    crossover_ipc_main_1.CrossoverMain.send(crossover_channels_1.InitializationChannel, win, model);
     if (!win.isVisible()) {
         win.show();
     }

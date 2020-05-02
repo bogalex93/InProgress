@@ -12,27 +12,39 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+function crossoverChannel(target) {
+    target.channelName = target.name;
+    target.withType = function (mt) { return withType(target, mt); };
+}
+function withType(typeDef, modelType) {
+    var crossOverChannel = new typeDef();
+    crossOverChannel.channelName = typeDef.name;
+    crossOverChannel.modelName = new modelType().constructor.name;
+    crossOverChannel.eventName = crossOverChannel.channelName + "-" + crossOverChannel.modelName;
+    return crossOverChannel;
+}
 var CrossoverChannel = /** @class */ (function () {
     function CrossoverChannel() {
     }
     return CrossoverChannel;
 }());
 exports.CrossoverChannel = CrossoverChannel;
-var WindowEvents = /** @class */ (function (_super) {
-    __extends(WindowEvents, _super);
-    function WindowEvents() {
+var InitializationChannel = /** @class */ (function (_super) {
+    __extends(InitializationChannel, _super);
+    function InitializationChannel() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    return WindowEvents;
+    InitializationChannel = __decorate([
+        crossoverChannel
+    ], InitializationChannel);
+    return InitializationChannel;
 }(CrossoverChannel));
-exports.WindowEvents = WindowEvents;
-var InitializationEvents = /** @class */ (function (_super) {
-    __extends(InitializationEvents, _super);
-    function InitializationEvents() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return InitializationEvents;
-}(CrossoverChannel));
-exports.InitializationEvents = InitializationEvents;
+exports.InitializationChannel = InitializationChannel;
 //# sourceMappingURL=crossover.channels.js.map

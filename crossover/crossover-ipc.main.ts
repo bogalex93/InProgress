@@ -1,25 +1,22 @@
 import { ipcMain, IpcMainEvent, BrowserWindow } from 'electron';
 import { CrossoverModel } from './crossover.models';
 import { CrossoverChannel } from './crossover.channels';
+import * as test from './crossover.channels';
 
 export class CrossoverMain {
 
-    static listen<TChannel extends CrossoverChannel>(channel: NoParamConstructor<TChannel>, listener: (event: IpcMainEvent, model: CrossoverModel) => void) {
-        var channelName = new channel().constructor.name;
-        ipcMain.on(channelName, listener);
+    static listen<TChannel extends CrossoverChannel>(channel: (new () => TChannel) | TChannel, listener: (event: IpcMainEvent, model: CrossoverModel) => void) {
+        let eventName = channel instanceof CrossoverChannel? channel.eventName : (channel as any).channelName;  
+        ipcMain.on(eventName, listener);
     }
 
-    static handle<TChannel extends CrossoverChannel>(channel: NoParamConstructor<TChannel>, listener: (event: IpcMainEvent, model: CrossoverModel) => CrossoverModel) {
-        var channelName = new channel().constructor.name;
-        ipcMain.handle(channelName, listener);
+    static handle<TChannel extends CrossoverChannel>(channel:(new () => TChannel) | TChannel, listener: (event: IpcMainEvent, model: CrossoverModel) => CrossoverModel) {
+        let eventName = channel instanceof CrossoverChannel? channel.eventName : (channel as any).channelName;  
+        ipcMain.handle(eventName, listener);
     }
 
-    static send<TChannel extends CrossoverChannel>(channel: NoParamConstructor<TChannel>, window: BrowserWindow, model?: CrossoverModel) {
-        var channelName = new channel().constructor.name;
-        window.webContents.send(channelName, model);
+    static send<TChannel extends CrossoverChannel>(channel: (new () => TChannel) | TChannel, window: BrowserWindow, model?: CrossoverModel) {                
+        let eventName = channel instanceof CrossoverChannel? channel.eventName : (channel as any).channelName;  
+        window.webContents.send(eventName, model);
     }
 }
-
-interface NoParamConstructor<T> {
-    new(): T;
-}    

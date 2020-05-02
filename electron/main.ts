@@ -2,9 +2,9 @@ import { app, BrowserWindow, screen, BrowserWindowConstructorOptions, WebPrefere
 import * as path from 'path';
 import * as url from 'url';
 import { CrossoverMain } from '../crossover/crossover-ipc.main';
-import { InitializationEvents } from '../crossover/crossover.channels';
-import { ScreenMeta } from '../crossover/crossover.models';
+import { InitializationChannel } from '../crossover/crossover.channels';
 import * as vibrancy from 'electron-acrylic-window';
+import { ScreenMeta } from '../crossover/crossover.models';
 
 let win: BrowserWindow;
 let display: Display;
@@ -13,7 +13,7 @@ app.on('ready', createWindow);
 
 function createWindow() {
     display = screen.getPrimaryDisplay();
-    let width = windowSizes[display.bounds.width] || 300;
+    let width = 1200;//windowSizes[display.bounds.width] || 300;
     let webPreferences: WebPreferences = { nodeIntegration: true };
     let windowOptions: BrowserWindowConstructorOptions = { width: width, height: display.workArea.height - 40, transparent: true, frame: false, skipTaskbar: false, y: 20, x: display.bounds.width - (width + 10), webPreferences: webPreferences, show: false, minimizable: false };
     let urlOptions = { pathname: path.join(__dirname, `../angular-app/index.html`), protocol: 'file:', slashes: true };
@@ -21,7 +21,7 @@ function createWindow() {
     win = new BrowserWindow(windowOptions);
     win.loadURL(appPath);
     win.on('closed', () => win = null);
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
     win.once("ready-to-show", resolveScreenMeta);    
     //win.on("maximize", resolveScreenMeta);
     vibrancy.setVibrancy(win);
@@ -29,7 +29,7 @@ function createWindow() {
 
 function resolveScreenMeta() {
     let model = { width: display.bounds.width, height: display.bounds.height };
-    CrossoverMain.send(InitializationEvents, win, model);
+    CrossoverMain.send(InitializationChannel, win, model);
     if (!win.isVisible()) { 
         win.show(); 
     }

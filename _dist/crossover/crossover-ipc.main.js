@@ -1,20 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
+var crossover_channels_1 = require("./crossover.channels");
 var CrossoverMain = /** @class */ (function () {
     function CrossoverMain() {
     }
     CrossoverMain.listen = function (channel, listener) {
-        var channelName = new channel().constructor.name;
-        electron_1.ipcMain.on(channelName, listener);
+        var eventName = channel instanceof crossover_channels_1.CrossoverChannel ? channel.eventName : new channel().constructor.name;
+        electron_1.ipcMain.on(eventName, listener);
     };
     CrossoverMain.handle = function (channel, listener) {
-        var channelName = new channel().constructor.name;
-        electron_1.ipcMain.handle(channelName, listener);
+        var eventName = channel instanceof crossover_channels_1.CrossoverChannel ? channel.eventName : new channel().constructor.name;
+        electron_1.ipcMain.handle(eventName, listener);
     };
     CrossoverMain.send = function (channel, window, model) {
-        var channelName = new channel().constructor.name;
-        window.webContents.send(channelName, model);
+        var eventName = channel instanceof crossover_channels_1.CrossoverChannel ? channel.eventName : channel.channelName;
+        window.webContents.send(eventName, model);
     };
     return CrossoverMain;
 }());
