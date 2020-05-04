@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function crossoverChannel(target) {
-    target.channelName = target.name;
-    target.withType = function (mt) { return withType(target, mt); };
+function crossoverChannel(typeDef) {
+    typeDef.channelName = typeDef.name;
+    typeDef.withType = function (mt) { return withType(typeDef, mt); };
 }
 exports.crossoverChannel = crossoverChannel;
-function crossoverModel(target) {
-    target.internal_type_name = target.name;
+function crossoverModel(typeDef) {
+    typeDef.internal_type_name = typeDef.name;
 }
 exports.crossoverModel = crossoverModel;
-function withType(typeDef, modelType) {
+function withType(typeDef, modelTypeDef) {
     var crossOverChannel = new typeDef();
     crossOverChannel.channelName = typeDef.name;
-    crossOverChannel.eventName = crossOverChannel.channelName + "-" + modelType.internal_type_name;
+    crossOverChannel.eventName = crossOverChannel.channelName + "-" + modelTypeDef.internal_type_name;
     return crossOverChannel;
 }
 var CrossoverChannel = /** @class */ (function () {

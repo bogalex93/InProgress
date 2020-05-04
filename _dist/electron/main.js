@@ -29,7 +29,7 @@ function createWindow() {
 ;
 function resolveScreenMeta() {
     var model = { width: display.bounds.width, height: display.bounds.height };
-    crossover_ipc_main_1.Crossover.send(crossover_channels_1.InitializationChannel.withType(crossover_models_1.ScreenMeta), win, model);
+    crossover_ipc_main_1.Crossover.send(crossover_channels_1.InitializationChannel.with(crossover_models_1.ScreenMeta), win, model);
     if (!win.isVisible()) {
         win.show();
     }
