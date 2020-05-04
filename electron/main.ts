@@ -29,7 +29,7 @@ function createWindow() {
 
 function resolveScreenMeta() {
     let model = { width: display.bounds.width, height: display.bounds.height };
-    Crossover.send(InitializationChannel.withType(ScreenMeta), win, model);
+    Crossover.send(InitializationChannel.with(ScreenMeta), win, model);
     if (!win.isVisible()) { 
         win.show(); 
     }

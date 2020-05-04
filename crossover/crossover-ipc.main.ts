@@ -1,7 +1,6 @@
 import { ipcMain, IpcMainEvent, BrowserWindow } from 'electron';
 import { CrossoverChannel, CrossoverModel } from './crossover-framework';
 
-
 export class Crossover {
 
     static listen<TChannel extends CrossoverChannel>(channel: (new () => TChannel) | TChannel, listener: (event: IpcMainEvent, model: CrossoverModel) => void) {
