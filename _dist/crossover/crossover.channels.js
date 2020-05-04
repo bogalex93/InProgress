@@ -19,32 +19,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-function crossoverChannel(target) {
-    target.channelName = target.name;
-    target.withType = function (mt) { return withType(target, mt); };
-}
-function withType(typeDef, modelType) {
-    var crossOverChannel = new typeDef();
-    crossOverChannel.channelName = typeDef.name;
-    crossOverChannel.modelName = new modelType().constructor.name;
-    crossOverChannel.eventName = crossOverChannel.channelName + "-" + crossOverChannel.modelName;
-    return crossOverChannel;
-}
-var CrossoverChannel = /** @class */ (function () {
-    function CrossoverChannel() {
-    }
-    return CrossoverChannel;
-}());
-exports.CrossoverChannel = CrossoverChannel;
+var crossover_framework_1 = require("./crossover-framework");
 var InitializationChannel = /** @class */ (function (_super) {
     __extends(InitializationChannel, _super);
     function InitializationChannel() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     InitializationChannel = __decorate([
-        crossoverChannel
+        crossover_framework_1.crossoverChannel
     ], InitializationChannel);
     return InitializationChannel;
-}(CrossoverChannel));
+}(crossover_framework_1.CrossoverChannel));
 exports.InitializationChannel = InitializationChannel;
 //# sourceMappingURL=crossover.channels.js.map

@@ -1,7 +1,7 @@
 import { app, BrowserWindow, screen, BrowserWindowConstructorOptions, WebPreferences, Display, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-import { CrossoverMain } from '../crossover/crossover-ipc.main';
+import { Crossover } from '../crossover/crossover-ipc.main';
 import { InitializationChannel } from '../crossover/crossover.channels';
 import * as vibrancy from 'electron-acrylic-window';
 import { ScreenMeta } from '../crossover/crossover.models';
@@ -21,7 +21,7 @@ function createWindow() {
     win = new BrowserWindow(windowOptions);
     win.loadURL(appPath);
     win.on('closed', () => win = null);
-    win.webContents.openDevTools();
+    //win.webContents.openDevTools();
     win.once("ready-to-show", resolveScreenMeta);    
     //win.on("maximize", resolveScreenMeta);
     vibrancy.setVibrancy(win);
@@ -29,7 +29,7 @@ function createWindow() {
 
 function resolveScreenMeta() {
     let model = { width: display.bounds.width, height: display.bounds.height };
-    CrossoverMain.send(InitializationChannel, win, model);
+    Crossover.send(InitializationChannel.withType(ScreenMeta), win, model);
     if (!win.isVisible()) { 
         win.show(); 
     }

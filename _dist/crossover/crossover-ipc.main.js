@@ -1,23 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
-var crossover_channels_1 = require("./crossover.channels");
-var CrossoverMain = /** @class */ (function () {
-    function CrossoverMain() {
+var crossover_framework_1 = require("./crossover-framework");
+var Crossover = /** @class */ (function () {
+    function Crossover() {
     }
-    CrossoverMain.listen = function (channel, listener) {
-        var eventName = channel instanceof crossover_channels_1.CrossoverChannel ? channel.eventName : new channel().constructor.name;
+    Crossover.listen = function (channel, listener) {
+        var eventName = channel instanceof crossover_framework_1.CrossoverChannel ? channel.eventName : channel.channelName;
         electron_1.ipcMain.on(eventName, listener);
     };
-    CrossoverMain.handle = function (channel, listener) {
-        var eventName = channel instanceof crossover_channels_1.CrossoverChannel ? channel.eventName : new channel().constructor.name;
+    Crossover.handle = function (channel, listener) {
+        var eventName = channel instanceof crossover_framework_1.CrossoverChannel ? channel.eventName : channel.channelName;
         electron_1.ipcMain.handle(eventName, listener);
     };
-    CrossoverMain.send = function (channel, window, model) {
-        var eventName = channel instanceof crossover_channels_1.CrossoverChannel ? channel.eventName : channel.channelName;
+    Crossover.send = function (channel, window, model) {
+        var eventName = channel instanceof crossover_framework_1.CrossoverChannel ? channel.eventName : channel.channelName;
         window.webContents.send(eventName, model);
     };
-    return CrossoverMain;
+    return Crossover;
 }());
-exports.CrossoverMain = CrossoverMain;
+exports.Crossover = Crossover;
 //# sourceMappingURL=crossover-ipc.main.js.map

@@ -1,7 +1,7 @@
-export interface CrossoverModel{
-}
+import { CrossoverModel, crossoverModel } from './crossover-framework';
 
-export class ScreenMeta implements CrossoverModel{
+@crossoverModel
+export class ScreenMeta extends CrossoverModel{
     width : number;
     height : number;
 }

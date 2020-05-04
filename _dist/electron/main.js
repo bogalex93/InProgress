@@ -6,6 +6,7 @@ var url = require("url");
 var crossover_ipc_main_1 = require("../crossover/crossover-ipc.main");
 var crossover_channels_1 = require("../crossover/crossover.channels");
 var vibrancy = require("electron-acrylic-window");
+var crossover_models_1 = require("../crossover/crossover.models");
 var win;
 var display;
 electron_1.app.allowRendererProcessReuse = true;
@@ -20,7 +21,7 @@ function createWindow() {
     win = new electron_1.BrowserWindow(windowOptions);
     win.loadURL(appPath);
     win.on('closed', function () { return win = null; });
-    win.webContents.openDevTools();
+    //win.webContents.openDevTools();
     win.once("ready-to-show", resolveScreenMeta);
     //win.on("maximize", resolveScreenMeta);
     vibrancy.setVibrancy(win);
@@ -28,7 +29,7 @@ function createWindow() {
 ;
 function resolveScreenMeta() {
     var model = { width: display.bounds.width, height: display.bounds.height };
-    crossover_ipc_main_1.CrossoverMain.send(crossover_channels_1.InitializationChannel, win, model);
+    crossover_ipc_main_1.Crossover.send(crossover_channels_1.InitializationChannel.withType(crossover_models_1.ScreenMeta), win, model);
     if (!win.isVisible()) {
         win.show();
     }

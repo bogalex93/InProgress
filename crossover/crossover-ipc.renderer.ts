@@ -1,10 +1,9 @@
-import { CrossoverModel } from './crossover.models';
-import { CrossoverChannel } from './crossover.channels';
-import { IpcRendererEvent } from 'electron';
+ import { IpcRendererEvent } from 'electron';
+import { CrossoverChannel, CrossoverModel } from './crossover-framework';
 
 const electron: Electron.RendererInterface = window.require('electron');
 
-export class CrossoverRenderer {
+export class Crossover {
 
     public static electron : Electron.RendererInterface = electron;
 

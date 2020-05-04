@@ -1,9 +1,8 @@
 import { ipcMain, IpcMainEvent, BrowserWindow } from 'electron';
-import { CrossoverModel } from './crossover.models';
-import { CrossoverChannel } from './crossover.channels';
-import * as test from './crossover.channels';
+import { CrossoverChannel, CrossoverModel } from './crossover-framework';
 
-export class CrossoverMain {
+
+export class Crossover {
 
     static listen<TChannel extends CrossoverChannel>(channel: (new () => TChannel) | TChannel, listener: (event: IpcMainEvent, model: CrossoverModel) => void) {
         let eventName = channel instanceof CrossoverChannel? channel.eventName : (channel as any).channelName;  
