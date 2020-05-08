@@ -53,9 +53,9 @@
       "version": 3,
       "sources": ["D:\\Projects\\InProgress/app\\styles.scss", "styles.scss"],
       "names": [],
-      "mappings": "AAAA;;EAEI,YAAA;EACA,gBAAA;EACA,uBAAA;EACA,0DAAA;ACCJ",
+      "mappings": "AAEA;;EAEI,YAAA;EACA,gBAAA;EACA,uBAAA;EACA,0DAAA;ACDJ",
       "file": "styles.scss",
-      "sourcesContent": ["html, \nbody {\n    height:100%;\n    overflow: hidden;        \n    background: transparent;\n    font-family: -apple-system, BlinkMacSystemFont, sans-serif;\n}", "html,\nbody {\n  height: 100%;\n  overflow: hidden;\n  background: transparent;\n  font-family: -apple-system, BlinkMacSystemFont, sans-serif;\n}"]
+      "sourcesContent": ["//@import \"../node_modules/font-awesome/scss/font-awesome.scss\";\n\nhtml, \nbody {\n    height:100%;\n    overflow: hidden;        \n    background: transparent;\n    font-family: -apple-system, BlinkMacSystemFont, sans-serif;\n} ", "html,\nbody {\n  height: 100%;\n  overflow: hidden;\n  background: transparent;\n  font-family: -apple-system, BlinkMacSystemFont, sans-serif;\n}"]
     }]); // Exports
 
     module.exports = exports;

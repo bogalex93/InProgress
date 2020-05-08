@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function crossoverChannel(typeDef) {
-    typeDef.channelName = typeDef.name;
-    typeDef.withType = function (mt) { return withType(typeDef, mt); };
-}
-exports.crossoverChannel = crossoverChannel;
 function crossoverModel(typeDef) {
     typeDef.internal_type_name = typeDef.name;
 }
 exports.crossoverModel = crossoverModel;
+function crossoverChannel(typeDef) {
+    typeDef.channelName = typeDef.name;
+    typeDef.with = function (mt) { return withType(typeDef, mt); };
+}
+exports.crossoverChannel = crossoverChannel;
 function withType(typeDef, modelTypeDef) {
     var crossOverChannel = new typeDef();
     crossOverChannel.channelName = typeDef.name;

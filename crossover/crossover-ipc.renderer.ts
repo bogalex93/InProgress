@@ -1,6 +1,6 @@
 import { IpcRendererEvent } from 'electron';
 import { CrossoverChannel, CrossoverModel } from './crossover-framework';
-const electron: Electron.RendererInterface = window.require('electron');
+const electron: Electron.RendererInterface = window.require? window.require('electron') : undefined;
 
 export class Crossover {
 

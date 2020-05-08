@@ -10,7 +10,7 @@ import { RootComponent } from './root/root.component';
   ],
   imports: [
     BrowserModule,
-    MainRoutingModule
+    MainRoutingModule,
   ],
   providers: [],
   bootstrap: [RootComponent]

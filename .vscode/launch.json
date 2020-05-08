@@ -17,7 +17,7 @@
         ".",
         "--remote-debugging-port=9222"
       ],
-      //"preLaunchTask": "npm: electron-build",
+      "preLaunchTask": "npm: electron-compile",
       "outputCapture": "std",
       "protocol": "auto"
     },

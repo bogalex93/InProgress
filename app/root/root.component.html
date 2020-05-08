@@ -1,29 +1,108 @@
-<div class="container">
-    <div class="note">
-        <div class="title-container">
-            <h2 class="title">Note title</h2>
-            <span class="date">18/03/2020</span>
-        </div>
-        <div class="body">
-            description
+<div class="content-container">
+    <div class="container">
+        <div class="notes-list" [ngClass]="{'blur': modalVisible}">
+            <div class="note">
+                <div class="title-container">
+                    <h3 class="title">
+                        <span uk-icon="icon: comment; ratio: 1.2"></span>
+                        Note title
+                    </h3>
+                    <span class="date">
+                        <span class="important" uk-icon="icon: warning; ratio: 1.2"></span>
+                    </span>
+                </div>
+                <div class="body">
+                    - description
+                </div>
+            </div>
         </div>
     </div>
-    <div class="note">
-        <div class="title-container">
-            <h3 class="title">Note title</h3>
-            <span class="date">18/03/2020</span>
-        </div>
-        <div class="body">
-            description
+    <div class="menu-container">
+        <div class="menu">
+            <button class="btn-new-note" (click)="addNotesModal.show()">
+                <span uk-icon="icon: plus; ratio: 2"></span>
+            </button>
+            <div class="uk-inline">
+                <button>
+                    <span uk-icon="icon: folder; ratio: 2"></span>
+                </button>
+                <div uk-dropdown="pos: top">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <li class="uk-nav-divider"></li>
+                        <li><a (click)="creteFolderModal.show()"><span uk-icon="icon: plus; ratio: 1"></span> New Folder</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li *ngFor="let folder of folders">
+                            <a  [ngClass]="{'selected': folder.selected}">
+                                <span (click)="selectFolder(folder)">
+                                    <span uk-icon="icon: folder; ratio: 1"></span> <span style="margin-left: 4px" [innerText]="folder.name"></span>
+                                </span>
+                                <span *ngIf="folder.selected" style="float: right;" uk-icon="icon: check; ratio: 1"></span>
+                                <span *ngIf="!folder.isDefault && !folder.selected" style="float: right;" uk-icon="icon: trash; ratio: 1"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="uk-inline">
+                <button class="btn-new-note">
+                    <span uk-icon="icon: paint-bucket; ratio: 2"></span>
+                </button>
+                <div uk-dropdown="pos: top">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <li><a><span uk-icon="icon: paint-bucket; ratio: 1"></span> Theme: Dark</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a><span uk-icon="icon: paint-bucket; ratio: 1"></span> Theme: Light</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a><span uk-icon="icon: paint-bucket; ratio: 1"></span> Theme: Blur</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a><span uk-icon="icon: paint-bucket; ratio: 1"></span> Theme: Nude</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="uk-inline">
+                <button class="btn-new-note">
+                    <span uk-icon="icon: settings; ratio: 2"></span>
+                </button>
+                <div uk-dropdown="pos: top">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <li><a><span uk-icon="icon: settings; ratio: 1"></span> Default Width: 25%</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a><span uk-icon="icon: settings; ratio: 1"></span> Custom Width %: <input
+                                    class="uk-input uk-form-small uk-form-width-xsmall" /></a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a><span uk-icon="icon: settings; ratio: 1"></span> Style: Floating</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a><span uk-icon="icon: settings; ratio: 1"></span> Style: Docked</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="note success">
-        <div class="title-container">
-            <h2 class="title">Note title</h2>
-            <span class="date">18/03/2020</span>
+</div>
+
+<div id="add-note-modal" class="uk-flex-top" #addNoteModalRef>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.</p>
+    </div>
+</div>
+
+<div id="create-folder-modal" class="uk-flex-top" #createFolderModalRef>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+        <button class="uk-modal-close-default" type="button" uk-close></button>        
+        <div class="uk-modal-header">
+            <h3><span uk-icon="icon: folder; ratio: 1.2"></span> New Folder</h3>
         </div>
-        <div class="body">
-            description
+        <div class="uk-modal-body">
+            <div class="uk-display-inline">Type folder name: </div> <input class="uk-input uk-form-medium uk-form-width-small uk-display-inline" #folderInput (keyup)="folderInput.canSave = folderInput.value && folderInput.value.length > 2"/>
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+            <button class="uk-button uk-button-primary" [disabled]="!folderInput.canSave" (click)="saveFolder(folderInput)">Save</button>
         </div>
     </div>
 </div>

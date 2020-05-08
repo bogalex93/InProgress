@@ -13,25 +13,35 @@ app.on('ready', createWindow);
 
 function createWindow() {
     display = screen.getPrimaryDisplay();
-    let width = 1200;//windowSizes[display.bounds.width] || 300;
+    let width = windowSizes[display.bounds.width] || 300;
     let webPreferences: WebPreferences = { nodeIntegration: true };
-    let windowOptions: BrowserWindowConstructorOptions = { width: width, height: display.workArea.height - 40, transparent: true, frame: false, skipTaskbar: false, y: 20, x: display.bounds.width - (width + 10), webPreferences: webPreferences, show: false, minimizable: false };
+    let windowOptions: BrowserWindowConstructorOptions = {
+        width: width,
+        height: display.workArea.height,
+        transparent: true,
+        frame: false,
+        skipTaskbar: false,
+        y: 0, x: display.bounds.width - width,
+        webPreferences: webPreferences,
+        show: false,
+        minimizable: false,
+        resizable:false
+    };
     let urlOptions = { pathname: path.join(__dirname, `../angular-app/index.html`), protocol: 'file:', slashes: true };
-    let appPath = url.format(urlOptions);
     win = new BrowserWindow(windowOptions);
+    let isDev  = JSON.stringify(process.argv).indexOf('remote-debugging-port') >= 0;
+    let appPath = isDev? "http://localhost:4200/" :  url.format(urlOptions);
     win.loadURL(appPath);
-    win.on('closed', () => win = null);
-    //win.webContents.openDevTools();
-    win.once("ready-to-show", resolveScreenMeta);    
-    //win.on("maximize", resolveScreenMeta);
+    win.on('closed', () => win = null);    
+    win.once("ready-to-show", showWindow);    
     vibrancy.setVibrancy(win);
 };
 
-function resolveScreenMeta() {
-    let model = { width: display.bounds.width, height: display.bounds.height };
-    Crossover.send(InitializationChannel.with(ScreenMeta), win, model);
-    if (!win.isVisible()) { 
-        win.show(); 
+function showWindow() {
+    // let model = { width: display.bounds.width, height: display.bounds.height };
+    // Crossover.send(InitializationChannel.with(ScreenMeta), win, model);
+    if (!win.isVisible()) {
+        win.show();
     }
 }
 

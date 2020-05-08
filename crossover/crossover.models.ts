@@ -5,4 +5,3 @@ export class ScreenMeta extends CrossoverModel{
     width : number;
     height : number;
 }
-
