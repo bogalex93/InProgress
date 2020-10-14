@@ -5,6 +5,9 @@
     "types": [],
     "experimentalDecorators": true
   },
+  "angularCompilerOptions": {
+    "enableIvy": false
+  },
   "files": [
     "./main.ts",
     "./polyfills.ts"

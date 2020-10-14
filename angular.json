@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "InProgress": {
+    "inprogress": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -76,18 +76,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "InProgress:build"
+            "browserTarget": "inprogress:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "InProgress:build:production"
+              "browserTarget": "inprogress:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "InProgress:build"
+            "browserTarget": "inprogress:build"
           }
         },
         "lint": {
@@ -104,7 +104,7 @@
       }
     }
   },
-  "defaultProject": "InProgress",
+  "defaultProject": "inprogress",
   "cli": {
     "analytics": false
   }
