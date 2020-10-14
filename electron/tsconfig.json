@@ -22,6 +22,6 @@
         "**/*",           
         "../crossover/crossover-ipc.main.ts",
         "../crossover/crossover.channels.ts",
-        "../crossover/crossover.models.ts",    
+        "../crossover/crossover.models.ts"
     ]
 }
