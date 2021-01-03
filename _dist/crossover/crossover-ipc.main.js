@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Crossover = void 0;
 var electron_1 = require("electron");
 var crossover_framework_1 = require("./crossover-framework");
 var Crossover = /** @class */ (function () {

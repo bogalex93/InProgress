@@ -13,5 +13,6 @@ export class AppConfig extends CrossoverModel {
 @crossoverModel
 export class GenericData extends CrossoverModel {
   storeName: string;
-  data: any;
+  data?: any;
+  action: 'save' | 'get'
 }

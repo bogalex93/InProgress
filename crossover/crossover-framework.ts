@@ -4,11 +4,13 @@ export function crossoverModel(typeDef: any) {
 
 export function crossoverChannel(typeDef: any) {
     typeDef.channelName = typeDef.name;
+    console.log(typeDef);
     typeDef.with = mt => withType(typeDef, mt);
 }
 
 function withType(typeDef: any, modelTypeDef: any) {
     var crossOverChannel = new typeDef();
+    console.log(crossOverChannel);
     crossOverChannel.channelName = typeDef.name;
     crossOverChannel.eventName = `${crossOverChannel.channelName}-${modelTypeDef.internal_type_name}`;
     return crossOverChannel;

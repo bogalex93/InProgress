@@ -25,8 +25,6 @@ export class Crossover {
 
   public static async get<T>(channel: (new () => CrossoverChannel) | CrossoverChannel, model?: CrossoverModel): Promise<T> {
     let eventName = channel instanceof CrossoverChannel ? channel.eventName : (channel as any).channelName;
-    console.log(eventName);
-    console.log(channel);
     var result = await Crossover.electron.ipcRenderer.invoke(eventName, model);
     return result;
   }

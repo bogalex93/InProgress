@@ -1,0 +1,188 @@
+@import "../../styles/variables.scss";
+.notes-list {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    padding-right: 6px;
+    padding-top: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    .note {
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      color: $font-color;
+      background-color: $card-color;
+      text-rendering: optimizelegibility;
+      border-radius: $border-radius;
+      position: relative;
+      overflow: hidden;
+  
+      &.completed {
+        // border-left: 2px solid limegreen;
+        // border-top: 2px solid limegreen;
+        border-bottom: 2px solid limegreen;
+        border-right: 2px solid limegreen;
+        .line{
+          pointer-events: none;
+          cursor: default;
+        }
+        .title{
+          color: limegreen;
+        }
+      }
+  
+      &.important {
+        // border-left: 2px solid limegreen;
+        // border-top: 2px solid limegreen;
+        .title{
+          color: red;
+        }
+        border-bottom: 2px solid red;
+        border-right: 2px solid red;
+      }
+  
+      &:not(:first-child) {
+        margin-top: 6px;
+      }
+  
+      .title-container {
+        display: flex;
+        justify-content: space-between;
+        .title {
+          margin: 0;
+          //color: white;
+          color: $font-color;
+        }
+  
+        .meta {
+          position: absolute;
+          right: 5px;
+          top: 5px;
+          .important {
+            color: red;
+          }
+          .done {
+            color: limegreen;
+          }
+        }
+      }
+      .body {
+        padding-top: 6px;
+        padding-bottom: 46px;
+  
+        .line {
+          display: flex;          
+          line-height: 16px;
+          height: 16px;
+          padding: 3px 0px;
+          
+          &.completed {
+            border-right: 2px solid limegreen;
+            textarea{
+              color: limegreen;
+            } 
+            .icon-btn.done{
+              display: none;
+            }
+            input,
+            .uk-icon.bulet {
+              color: limegreen;
+            }
+          }
+          &.canceled {
+            border-right: 2px solid lightgrey;
+            .icon-btn.cancel{
+              display: none;
+            }
+            textarea{
+              color: lightgray;
+            } 
+            input,
+            .uk-icon.bulet {
+              color: lightgrey;
+            }
+          }
+          &.inProgress {
+            border-right: 2px solid $color-info;
+            .icon-btn.in-progress{
+              display: none;
+            }
+            textarea{
+              color: $color-info;
+            } 
+            input,
+            .uk-icon.bulet {
+              color: $color-info;
+            }
+          }
+          .icon-btn {
+            visibility: hidden;
+          }
+          &:hover {          
+            .icon-btn {
+              visibility: visible;
+            }
+          }
+  
+          textarea {
+            resize: none;
+            margin-left: -26px;
+            padding-left: 32px;
+            margin-right: -24px;
+            padding-right: 26px;
+            border-radius: 0;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            background: transparent;
+            border: none;
+            color: $font-color;
+            line-height:16px;
+            font-size: 16px;
+            height: min-content;    
+            display: inline-table;        
+            word-wrap: break-word;
+            word-break: break-word;
+            cursor: pointer;
+            &::-webkit-scrollbar {
+              display: none;
+            }
+            &:focus {
+              cursor: text;
+            }
+          }
+          .uk-icon {
+            line-height: 16px;
+          }
+          .icon-btn.delete {
+            &:hover {
+              color: orangered;
+            }
+          }
+        }
+      }
+      .actions {
+        margin: auto;
+        width: fit-content;
+        min-width: 70%;
+        background-color: #252526;
+        border-radius: 10px;
+        padding: 4px 16px;
+        display: flex;
+        justify-content: space-around;
+        transition: bottom 0.7s ease;
+        position: absolute;
+        bottom: -80px;
+        left: 0;
+        right: 0;
+      }
+      &:hover {
+        .actions {
+          bottom: 10px;
+        }
+      }
+    }
+  }

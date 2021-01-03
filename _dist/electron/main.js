@@ -37,11 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
+var glasstron = require('glasstron');
 var path = require("path");
 var url = require("url");
 var crossover_ipc_main_1 = require("../crossover/crossover-ipc.main");
 var crossover_channels_1 = require("../crossover/crossover.channels");
-var vibrancy = require("electron-acrylic-window");
+//import * as vibrancy from 'electron-acrylic-window';
 var crossover_models_1 = require("../crossover/crossover.models");
 var fs = require("fs");
 var Blob = require("cross-blob");
@@ -50,36 +51,41 @@ var display;
 var dockedBounds;
 var width;
 electron_1.app.allowRendererProcessReuse = true;
-electron_1.app.on('ready', createWindow);
+electron_1.app.commandLine.appendSwitch('enable-transparent-visuals');
+electron_1.app.on("ready", function () { return setTimeout(createWindow, process.platform == "linux" ? 1000 : 0); });
 function createWindow() {
     onStartup();
-    var webPreferences = { nodeIntegration: true };
     dockedBounds = { width: width, height: display.workArea.height, y: 0, x: display.bounds.width - width };
+    var urlOptions = { pathname: path.join(__dirname, "../angular-app/index.html"), protocol: 'file:', slashes: true };
+    var isDev = JSON.stringify(process.argv).indexOf('remote-debugging-port') >= 0;
+    var appUrl = isDev ? "http://localhost:4200/" : url.format(urlOptions);
+    var webPreferences = { nodeIntegration: true };
     var windowOptions = {
         transparent: true,
         frame: false,
         skipTaskbar: false,
         webPreferences: webPreferences,
-        show: false,
-        minimizable: false
+        minimizable: false,
     };
-    var urlOptions = { pathname: path.join(__dirname, "../angular-app/index.html"), protocol: 'file:', slashes: true };
-    win = new electron_1.BrowserWindow(windowOptions);
-    var isDev = JSON.stringify(process.argv).indexOf('remote-debugging-port') >= 0;
-    var appPath = isDev ? "http://localhost:4200/" : url.format(urlOptions);
-    var appUrl = url.format(urlOptions);
+    win = new glasstron.BrowserWindow(windowOptions);
+    win.blurType = "acrylic";
+    //              ^~~~~~~
+    // Windows 10 1803+; for older versions you
+    // might want to use 'blurbehind'
+    win.setBlur(true);
+    win.setBounds(dockedBounds, true);
+    //win.webContents.openDevTools();
+    // if (!win.isVisible()) {
+    //   win.show();
+    // }
     win.loadURL(appUrl);
-    win.on('closed', function () { return win = null; });
-    win.once("ready-to-show", showWindow);
-    vibrancy.setVibrancy(win);
+    win.webContents.openDevTools();
+    win.on('closed', function () { return onClosed; });
+    //vibrancy.setVibrancy(win);
 }
 ;
-function showWindow() {
-    win.setBounds(dockedBounds, true);
-    win.webContents.openDevTools();
-    if (!win.isVisible()) {
-        win.show();
-    }
+function onClosed() {
+    win = null;
 }
 function onStartup() {
     display = electron_1.screen.getPrimaryDisplay();
@@ -127,6 +133,7 @@ function saveData(genericData) {
                     ab = _a.sent();
                     bytesStr = JSON.stringify(Array.from(new Uint8Array(ab)));
                     fs.writeFile("./appdata/" + genericData.storeName + ".db", bytesStr, { encoding: "utf-8" }, function () { });
+                    alert("saving data");
                     return [3 /*break*/, 3];
                 case 2:
                     err_1 = _a.sent();

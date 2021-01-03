@@ -35,7 +35,7 @@ export class RootComponent implements OnInit, AfterViewInit {
   public appConfig: AppConfig = { minimized: false };
   public display: DisplayInfo;
   public electronWindow: Electron.BrowserWindow;
-  public noteStates = NoteStates;
+ 
   public get folderStats() {
     return {
       notesCount: this.selectedFolder.notes.length,
@@ -51,10 +51,14 @@ export class RootComponent implements OnInit, AfterViewInit {
     if (Crossover.isElectronRunning) {
       this.electronWindow = Crossover.electron.remote.getCurrentWindow();
       this.appConfig.width = this.electronWindow.getBounds().width;
+      // this.electronWindow.on('close', (e) => {
+      //   e.preventDefault();
+      //   this.saveToDisk();
+      //   //setTimeout(() => this.electronWindow.close(), 500);
+      // });
       console.log(this.electronWindow.getBounds());
       this.display = await Crossover.get<DisplayInfo>(ConfigurationChannel.with(DisplayInfo));
-      this.folders = await Crossover.get<Folder[]>(DataChannel.with(GenericData), <GenericData>{ storeName: 'notes' });
-      setInterval(() => this.saveToDisk(), 1000);
+      this.folders = await Crossover.get<Folder[]>(DataChannel.with(GenericData), <GenericData>{ storeName: 'notes', action: 'get' });
     }
     if (!this.folders) { this.folders = [{ name: "General", notes: [], isDefault: true }]; }
     if (!this.selectedFolder) { this.selectFolder(this.folders[0]); }
@@ -83,6 +87,7 @@ export class RootComponent implements OnInit, AfterViewInit {
     this.selectFolder(this.folders[this.folders.length - 1]);
     this.creteFolderModal.hide();
     input.value = '';
+    this.saveToDisk();
   }
 
   public createNote() {
@@ -100,27 +105,10 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   private saveToDisk() {
-    Crossover.send<GenericData>(DataChannel.with(GenericData), { storeName: 'notes', data: this.folders });
+    Crossover.send<GenericData>(DataChannel.with(GenericData), { storeName: 'notes', data: this.folders, action: 'save' });
   }
 
-  public async completeNote(note: Note) {
-    note.lines = note.lines.filter(l => !!l.content);
-    note.lines.filter(l => l.state != NoteStates.canceled).forEach(l => l.state = NoteStates.completed);
-    note.state = NoteStates.completed;
-  }
 
-  public markNote(note: Note) {
-    note.state = note.state === NoteStates.important ? NoteStates.neutral : NoteStates.important;
-  }
-
-  public initNote(noteEl: any, note: Note) {
-    noteEl.allStates = NoteStates;
-    noteEl.actions = new NoteActions(note);
-  }
-
-  public removeNote(note: Note) {
-    this.selectedFolder.notes = _.without(this.selectedFolder.notes, note);
-  }
 
   public changeWindowSize(value) {
     this.appConfig.width += value;
