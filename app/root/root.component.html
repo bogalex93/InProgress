@@ -1,5 +1,5 @@
 <div class="home-root">
-  <div id="content-container" class="content-container" *ngIf="selectedFolder"
+  <div id="content-container" class="content-container" *ngIf="selectedFolder" confirm-delete #folderEl
     [ngClass]="{'blur': modalVisible,'minimized': appConfig.minimized}">
     <h2 class="folder-title">
       <div style="display: flex;"><span uk-icon="icon: folder; ratio: 1.6"></span> <span style="margin-left: 4px"
@@ -18,6 +18,7 @@
           <span style="margin-left: 4px;">completed</span>
         </div>
       </div>
+      
     </h2>
   <notes-list *ngIf="selectedFolder" [(notes)]="selectedFolder.notes"></notes-list>
   </div>
@@ -49,7 +50,7 @@
                     [innerText]="folder.name"></span>
                 </span>
                 <span *ngIf="folder.selected" style="float: right;" uk-icon="icon: check; ratio: 1"></span>
-                <span *ngIf="!folder.isDefault && !folder.selected" class="icon-btn delete" style="float: right;"
+                <span *ngIf="!folder.isDefault && !folder.selected" class="icon-btn delete" style="float: right;" (click)="deleteFolder(folder)"
                   uk-icon="icon: trash; ratio: 1"></span>
               </a>
             </li>
@@ -122,25 +123,27 @@
       </div>
     </div>
   </div>
-</div>
 
 
-<div id="delete-folder-modal" class="uk-flex-top" #deleteFolderModalRef>
-  <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
-    <div class="add-note">
-      <div class="uk-modal-header">
-        <h2><span uk-icon="icon: folder; ratio: 1.4"></span> Delete Folder</h2>
-      </div>
-      <div class="uk-modal-body">
-        <div style="display: flex; flex-direction: column;">
-          <h3>Deleting the folder will : </h3>          
-      </div>
-      </div>
-      <div class="uk-modal-footer uk-text-right">
-        <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button">Cancel</button>
-        <button class="uk-button uk-button-primary  uk-button-small" [disabled]="!folderInput.canSave"
-          (click)="saveFolder(folderInput)">Save</button>
+  <div id="delete-folder-modal" class="uk-flex-top" #deleteFolderModalRef>
+    <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
+      <div>
+        <div class="uk-modal-header">
+          <h2 *ngIf="tempDictionary.folderToDelete"><span uk-icon="icon: trash; ratio: 1.4"></span> Delete folder {{'<'+tempDictionary.folderToDelete.name+'>'}} </h2>
+        </div>
+        <div class="uk-modal-body">
+          <div style="display: flex; flex-direction: column;">
+            <h4>Deleting the folder will permanently lose you notes</h4>          
+        </div>
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+          <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button">Cancel</button>
+          <button class="uk-button uk-button-primary uk-button-small"
+            (click)="confirmDeleteFolder()">Delete</button>
+        </div>
       </div>
     </div>
   </div>
+
 </div>
+

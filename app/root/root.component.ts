@@ -25,6 +25,10 @@ export class RootComponent implements OnInit, AfterViewInit {
   @UIkitComponent(uikit.modal)
   public creteFolderModal: UIkitModalElement;
 
+  @ViewChild('deleteFolderModalRef')
+  @UIkitComponent(uikit.modal)
+  public deleteFolderModal: UIkitModalElement;
+
   public modalVisible: boolean;
   public folders: Folder[];
   public selectedFolder: Folder;
@@ -35,6 +39,7 @@ export class RootComponent implements OnInit, AfterViewInit {
   public appConfig: AppConfig = { minimized: false };
   public display: DisplayInfo;
   public electronWindow: Electron.BrowserWindow;
+  public tempDictionary : {folderToDelete?: Folder} = {};
  
   public get folderStats() {
     return {
@@ -69,8 +74,12 @@ export class RootComponent implements OnInit, AfterViewInit {
     uikit.util.on(this.addNotesModal.$el, ModalEvents.hidden, e => this.modalVisible = false);
     uikit.util.on(this.creteFolderModal.$el, ModalEvents.show, e => this.modalVisible = true);
     uikit.util.on(this.creteFolderModal.$el, ModalEvents.hidden, e => this.modalVisible = false);
+    uikit.util.on(this.deleteFolderModal.$el, ModalEvents.show, e => this.modalVisible = true);
+    uikit.util.on(this.deleteFolderModal.$el, ModalEvents.hidden, e => this.modalVisible = false);
 
     this.addNotesModal.$el.style.right = '46px';
+    this.creteFolderModal.$el.style.right = '46px';
+    this.deleteFolderModal.$el.style.right = '46px';
     (<HTMLElement>document.body).style.setProperty('--border-radius', '15px');
     //(<HTMLElement>this.elementRef.nativeElement).style.setProperty('--border-radius', '10px');
   }
@@ -108,7 +117,18 @@ export class RootComponent implements OnInit, AfterViewInit {
     Crossover.send<GenericData>(DataChannel.with(GenericData), { storeName: 'notes', data: this.folders, action: 'save' });
   }
 
+  public deleteFolder(folder : Folder){
+     this.tempDictionary.folderToDelete = folder;
+     this.deleteFolderModal.show();
+  }
 
+  public confirmDeleteFolder(){
+    var index = this.folders.indexOf(this.tempDictionary.folderToDelete);
+    this.folders.splice(index,1);
+    this.saveToDisk();
+    this.tempDictionary.folderToDelete = null;
+    this.deleteFolderModal.hide();
+  }
 
   public changeWindowSize(value) {
     this.appConfig.width += value;

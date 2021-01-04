@@ -74,14 +74,9 @@ function createWindow() {
     // might want to use 'blurbehind'
     win.setBlur(true);
     win.setBounds(dockedBounds, true);
-    //win.webContents.openDevTools();
-    // if (!win.isVisible()) {
-    //   win.show();
-    // }
     win.loadURL(appUrl);
-    win.webContents.openDevTools();
+    //(<BrowserWindow>win).webContents.openDevTools();
     win.on('closed', function () { return onClosed; });
-    //vibrancy.setVibrancy(win);
 }
 ;
 function onClosed() {
