@@ -146,5 +146,9 @@ export class RootComponent implements OnInit, AfterViewInit {
       this.electronWindow.setBounds({ width: this.appConfig.width, height: this.display.height, x: this.display.width - this.appConfig.width, y: 0 });
     }
   }
+
+  public close(){
+    this.electronWindow.close();
+  }
 }
 

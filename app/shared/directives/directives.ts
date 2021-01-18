@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, Output, EventEmitter, AfterViewInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef } from '@angular/core';
+import { Directive, ElementRef, Input, Output, EventEmitter, AfterViewInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, OnInit } from '@angular/core';
 import { ConfirmationOverlayComponent } from '../components/confirmation-overlay/confirmation-overlay.component';
 
 @Directive({ selector: '[confirm-delete]' })
@@ -53,12 +53,24 @@ export class ConfirmDeleteDirective {
 @Directive({
   selector: '[ngInit]'
 })
-export class NgInitDirective {
+export class NgInitDirective implements OnInit{
   @Output('ngInit') initEvent: EventEmitter<HTMLElement> = new EventEmitter();
   constructor(private elRef: ElementRef) {
   }
 
   ngOnInit() {
     this.initEvent.emit(this.elRef.nativeElement);
+  }
+}
+@Directive({
+  selector: '[ngViewInit]'
+})
+export class NgViewInitDirective implements AfterViewInit {
+  @Output('ngViewInit') initEvent: EventEmitter<HTMLElement> = new EventEmitter();
+  constructor(private elRef: ElementRef) {
+  }
+
+  ngAfterViewInit(): void {    
+    setTimeout(() => this.initEvent.emit(this.elRef.nativeElement), 50);        
   }
 }

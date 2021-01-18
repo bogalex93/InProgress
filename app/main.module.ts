@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MainRoutingModule } from './main-routing.module';
 import { RootComponent } from './root/root.component';
-import { ConfirmDeleteDirective, NgInitDirective } from './shared/directives/directives';
+import { ConfirmDeleteDirective, NgInitDirective, NgViewInitDirective } from './shared/directives/directives';
 import { ConfirmationOverlayComponent } from './shared/components/confirmation-overlay/confirmation-overlay.component';
 import { NotesListComponent } from './core/notes-list/notes-list.component';
 
@@ -17,6 +17,7 @@ import { NotesListComponent } from './core/notes-list/notes-list.component';
     RootComponent,
     ConfirmDeleteDirective,
     NgInitDirective,
+    NgViewInitDirective,
     ConfirmationOverlayComponent,
     NotesListComponent
   ],

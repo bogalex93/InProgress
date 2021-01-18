@@ -20,19 +20,19 @@ app.on("ready", () => setTimeout(createWindow,  process.platform == "linux" ? 10
 
 function createWindow() {
   onStartup();
-  dockedBounds = { width: width, height: display.workArea.height, y: 0, x: display.bounds.width - width };  
+  dockedBounds = { width: width, height: display.workArea.height, y: display.bounds.y, x: display.bounds.x + display.bounds.width - width };  
   let urlOptions = { pathname: path.join(__dirname, `../angular-app/index.html`), protocol: 'file:', slashes: true };
   let isDev = JSON.stringify(process.argv).indexOf('remote-debugging-port') >= 0;
   let appUrl = isDev ? "http://localhost:4200/" : url.format(urlOptions);
 
   let webPreferences: WebPreferences = { nodeIntegration: true };
+  var iconPath = path.join(__dirname, `assets/in-progress.png`);
   let windowOptions: BrowserWindowConstructorOptions = {
      transparent:true,
     frame: false,
-    skipTaskbar: false,
+    skipTaskbar: true,
     webPreferences: webPreferences,   
     minimizable: false,
-    
   };
   win =  new glasstron.BrowserWindow(windowOptions);
   win.blurType = "acrylic";
@@ -44,7 +44,7 @@ function createWindow() {
  
 
   win.loadURL(appUrl);
-  //(<BrowserWindow>win).webContents.openDevTools();
+//  (<BrowserWindow>win).webContents.openDevTools();
   win.on('closed', () => onClosed);  
 };
 

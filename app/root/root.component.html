@@ -1,149 +1,138 @@
 <div class="home-root">
-  <div id="content-container" class="content-container" *ngIf="selectedFolder" confirm-delete #folderEl
-    [ngClass]="{'blur': modalVisible,'minimized': appConfig.minimized}">
-    <h2 class="folder-title">
-      <div style="display: flex;"><span uk-icon="icon: folder; ratio: 1.6"></span> <span style="margin-left: 4px"
-          [innerText]="selectedFolder.name"></span></div>
-      <div style="font-size: 11px; display: flex; flex-direction: column; line-height: 12px;">
-        <div>
-          <span [innerText]="folderStats.notesCount"></span>
-          <span style="margin-left: 4px;">notes</span>
-        </div>
-        <div style="color: #2ca8ff;">
-          <span [innerText]="folderStats.inProgressNotes"></span>
-          <span style="margin-left: 4px;">in progress</span>
-        </div>
-        <div style="color: limegreen;">
-          <span [innerText]="folderStats.completedNotes"></span>
-          <span style="margin-left: 4px;">completed</span>
-        </div>
-      </div>
-      
-    </h2>
-  <notes-list *ngIf="selectedFolder" [(notes)]="selectedFolder.notes"></notes-list>
-  </div>
-  <div class="menu-container" [ngClass]="{'minimized': appConfig.minimized}">
-    <div class="menu">
-      <div class="uk-inline">
-        <button class="btn-new-note" (click)="toggleView()">
-          <span *ngIf="appConfig.minimized" uk-tooltip="expand" uk-icon="icon: expand; ratio: 2"></span>
-          <span *ngIf="!appConfig.minimized" uk-tooltip="collapse" uk-icon="icon: shrink; ratio: 2"></span>
-        </button>
-      </div>
-      <div class="uk-inline">
-        <button class="btn-new-note" (click)="createNote()" uk-tooltip="new note">
-          <span uk-icon="icon: plus; ratio: 2"></span>
-        </button>
-      </div>
-      <div class="uk-inline">
-        <button [disabled]="appConfig.minimized" uk-tooltip="folders">
-          <span uk-icon="icon: folder; ratio: 2"></span>
-        </button>
-        <div uk-dropdown="pos: left">
-          <ul class="uk-nav uk-dropdown-nav">
-            <li><a (click)="creteFolderModal.show()"><span uk-icon="icon: plus; ratio: 1"></span> New
-                Folder</a></li>
-            <li *ngFor="let folder of folders">
-              <a [ngClass]="{'active': folder.selected}">
-                <span (click)="selectFolder(folder)">
-                  <span uk-icon="icon: folder; ratio: 1"></span> <span style="margin-left: 4px"
-                    [innerText]="folder.name"></span>
-                </span>
-                <span *ngIf="folder.selected" style="float: right;" uk-icon="icon: check; ratio: 1"></span>
-                <span *ngIf="!folder.isDefault && !folder.selected" class="icon-btn delete" style="float: right;" (click)="deleteFolder(folder)"
-                  uk-icon="icon: trash; ratio: 1"></span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="uk-inline">
-        <button [disabled]="appConfig.minimized">
-          <span uk-icon="icon: settings; ratio: 2"></span>
-        </button>
-        <div uk-dropdown="pos: left">
-          <ul class="uk-nav uk-dropdown-nav">
-            <li><a><span class="icon-btn" uk-icon="icon: plus; ratio: 1" (click)="changeWindowSize(20)"></span> Width:
-                {{ this.appConfig.width }}px <span class="icon-btn delete" uk-icon="icon: minus; ratio: 1"
-                  (click)="changeWindowSize(-20)"></span></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div id="content-container" class="content-container" *ngIf="selectedFolder" confirm-delete #folderEl [ngClass]="{'blur': modalVisible,'minimized': appConfig.minimized}">
+        <h2 class="folder-title">
+            <div style="display: flex;"><span uk-icon="icon: folder; ratio: 1.6"></span> <span style="margin-left: 4px" [innerText]="selectedFolder.name"></span></div>
+            <div style="font-size: 11px; display: flex; flex-direction: column; line-height: 12px;">
+                <div>
+                    <span [innerText]="folderStats.notesCount"></span>
+                    <span style="margin-left: 4px;">notes</span>
+                </div>
+                <div style="color: #2ca8ff;">
+                    <span [innerText]="folderStats.inProgressNotes"></span>
+                    <span style="margin-left: 4px;">in progress</span>
+                </div>
+                <div style="color: limegreen;">
+                    <span [innerText]="folderStats.completedNotes"></span>
+                    <span style="margin-left: 4px;">completed</span>
+                </div>
+            </div>
 
-  <div id="add-note-modal" class="uk-flex-top" #addNoteModalRef>
-    <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
-      <div class="add-note">
-        <div class="uk-modal-header">
-          <h2 class="title" style="margin: 10px 0 0 0;"><span uk-icon="icon: comment; ratio: 1.4"></span>
-            <input type="text" style="font-size: 20px;" [(ngModel)]="newNote.title" class="uk-input"
-              placeholder="title" />
-          </h2>
+        </h2>
+        <notes-list *ngIf="selectedFolder" [(notes)]="selectedFolder.notes"></notes-list>
+    </div>
+    <div class="menu-container" [ngClass]="{'minimized': appConfig.minimized}">
+        <div class="menu">
+            <div class="uk-inline">
+                <button class="btn-new-note" (click)="toggleView()">
+                    <span *ngIf="appConfig.minimized" uk-tooltip="expand" uk-icon="icon: expand; ratio: 2"></span>
+                    <span *ngIf="!appConfig.minimized" uk-tooltip="collapse" uk-icon="icon: shrink; ratio: 2"></span>
+                </button>
+            </div>
+            <div class="uk-inline">
+                <button class="btn-new-note" (click)="createNote()" uk-tooltip="new note">
+                    <span uk-icon="icon: plus; ratio: 2"></span>
+                </button>
+            </div>
+            <div class="uk-inline">
+                <button [disabled]="appConfig.minimized" uk-tooltip="folders">
+                    <span uk-icon="icon: folder; ratio: 2"></span>
+                </button>
+                <div uk-dropdown="pos: left">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <li><a (click)="creteFolderModal.show()"><span uk-icon="icon: plus; ratio: 1"></span> New
+                                Folder</a></li>
+                        <li *ngFor="let folder of folders">
+                            <a [ngClass]="{'active': folder.selected}">
+                                <span (click)="selectFolder(folder)">
+                                    <span uk-icon="icon: folder; ratio: 1"></span> <span style="margin-left: 4px" [innerText]="folder.name"></span>
+                                </span>
+                                <span *ngIf="folder.selected" style="float: right;" uk-icon="icon: check; ratio: 1"></span>
+                                <span *ngIf="!folder.isDefault && !folder.selected" class="icon-btn delete" style="float: right;" (click)="deleteFolder(folder)" uk-icon="icon: trash; ratio: 1"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="uk-inline">
+                <button [disabled]="appConfig.minimized">
+                    <span uk-icon="icon: settings; ratio: 2"></span>
+                </button>
+                <div uk-dropdown="pos: left">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <li><a><span class="icon-btn" uk-icon="icon: plus; ratio: 1" (click)="changeWindowSize(20)"></span> Width:
+                                {{ this.appConfig.width }}px <span class="icon-btn delete" uk-icon="icon: minus; ratio: 1" (click)="changeWindowSize(-20)"></span></a></li>
+                        <li><a (click)="close()"><span class="icon-btn" uk-icon="icon: close; ratio: 1"></span> Close InProgress</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="uk-modal-body">
-          <div class="line" *ngFor="let line of newNote.lines">
-            <!-- <textarea style="min-height: 120px;" [(ngModel)]="newNote.content" placeholder="content"
+    </div>
+
+    <div id="add-note-modal" class="uk-flex-top" #addNoteModalRef>
+        <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
+            <div class="add-note">
+                <div class="uk-modal-header">
+                    <h2 class="title" style="margin: 10px 0 0 0;"><span uk-icon="icon: comment; ratio: 1.4"></span>
+                        <input type="text" style="font-size: 20px;" [(ngModel)]="newNote.title" class="uk-input" placeholder="title" />
+                    </h2>
+                </div>
+                <div class="uk-modal-body">
+                    <div class="line" *ngFor="let line of newNote.lines">
+                        <!-- <textarea style="min-height: 120px;" [(ngModel)]="newNote.content" placeholder="content"
                       class="uk-textarea"></textarea> -->
-            <span uk-icon="icon: pencil; ratio: 1.4"></span>
-            <input type="text" [(ngModel)]="line.content" class="uk-input" placeholder="new line" />
-            <span uk-icon="icon: trash; ratio: 1.2" class="icon-btn delete"
-              (click)="newNote.lines = lodash.without(newNote.lines, line)"></span>
-          </div>
-          <p><span uk-icon="icon: plus; ratio: 1.2" class="icon-btn" (click)="newNote.lines.push({})"></span>
-          </p>
+                        <span uk-icon="icon: pencil; ratio: 1.4"></span>
+                        <input type="text" [(ngModel)]="line.content" class="uk-input" placeholder="new line" />
+                        <span uk-icon="icon: trash; ratio: 1.2" class="icon-btn delete" (click)="newNote.lines = lodash.without(newNote.lines, line)"></span>
+                    </div>
+                    <p><span uk-icon="icon: plus; ratio: 1.2" class="icon-btn" (click)="newNote.lines.push({})"></span>
+                    </p>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button">Cancel</button>
+                    <button class="uk-button uk-button-primary uk-button-small" [disabled]="!newNote.title" (click)="saveNote()">Save</button>
+                </div>
+            </div>
         </div>
-        <div class="uk-modal-footer uk-text-right">
-          <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button">Cancel</button>
-          <button class="uk-button uk-button-primary uk-button-small" [disabled]="!newNote.title"
-            (click)="saveNote()">Save</button>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <div id="create-folder-modal" class="uk-flex-top" #createFolderModalRef>
-    <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
-      <div class="add-note">
-        <div class="uk-modal-header">
-          <h2><span uk-icon="icon: folder; ratio: 1.4"></span> New Folder</h2>
+    <div id="create-folder-modal" class="uk-flex-top" #createFolderModalRef>
+        <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
+            <div class="add-note">
+                <div class="uk-modal-header">
+                    <h2><span uk-icon="icon: folder; ratio: 1.4"></span> New Folder</h2>
+                </div>
+                <div class="uk-modal-body">
+                    <div style="display: flex; flex-direction: column;">
+                        <h3>Type folder name: </h3>
+                        <input class="uk-input uk-form-medium" #folderInput placeholder="folder name" (keyup)="folderInput.canSave = folderInput.value && folderInput.value.length > 2" />
+                    </div>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button">Cancel</button>
+                    <button class="uk-button uk-button-primary  uk-button-small" [disabled]="!folderInput.canSave" (click)="saveFolder(folderInput)">Save</button>
+                </div>
+            </div>
         </div>
-        <div class="uk-modal-body">
-          <div style="display: flex; flex-direction: column;">
-            <h3>Type folder name: </h3>
-            <input class="uk-input uk-form-medium" #folderInput placeholder="folder name"
-              (keyup)="folderInput.canSave = folderInput.value && folderInput.value.length > 2" />
-          </div>
-        </div>
-        <div class="uk-modal-footer uk-text-right">
-          <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button">Cancel</button>
-          <button class="uk-button uk-button-primary  uk-button-small" [disabled]="!folderInput.canSave"
-            (click)="saveFolder(folderInput)">Save</button>
-        </div>
-      </div>
     </div>
-  </div>
 
 
-  <div id="delete-folder-modal" class="uk-flex-top" #deleteFolderModalRef>
-    <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
-      <div>
-        <div class="uk-modal-header">
-          <h2 *ngIf="tempDictionary.folderToDelete"><span uk-icon="icon: trash; ratio: 1.4"></span> Delete folder {{'<'+tempDictionary.folderToDelete.name+'>'}} </h2>
+    <div id="delete-folder-modal" class="uk-flex-top" #deleteFolderModalRef>
+        <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
+            <div>
+                <div class="uk-modal-header">
+                    <h2 *ngIf="tempDictionary.folderToDelete"><span uk-icon="icon: trash; ratio: 1.4"></span> Delete folder {{'<'+tempDictionary.folderToDelete.name+'>'}} </h2>
+                </div>
+                <div class="uk-modal-body">
+                    <div style="display: flex; flex-direction: column;">
+                        <h4>Deleting the folder will permanently lose you notes</h4>
+                    </div>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button">Cancel</button>
+                    <button class="uk-button uk-button-primary uk-button-small" (click)="confirmDeleteFolder()">Delete</button>
+                </div>
+            </div>
         </div>
-        <div class="uk-modal-body">
-          <div style="display: flex; flex-direction: column;">
-            <h4>Deleting the folder will permanently lose you notes</h4>          
-        </div>
-        </div>
-        <div class="uk-modal-footer uk-text-right">
-          <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button">Cancel</button>
-          <button class="uk-button uk-button-primary uk-button-small"
-            (click)="confirmDeleteFolder()">Delete</button>
-        </div>
-      </div>
     </div>
-  </div>
 
 </div>
-

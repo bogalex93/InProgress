@@ -18,7 +18,7 @@
             <!-- <textarea style="min-height: 120px;" [(ngModel)]="newNote.content" placeholder="content"
                             class="uk-textarea"></textarea> -->
             <span uk-icon="icon: minus; ratio: 1" class="bulet"></span>
-            <textarea type="text" #textEl rows="1" [id]="'note-'+noteIndex + 'line-'+lineIndex" [(ngModel)]="line.content" (input)="adaptHeight(textEl)"
+            <textarea type="text" #textEl (ngViewInit)="adaptHeight($event)" rows="1" [id]="'note-'+noteIndex + 'line-'+lineIndex" [(ngModel)]="line.content" (input)="adaptHeight(textEl)"
               [disabled]="line.state == noteStates.completed || line.state == noteStates.canceled" class="uk-input"
               placeholder="new line">
             </textarea>
@@ -31,7 +31,7 @@
               uk-tooltip="in progress" (click)="noteEl.actions.inProgressLine(line)"></span>
             <span *ngIf="line.content" uk-icon="icon: ban; ratio: 1.1" class="icon-btn default cancel" uk-tooltip="cancel"
               (click)="noteEl.actions.cancelLine(line)" style="margin-right: 4px;"></span>
-
+           
           </div>
         </div>
         <div class="actions">
