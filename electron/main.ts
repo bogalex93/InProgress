@@ -30,12 +30,12 @@ function createWindow() {
   let windowOptions: BrowserWindowConstructorOptions = {
      transparent:true,
     frame: false,
-    skipTaskbar: true,
+    skipTaskbar: false,
     webPreferences: webPreferences,   
     minimizable: false,
   };
   win =  new glasstron.BrowserWindow(windowOptions);
-  win.blurType = "acrylic";
+  win.blurType = "blurbehind";
   //              ^~~~~~~
   // Windows 10 1803+; for older versions you
   // might want to use 'blurbehind'

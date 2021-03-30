@@ -8,10 +8,34 @@ body,
 .home-root {
     height: 100%;
     width: 100%;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.5) 100%);
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
     //background-color: rgba(37, 37, 37, 0.5);
     overflow: hidden;
     transition: filter 0.7s ease;
+    box-sizing: border-box;
+
+    .move-btn {
+        top: 5px;
+        left: 5px;
+        display: none;
+        color: white;
+        position: absolute;
+        width: 100%;
+        -webkit-app-region: drag;        
+    }
+
+    &.minimized.widget {
+        border-radius: $border-radius;
+        background: $card-color;
+        position: relative;
+        text-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+        border: 1px solid rgba(0, 0, 0, 0.8);
+
+        .move-btn {
+            display: block;
+        }
+    }
 }
 
 .content-container {
@@ -23,10 +47,6 @@ body,
     padding: 10px 8px 22px 8px;
     overflow: hidden;
     transition: filter 1s;
-
-    &.minimized {
-        visibility: hidden;
-    }
 
     .folder-title {
         color: white;
@@ -51,11 +71,6 @@ body,
     background-color: $card-color;
     justify-content: center;
     height: 100%;
-
-    &.minimized {
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-    }
 
     .menu {
         padding: 16px 2px;
@@ -84,8 +99,11 @@ body,
     }
 }
 
-.add-note {
+.settings-list{
+ 
+}
 
+.add-note {
     .line,
     .title {
         display: flex;
@@ -98,18 +116,22 @@ body,
         }
 
         input {
-            margin-left: -30px;
-            padding-left: 32px;
-            margin-right: -30px;
+            height: 36px;
+            margin-left: -28px;
+            padding-left: 30px;
+            margin-right: -26px;
             padding-right: 32px;
-            /* border-top: none; */
-            /* border-left: none; */
-            /* border-right: none; */
             border-radius: $border-radius;
-        }
-
+        }  
+    }
+    .line{
         .uk-icon {
-            line-height: 40px;
+            line-height: 36px;
+        }
+    }
+    .title{
+        .uk-icon {
+            line-height: 32px;
         }
     }
 }
@@ -117,4 +139,32 @@ body,
 .uk-modal-header h2 {
     display: flex;
     line-height: 28px;
+}
+
+.minimized {
+    .menu-container {
+        top: 10px;
+        bottom: 10px;
+        right: 10px;
+        border-radius: 8px;
+        height: calc(100% - 20px);
+    }
+
+    .content-container {
+        visibility: hidden;
+    }
+
+    &.widget {
+        .menu-container {
+            background: transparent;
+            .menu {
+                padding: 10px 2px;
+
+                button {
+                    text-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+                    width: 40px;
+                }
+            }
+        }
+    }
 }

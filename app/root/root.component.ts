@@ -6,10 +6,11 @@ import { Crossover } from 'crossover/crossover-ipc.renderer';
 import { ConfigurationChannel, DataChannel } from 'crossover/crossover.channels';
 import { AppConfig, DisplayInfo, GenericData } from 'crossover/crossover.models';
 import * as lodash from 'lodash';
-import { ThrowStmt } from '@angular/compiler';
+import { ParsedEventType, ThrowStmt } from '@angular/compiler';
 import { app } from 'electron';
 import * as _ from 'lodash';
 import { NoteActions } from './note-actions';
+import * as crypto from "crypto-js";
 
 const uikit: UIkit = (window as any).UIkit;
 
@@ -39,8 +40,12 @@ export class RootComponent implements OnInit, AfterViewInit {
   public appConfig: AppConfig = { minimized: false };
   public display: DisplayInfo;
   public electronWindow: Electron.BrowserWindow;
-  public tempDictionary : {folderToDelete?: Folder} = {};
- 
+  public tempDictionary: { folderToDelete?: Folder, positionInterval?: any } = { };
+  public aperenceTypes = AperenceTypes;
+
+  public get aperenceIsWidget() { return this.appConfig.minimizedAperence === AperenceTypes.widget }
+  public get aperenceIsSidebar() { return this.appConfig.minimizedAperence === AperenceTypes.sidebar }
+
   public get folderStats() {
     return {
       notesCount: this.selectedFolder.notes.length,
@@ -64,6 +69,7 @@ export class RootComponent implements OnInit, AfterViewInit {
       console.log(this.electronWindow.getBounds());
       this.display = await Crossover.get<DisplayInfo>(ConfigurationChannel.with(DisplayInfo));
       this.folders = await Crossover.get<Folder[]>(DataChannel.with(GenericData), <GenericData>{ storeName: 'notes', action: 'get' });
+      this.setMinimizedAperence(AperenceTypes.widget);
     }
     if (!this.folders) { this.folders = [{ name: "General", notes: [], isDefault: true }]; }
     if (!this.selectedFolder) { this.selectFolder(this.folders[0]); }
@@ -91,11 +97,12 @@ export class RootComponent implements OnInit, AfterViewInit {
     this.saveToDisk();
   }
 
-  public async saveFolder(input: HTMLInputElement) {
-    this.folders.push({ name: input.value, notes: [] });
+  public async saveFolder(folderNameInput: HTMLInputElement, classifiedInput: HTMLInputElement) {
+    this.folders.push({ name: folderNameInput.value, notes: [], classified: Boolean(classifiedInput.value) });
     this.selectFolder(this.folders[this.folders.length - 1]);
     this.creteFolderModal.hide();
-    input.value = '';
+    folderNameInput.value = '';
+    classifiedInput.value = null;
     this.saveToDisk();
   }
 
@@ -111,20 +118,21 @@ export class RootComponent implements OnInit, AfterViewInit {
     this.newNote.date = new Date(Date.now());
     this.selectedFolder.notes.push(this.newNote);
     this.addNotesModal.hide();
+    alert(crypto.AES.encrypt(JSON.stringify(this.newNote), 'key'));
   }
 
   private saveToDisk() {
     Crossover.send<GenericData>(DataChannel.with(GenericData), { storeName: 'notes', data: this.folders, action: 'save' });
   }
 
-  public deleteFolder(folder : Folder){
-     this.tempDictionary.folderToDelete = folder;
-     this.deleteFolderModal.show();
+  public deleteFolder(folder: Folder) {
+    this.tempDictionary.folderToDelete = folder;
+    this.deleteFolderModal.show();
   }
 
-  public confirmDeleteFolder(){
+  public confirmDeleteFolder() {
     var index = this.folders.indexOf(this.tempDictionary.folderToDelete);
-    this.folders.splice(index,1);
+    this.folders.splice(index, 1);
     this.saveToDisk();
     this.tempDictionary.folderToDelete = null;
     this.deleteFolderModal.hide();
@@ -139,16 +147,48 @@ export class RootComponent implements OnInit, AfterViewInit {
     this.appConfig.minimized = !this.appConfig.minimized;
 
     if (this.appConfig.minimized) {
-      var centerY = this.display.height / 2 - 150;
-      this.electronWindow.setBounds({ width: 50, height: 300, x: this.display.width - 50, y: centerY });
+      this.electronWindow.setBounds(this.appConfig.minimizedBounds);
+      //(<any>this.electronWindow).setBlur(false);
+      this.tempDictionary.positionInterval = setInterval(e => this.appMoved(), 3000);
     }
     else {
       this.electronWindow.setBounds({ width: this.appConfig.width, height: this.display.height, x: this.display.width - this.appConfig.width, y: 0 });
+      (<any>this.electronWindow).setBlur(true);
+      clearInterval(this.tempDictionary.positionInterval);
     }
   }
 
-  public close(){
+  public setMinimizedAperence(aperence: AperenceTypes) {
+    this.appConfig.minimizedAperence = aperence;
+    if (aperence == AperenceTypes.widget) {
+      this.appConfig.minimizedBounds = { width: 250, height: 150, x: this.display.width - 450, y: 0 }
+    }
+    if (aperence == AperenceTypes.sidebar) {
+      var centerY = this.display.height / 2 - 150;
+      this.appConfig.minimizedBounds = { width: 50, height: 300, x: this.display.width - 50, y: centerY };
+    }
+  }
+
+  public appMoved() {
+    if (this.appConfig.minimized) {
+      var windowBounds = this.electronWindow.getBounds();
+      this.appConfig.minimizedBounds = windowBounds;
+    }
+    else {
+      clearInterval(this.tempDictionary.positionInterval);
+    }
+  }
+
+  public close() {
     this.electronWindow.close();
+  }
+
+  public preventDefault(event: MouseEvent) {
+    event.preventDefault();
   }
 }
 
+enum AperenceTypes {
+  widget = 'widget',
+  sidebar = 'sidebar'
+}

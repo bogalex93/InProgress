@@ -9,6 +9,9 @@ export class DisplayInfo extends CrossoverModel {
 export class AppConfig extends CrossoverModel {
   minimized?: boolean;
   width?: number;
+  minimizedAperence?: string;
+  minimizedBounds?: any;
+  bluredBackground: boolean;  
 }
 @crossoverModel
 export class GenericData extends CrossoverModel {

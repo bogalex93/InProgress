@@ -5,6 +5,7 @@ export class Folder {
   notes: Note[];
   isDefault?: boolean;
   selected?: boolean;
+  classified?: boolean;
 }
 
 export class Note {
