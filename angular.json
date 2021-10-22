@@ -89,18 +89,7 @@
           "options": {
             "browserTarget": "inprogress:build"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "app/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
+        } 
       }
     }
   },

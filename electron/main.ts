@@ -4,10 +4,12 @@ import * as path from 'path';
 import * as url from 'url';
 import { Crossover } from '../crossover/crossover-ipc.main';
 import { ConfigurationChannel, DataChannel } from '../crossover/crossover.channels';
-//import * as vibrancy from 'electron-acrylic-window';
 import { DisplayInfo, AppConfig, GenericData } from '../crossover/crossover.models';
 import * as fs from 'fs';
 import * as Blob from 'cross-blob';
+import { Guid } from 'js-guid';
+import { db } from 'data/db';
+ 
 
 let win: any;
 let display: Display;
@@ -16,40 +18,40 @@ let width;
 app.allowRendererProcessReuse = true;
 app.commandLine.appendSwitch('enable-transparent-visuals');
 
-app.on("ready", () => setTimeout(createWindow,  process.platform == "linux" ? 1000 : 0));
+app.on("ready", () => setTimeout(createWindow, process.platform == "linux" ? 1000 : 0));
 
 function createWindow() {
   onStartup();
-  dockedBounds = { width: width, height: display.workArea.height, y: display.bounds.y, x: display.bounds.x + display.bounds.width - width };  
+  dockedBounds = { width: width, height: display.workArea.height, y: display.bounds.y, x: display.bounds.x + display.bounds.width - width };
   let urlOptions = { pathname: path.join(__dirname, `../angular-app/index.html`), protocol: 'file:', slashes: true };
   let isDev = JSON.stringify(process.argv).indexOf('remote-debugging-port') >= 0;
-  let appUrl = isDev ? "http://localhost:4200/" : url.format(urlOptions);
+  let appUrl = isDev ? "http://localhost:1110/" : url.format(urlOptions);
 
   let webPreferences: WebPreferences = { nodeIntegration: true };
   var iconPath = path.join(__dirname, `assets/in-progress.png`);
   let windowOptions: BrowserWindowConstructorOptions = {
-     transparent:true,
+    transparent: true,
     frame: false,
     skipTaskbar: false,
-    webPreferences: webPreferences,   
+    webPreferences: webPreferences,
     minimizable: false,
   };
-  win =  new glasstron.BrowserWindow(windowOptions);
+  win = new glasstron.BrowserWindow(windowOptions);
   win.blurType = "blurbehind";
   //              ^~~~~~~
   // Windows 10 1803+; for older versions you
   // might want to use 'blurbehind'
   win.setBlur(true);
   win.setBounds(dockedBounds, true);
- 
+
 
   win.loadURL(appUrl);
-//  (<BrowserWindow>win).webContents.openDevTools();
-  win.on('closed', () => onClosed);  
+  //  (<BrowserWindow>win).webContents.openDevTools();
+  win.on('closed', () => onClosed);
 };
 
 
- 
+
 function onClosed() {
   win = null;
 }
@@ -78,12 +80,14 @@ function checkDataDir() {
 
 async function saveData(genericData: GenericData) {
   try {
-    var dataStr = JSON.stringify(genericData.data);
-    var b = new Blob([dataStr], { type: 'text/json' });
-    var ab = await b.arrayBuffer();
-    var bytesStr = JSON.stringify(Array.from(new Uint8Array(ab)));
-    fs.writeFile(`./appdata/${genericData.storeName}.db`, bytesStr, { encoding: "utf-8" }, () => { });
-    alert("saving data");
+    // var dataStr = JSON.stringify(genericData.data);
+    // var b = new Blob([dataStr], { type: 'text/json' });
+    // var ab = await b.arrayBuffer();
+    // var bytesStr = JSON.stringify(Array.from(new Uint8Array(ab)));
+    // fs.writeFile(`./appdata/${genericData.storeName}.db`, bytesStr, { encoding: "utf-8" }, () => { });
+    // alert("saving data");
+    
+
   }
   catch (err) {
     alert(err);
@@ -92,14 +96,10 @@ async function saveData(genericData: GenericData) {
 
 function getData(storeName: string) {
   try {
-    var data = fs.readFileSync(`./appdata/${storeName}.db`);
-    var dataStr = data.toString();
-    var bufferVal = JSON.parse(dataStr);
-    var jsonString = String.fromCharCode.apply(null, new Uint16Array(bufferVal));
-    var jsonData = JSON.parse(jsonString);
-    return jsonData;
+    return {};
   }
   catch {
     return null;
   }
 }
+ 

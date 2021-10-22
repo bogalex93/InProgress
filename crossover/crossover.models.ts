@@ -11,7 +11,7 @@ export class AppConfig extends CrossoverModel {
   width?: number;
   minimizedAperence?: string;
   minimizedBounds?: any;
-  bluredBackground: boolean;  
+  bluredBackground?: boolean;  
 }
 @crossoverModel
 export class GenericData extends CrossoverModel {

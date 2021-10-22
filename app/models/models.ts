@@ -1,6 +1,7 @@
 import { NoteActions } from 'app/root/note-actions';
 
 export class Folder {
+  id: string;
   name: string;
   notes: Note[];
   isDefault?: boolean;
@@ -9,9 +10,9 @@ export class Folder {
 }
 
 export class Note {
+  id: string;
   title?: string;
   lines?: NoteLine[];
-  content?: string;
   date?: Date;
   target?: Date;
   state?: NoteStates;

@@ -11,6 +11,7 @@ import { app } from 'electron';
 import * as _ from 'lodash';
 import { NoteActions } from './note-actions';
 import * as crypto from "crypto-js";
+import { Guid } from 'js-guid';
 
 const uikit: UIkit = (window as any).UIkit;
 
@@ -35,12 +36,11 @@ export class RootComponent implements OnInit, AfterViewInit {
   public selectedFolder: Folder;
 
   public console = console;
-  public newNote: Note = {};
 
   public appConfig: AppConfig = { minimized: false };
   public display: DisplayInfo;
   public electronWindow: Electron.BrowserWindow;
-  public tempDictionary: { folderToDelete?: Folder, positionInterval?: any } = { };
+  public tempDictionary: { folderToDelete?: Folder, positionInterval?: any, newNote?: Note } = {};
   public aperenceTypes = AperenceTypes;
 
   public get aperenceIsWidget() { return this.appConfig.minimizedAperence === AperenceTypes.widget }
@@ -71,7 +71,7 @@ export class RootComponent implements OnInit, AfterViewInit {
       this.folders = await Crossover.get<Folder[]>(DataChannel.with(GenericData), <GenericData>{ storeName: 'notes', action: 'get' });
       this.setMinimizedAperence(AperenceTypes.widget);
     }
-    if (!this.folders) { this.folders = [{ name: "General", notes: [], isDefault: true }]; }
+    if (!this.folders) { this.folders = [{id: Guid.newGuid().toString(), name: "General", notes: [], isDefault: true }]; }
     if (!this.selectedFolder) { this.selectFolder(this.folders[0]); }
   }
 
@@ -98,7 +98,7 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   public async saveFolder(folderNameInput: HTMLInputElement, classifiedInput: HTMLInputElement) {
-    this.folders.push({ name: folderNameInput.value, notes: [], classified: Boolean(classifiedInput.value) });
+    this.folders.push({ id: Guid.newGuid().toString(), name: folderNameInput.value, notes: [], classified: Boolean(classifiedInput.value) });
     this.selectFolder(this.folders[this.folders.length - 1]);
     this.creteFolderModal.hide();
     folderNameInput.value = '';
@@ -110,15 +110,15 @@ export class RootComponent implements OnInit, AfterViewInit {
     if (this.appConfig.minimized) {
       this.toggleView();
     }
-    this.newNote = { lines: [{}] };
+    this.tempDictionary.newNote = { id: Guid.newGuid().toString(), lines: [{}] };
     this.addNotesModal.show();
   }
 
   public saveNote() {
-    this.newNote.date = new Date(Date.now());
-    this.selectedFolder.notes.push(this.newNote);
+    this.tempDictionary.newNote.date = new Date(Date.now());
+    this.selectedFolder.notes.push(this.tempDictionary.newNote);
     this.addNotesModal.hide();
-    alert(crypto.AES.encrypt(JSON.stringify(this.newNote), 'key'));
+    //alert(crypto.AES.encrypt(JSON.stringify(this.newNote), 'key'));
   }
 
   private saveToDisk() {
