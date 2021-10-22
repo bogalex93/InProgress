@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "types": [],
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "strict": false
   },
   "files": [
     "./main.ts",

@@ -83,10 +83,8 @@ async function saveData(genericData: GenericData) {
     var ab = await b.arrayBuffer();
     var bytesStr = JSON.stringify(Array.from(new Uint8Array(ab)));
     fs.writeFile(`./appdata/${genericData.storeName}.db`, bytesStr, { encoding: "utf-8" }, () => { });
-    alert("saving data");
   }
   catch (err) {
-    alert(err);
   }
 }
 
