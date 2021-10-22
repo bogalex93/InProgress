@@ -3,5 +3,6 @@
         "**/_dist": true,
         "**/dist": true,
         "**/node_modules": true
-    }
+    },
+    "git.ignoreLimitWarning": true
 }

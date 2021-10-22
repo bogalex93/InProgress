@@ -1,17 +1,16 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, OnInit } from '@angular/core';
-import { UIkit, ModalEvents, UIkitModalElement, UIkitModalOptions } from 'app/shared/types/uikit.types';
-import { UIkitComponent } from 'app/shared/custom-decorators';
-import { Folder, Note, NoteStates } from 'app/models/models';
-import { Crossover } from 'crossover/crossover-ipc.renderer';
-import { ConfigurationChannel, DataChannel } from 'crossover/crossover.channels';
-import { AppConfig, DisplayInfo, GenericData } from 'crossover/crossover.models';
+import { UIkit, ModalEvents, UIkitModalElement, UIkitModalOptions } from 'shared/types/uikit.types';
+import { UIkitComponent } from 'shared/custom-decorators';
+import { Folder, Note, NoteStates } from 'models/models';
 import * as lodash from 'lodash';
-import { ParsedEventType, ThrowStmt } from '@angular/compiler';
-import { app } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import * as _ from 'lodash';
 import { NoteActions } from './note-actions';
 import * as crypto from "crypto-js";
 import { Guid } from 'js-guid';
+import { AppConfig, DisplayInfo, GenericData } from '../../crossover/crossover.models';
+import { Crossover } from '../../crossover/crossover-ipc.renderer';
+import { ConfigurationChannel, DataChannel } from '../../crossover/crossover.channels';
 
 const uikit: UIkit = (window as any).UIkit;
 
@@ -39,7 +38,7 @@ export class RootComponent implements OnInit, AfterViewInit {
 
   public appConfig: AppConfig = { minimized: false };
   public display: DisplayInfo;
-  public electronWindow: Electron.BrowserWindow;
+  public electronWindow: BrowserWindow;
   public tempDictionary: { folderToDelete?: Folder, positionInterval?: any, newNote?: Note } = {};
   public aperenceTypes = AperenceTypes;
 
@@ -59,7 +58,7 @@ export class RootComponent implements OnInit, AfterViewInit {
 
   async ngOnInit(): Promise<void> {
     if (Crossover.isElectronRunning) {
-      this.electronWindow = Crossover.electron.remote.getCurrentWindow();
+      this.electronWindow = Crossover.browserWindow;
       this.appConfig.width = this.electronWindow.getBounds().width;
       // this.electronWindow.on('close', (e) => {
       //   e.preventDefault();

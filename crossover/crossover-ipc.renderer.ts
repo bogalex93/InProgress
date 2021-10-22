@@ -1,16 +1,18 @@
-import { IpcRendererEvent } from 'electron';
+import { DesktopCapturer, IpcRenderer, IpcRendererEvent } from 'electron';
 import { CrossoverChannel, CrossoverModel } from './crossover-framework';
-
-const electron: Electron.RendererInterface = window.require ? window.require('electron') : undefined;
-const electronNotPrezent = e => console.error('electron not available')
+import * as electron from 'electron';
+import * as electronRemote from '@electron/remote/renderer';
+const electronRunning = e => { if (!e) console.error('electron not available') };
+electronRunning(!!electron);
 export class Crossover {
 
-  public static electron: Electron.RendererInterface = electron || { ipcRenderer: { send: electronNotPrezent, on: electronNotPrezent, removeListener: electronNotPrezent, invoke: electronNotPrezent } } as any as Electron.RendererInterface;
-  public static isElectronRunning: boolean = !!electron;
+  public static electron = electron;
+  public static browserWindow = electronRemote.getCurrentWindow();
+  static isElectronRunning: boolean = !!electron;
 
   public static send<TModel extends CrossoverModel>(channel: (new () => CrossoverChannel) | CrossoverChannel, model: TModel) {
     let eventName = channel instanceof CrossoverChannel ? channel.eventName : (channel as any).channelName;
-    Crossover.electron.ipcRenderer.send(eventName, model);
+    Crossover.electron.ipcRenderer.send(eventName, model);      
   }
 
   public static subscribe(channel: (new () => CrossoverChannel) | CrossoverChannel, listener: <T>(event: IpcRendererEvent, model: T) => void) {

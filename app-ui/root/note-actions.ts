@@ -1,4 +1,4 @@
-import { Note, NoteLine, NoteStates } from 'app/models/models';
+import { Note, NoteLine, NoteStates } from 'models/models';
 
 export class NoteActions {
 

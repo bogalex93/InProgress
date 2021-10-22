@@ -6,16 +6,13 @@ import { Crossover } from '../crossover/crossover-ipc.main';
 import { ConfigurationChannel, DataChannel } from '../crossover/crossover.channels';
 import { DisplayInfo, AppConfig, GenericData } from '../crossover/crossover.models';
 import * as fs from 'fs';
-import * as Blob from 'cross-blob';
-import { Guid } from 'js-guid';
 import { db } from 'data/db';
- 
+require('@electron/remote/main').initialize()
 
 let win: any;
 let display: Display;
 let dockedBounds;
 let width;
-app.allowRendererProcessReuse = true;
 app.commandLine.appendSwitch('enable-transparent-visuals');
 
 app.on("ready", () => setTimeout(createWindow, process.platform == "linux" ? 1000 : 0));
@@ -23,7 +20,7 @@ app.on("ready", () => setTimeout(createWindow, process.platform == "linux" ? 100
 function createWindow() {
   onStartup();
   dockedBounds = { width: width, height: display.workArea.height, y: display.bounds.y, x: display.bounds.x + display.bounds.width - width };
-  let urlOptions = { pathname: path.join(__dirname, `../angular-app/index.html`), protocol: 'file:', slashes: true };
+  let urlOptions = { pathname: path.join(__dirname, `../app-ui/index.html`), protocol: 'file:', slashes: true };
   let isDev = JSON.stringify(process.argv).indexOf('remote-debugging-port') >= 0;
   let appUrl = isDev ? "http://localhost:1110/" : url.format(urlOptions);
 
@@ -46,7 +43,7 @@ function createWindow() {
 
 
   win.loadURL(appUrl);
-  //  (<BrowserWindow>win).webContents.openDevTools();
+   (<BrowserWindow>win).webContents.openDevTools();
   win.on('closed', () => onClosed);
 };
 
@@ -67,11 +64,11 @@ function onStartup() {
 function registerEvents() {
   Crossover.handle<DisplayInfo>(ConfigurationChannel.with(DisplayInfo), async (e, m) => display.bounds);
   Crossover.listen<GenericData>(DataChannel.with(GenericData), async (e, m) => await saveData(m));
-  Crossover.handle<GenericData>(DataChannel.with(GenericData), async (e, m) => await getData(m.storeName));
+  //Crossover.handle<GenericData>(DataChannel.with(GenericData), async (e, m) => await getData(m.storeName));
 }
 
 function checkDataDir() {
-  fs.opendir('./appdata', (err, dir) => {
+  fs.readdir('./appdata', (err, dir) => {
     if (err) {
       fs.mkdir('./appdata', () => { })
     }
@@ -86,7 +83,7 @@ async function saveData(genericData: GenericData) {
     // var bytesStr = JSON.stringify(Array.from(new Uint8Array(ab)));
     // fs.writeFile(`./appdata/${genericData.storeName}.db`, bytesStr, { encoding: "utf-8" }, () => { });
     // alert("saving data");
-    
+
 
   }
   catch (err) {
@@ -102,4 +99,3 @@ function getData(storeName: string) {
     return null;
   }
 }
- 

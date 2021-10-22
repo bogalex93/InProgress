@@ -1,0 +1,39 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "types": [],
+    "outDir": "_dist",
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  },
+ 
+  "files": [
+    "./main.ts",
+    "./polyfills.ts"
+  ],
+  "include": [
+    "./",
+    "../crossover/crossover-ipc.renderer.ts",
+    "../crossover/crossover.channels.ts",
+    "../crossover/crossover.models.ts"
+  ],
+  "exclude": [
+    "./global/environment.prod.ts",
+    "./global/environment.ts"
+  ]
+}

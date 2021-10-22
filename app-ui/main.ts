@@ -2,10 +2,9 @@ import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { MainModule } from './main.module';
 import { environment } from './global/environment';
-import { Crossover } from 'crossover/crossover-ipc.renderer';
-import { InitializationChannel } from 'crossover/crossover.channels';
-import { DisplayInfo } from 'crossover/crossover.models';
 import { SourcesOptions, DesktopCapturerSource } from 'electron';
+import { Crossover } from '../crossover/crossover-ipc.renderer';
+import { DisplayInfo } from '../crossover/crossover.models';
 
 if (environment.production) {
   enableProdMode();

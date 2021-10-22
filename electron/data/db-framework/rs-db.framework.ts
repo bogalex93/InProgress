@@ -1,4 +1,4 @@
-import * as Knex from 'knex';
+import Knex = require('knex');
 import * as path from 'path';
 import { entityModelDescriptor } from './rs-db.model-composer';
 var dbPath = path.join(__dirname, './db.db3');

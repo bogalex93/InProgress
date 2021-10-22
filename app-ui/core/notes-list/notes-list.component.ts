@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Note, NoteStates } from 'app/models/models';
-import { NoteActions } from 'app/root/note-actions';
+import { Note, NoteStates } from 'models/models';
+import { NoteActions } from 'root/note-actions';
 import * as _ from 'lodash';
 import * as lodash from 'lodash';
 

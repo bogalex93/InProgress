@@ -1,4 +1,4 @@
-import { CrossoverModel, crossoverModel } from './crossover-framework';
+import { CrossoverModel, crossoverModel } from "./crossover-framework";
 
 @crossoverModel
 export class DisplayInfo extends CrossoverModel {

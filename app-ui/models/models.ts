@@ -1,4 +1,4 @@
-import { NoteActions } from 'app/root/note-actions';
+import { NoteActions } from 'root/note-actions';
 
 export class Folder {
   id: string;
