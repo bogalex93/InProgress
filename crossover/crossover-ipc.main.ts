@@ -8,7 +8,7 @@ export class Crossover {
     ipcMain.on(eventName, listener);
   }
 
-  static handle<TModel extends CrossoverModel>(channel: (new () => CrossoverChannel) | CrossoverChannel, listener: <T>(event: IpcMainEvent, model: TModel) => Promise<T | TModel>) {
+  static handle<TModel extends CrossoverModel>(channel: (new () => CrossoverChannel) | CrossoverChannel, listener: <T>(event: IpcMainEvent, model: TModel) => Promise<T | any>) {
     let eventName = channel instanceof CrossoverChannel ? channel.eventName : (channel as any).channelName;
     ipcMain.handle(eventName, listener);
   }

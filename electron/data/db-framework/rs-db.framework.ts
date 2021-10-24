@@ -1,7 +1,7 @@
-import Knex = require('knex');
+import Knex = require('Knex');
 import * as path from 'path';
 import { entityModelDescriptor } from './rs-db.model-composer';
-var dbPath = path.join(__dirname, './db.db3');
+var dbPath = path.join(__dirname, '../db.db3');
 var sqlClient = Knex({ client: 'sqlite3', connection: { filename: dbPath }, useNullAsDefault: true });
 
 export interface RsDbTable<T> extends Knex.QueryBuilder<any> {

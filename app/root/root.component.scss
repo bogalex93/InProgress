@@ -99,42 +99,7 @@ body,
     }
 }
 
-.settings-list{
- 
-}
 
-.add-note {
-    .line,
-    .title {
-        display: flex;
-        margin-top: 6px;
-
-        &:hover {
-            .uk-icon:not(.delete) {
-                color: $color-info;
-            }
-        }
-
-        input {
-            height: 36px;
-            margin-left: -28px;
-            padding-left: 30px;
-            margin-right: -26px;
-            padding-right: 32px;
-            border-radius: $border-radius;
-        }  
-    }
-    .line{
-        .uk-icon {
-            line-height: 36px;
-        }
-    }
-    .title{
-        .uk-icon {
-            line-height: 32px;
-        }
-    }
-}
 
 .uk-modal-header h2 {
     display: flex;

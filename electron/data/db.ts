@@ -12,4 +12,3 @@ export const db = {
     get notes() { return createRsTableSession<Folder>(Tables.notes) },
 };
 
-

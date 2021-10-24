@@ -46,7 +46,7 @@
             </div>
 
         </h2>
-        <notes-list *ngIf="selectedFolder" [(notes)]="selectedFolder.notes"></notes-list>
+        <notes-list  #notesList [(notes)]="selectedFolder.notes" (notesChange)="saveNotesUpdates($event)"></notes-list>
     </div>
     <div class="menu-container">
         <div class="menu">
@@ -112,37 +112,6 @@
                         <li><a (click)="close()">Close App <span class="icon-btn"
                                     uk-icon="icon: close; ratio: 0.8"></span></a></li>
                     </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="add-note-modal" class="uk-flex-top" #addNoteModalRef>
-        <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
-            <div class="add-note">
-                <div class="uk-modal-header">
-                    <h2 class="title" style="margin: 10px 0 0 0;"><span uk-icon="icon: comment; ratio: 1.1"></span>
-                        <input type="text" style="font-size: 20px;" [(ngModel)]="newNote.title" class="uk-input"
-                            placeholder="title" />
-                    </h2>
-                </div>
-                <div class="uk-modal-body">
-                    <div class="line" *ngFor="let line of newNote.lines">
-                        <!-- <textarea style="min-height: 120px;" [(ngModel)]="newNote.content" placeholder="content"
-                      class="uk-textarea"></textarea> -->
-                        <span uk-icon="icon: pencil; ratio: 1.1"></span>
-                        <input type="text" [(ngModel)]="line.content" class="uk-input" placeholder="new line" />
-                        <span uk-icon="icon: trash; ratio: 1" class="icon-btn delete"
-                            (click)="newNote.lines = lodash.without(newNote.lines, line)"></span>
-                    </div>
-                    <p><span uk-icon="icon: plus; ratio: 1.1" class="icon-btn" (click)="newNote.lines.push({})"></span>
-                    </p>
-                </div>
-                <div class="uk-modal-footer uk-text-right">
-                    <button class="uk-button uk-button-danger uk-modal-close  uk-button-small"
-                        type="button">Cancel</button>
-                    <button class="uk-button uk-button-primary uk-button-small" [disabled]="!newNote.title"
-                        (click)="saveNote()">Save</button>
                 </div>
             </div>
         </div>

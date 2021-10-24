@@ -1,6 +1,7 @@
-import { NoteActions } from 'app/root/note-actions';
+import { NoteActions } from 'app/core/notes-list/note-actions';
 
 export class Folder {
+  id?: string;
   name: string;
   notes: Note[];
   isDefault?: boolean;
@@ -9,13 +10,13 @@ export class Folder {
 }
 
 export class Note {
+  id?: string;
   title?: string;
   lines?: NoteLine[];
   content?: string;
   date?: Date;
   target?: Date;
   state?: NoteStates;
-
   allStates?: typeof NoteStates;
   actions?: NoteActions;
 }
@@ -36,3 +37,7 @@ export enum NoteStates {
   neutral = 'neutral'
 }
 
+export enum DataStores {
+  folders = 'folders',
+  notes = 'notes'
+}

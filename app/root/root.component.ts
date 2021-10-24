@@ -1,7 +1,7 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, OnInit } from '@angular/core';
 import { UIkit, ModalEvents, UIkitModalElement, UIkitModalOptions } from 'app/shared/types/uikit.types';
 import { UIkitComponent } from 'app/shared/custom-decorators';
-import { Folder, Note, NoteStates } from 'app/models/models';
+import { DataStores, Folder, Note, NoteStates } from 'app/models/models';
 import { Crossover } from 'crossover/crossover-ipc.renderer';
 import { ConfigurationChannel, DataChannel } from 'crossover/crossover.channels';
 import { AppConfig, DisplayInfo, GenericData } from 'crossover/crossover.models';
@@ -9,18 +9,15 @@ import * as lodash from 'lodash';
 import { ParsedEventType, ThrowStmt } from '@angular/compiler';
 import { app } from 'electron';
 import * as _ from 'lodash';
-import { NoteActions } from './note-actions';
+import { NoteActions } from '../core/notes-list/note-actions';
 import * as crypto from "crypto-js";
-
+import { NotesListComponent } from 'app/core/notes-list/notes-list.component';
 const uikit: UIkit = (window as any).UIkit;
 
 @Component({ selector: 'app-root', templateUrl: './root.component.html', styleUrls: ['./root.component.scss'] })
 export class RootComponent implements OnInit, AfterViewInit {
 
   public lodash = lodash;
-  @ViewChild('addNoteModalRef')
-  @UIkitComponent(uikit.modal)
-  public addNotesModal: UIkitModalElement;
 
   @ViewChild('createFolderModalRef')
   @UIkitComponent(uikit.modal)
@@ -30,17 +27,18 @@ export class RootComponent implements OnInit, AfterViewInit {
   @UIkitComponent(uikit.modal)
   public deleteFolderModal: UIkitModalElement;
 
+  @ViewChild('notesList') notesList: NotesListComponent;
+
   public modalVisible: boolean;
-  public folders: Folder[];
-  public selectedFolder: Folder;
+  public folders: Folder[] = [{ name: 'Generic', notes: [], selected: true, isDefault: true }];
+  public selectedFolder: Folder = this.folders[0];
 
   public console = console;
-  public newNote: Note = {};
 
   public appConfig: AppConfig = { minimized: false };
   public display: DisplayInfo;
   public electronWindow: Electron.BrowserWindow;
-  public tempDictionary: { folderToDelete?: Folder, positionInterval?: any } = { };
+  public tempDictionary: { folderToDelete?: Folder, positionInterval?: any } = {};
   public aperenceTypes = AperenceTypes;
 
   public get aperenceIsWidget() { return this.appConfig.minimizedAperence === AperenceTypes.widget }
@@ -68,7 +66,7 @@ export class RootComponent implements OnInit, AfterViewInit {
       // });
       console.log(this.electronWindow.getBounds());
       this.display = await Crossover.get<DisplayInfo>(ConfigurationChannel.with(DisplayInfo));
-      this.folders = await Crossover.get<Folder[]>(DataChannel.with(GenericData), <GenericData>{ storeName: 'notes', action: 'get' });
+      this.folders = await Crossover.get<Folder[]>(DataChannel.with(GenericData), <GenericData>{ storeName: DataStores.folders, action: 'get' });
       this.setMinimizedAperence(AperenceTypes.widget);
     }
     if (!this.folders) { this.folders = [{ name: "General", notes: [], isDefault: true }]; }
@@ -76,14 +74,11 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   async ngAfterViewInit(): Promise<void> {
-    uikit.util.on(this.addNotesModal.$el, ModalEvents.show, e => this.modalVisible = true);
-    uikit.util.on(this.addNotesModal.$el, ModalEvents.hidden, e => this.modalVisible = false);
+
     uikit.util.on(this.creteFolderModal.$el, ModalEvents.show, e => this.modalVisible = true);
     uikit.util.on(this.creteFolderModal.$el, ModalEvents.hidden, e => this.modalVisible = false);
     uikit.util.on(this.deleteFolderModal.$el, ModalEvents.show, e => this.modalVisible = true);
     uikit.util.on(this.deleteFolderModal.$el, ModalEvents.hidden, e => this.modalVisible = false);
-
-    this.addNotesModal.$el.style.right = '46px';
     this.creteFolderModal.$el.style.right = '46px';
     this.deleteFolderModal.$el.style.right = '46px';
     (<HTMLElement>document.body).style.setProperty('--border-radius', '15px');
@@ -94,35 +89,32 @@ export class RootComponent implements OnInit, AfterViewInit {
     this.folders.forEach(f => f.selected = false);
     folder.selected = true;
     this.selectedFolder = folder;
-    this.saveToDisk();
+    this.saveToDisk({ action: 'update', entity: folder, storeName: DataStores.folders });
   }
 
   public async saveFolder(folderNameInput: HTMLInputElement, classifiedInput: HTMLInputElement) {
-    this.folders.push({ name: folderNameInput.value, notes: [], classified: Boolean(classifiedInput.value) });
+    var newFolder = { name: folderNameInput.value, notes: [], classified: Boolean(classifiedInput.value) };
+    this.folders.push(newFolder);
     this.selectFolder(this.folders[this.folders.length - 1]);
     this.creteFolderModal.hide();
     folderNameInput.value = '';
     classifiedInput.value = null;
-    this.saveToDisk();
+    this.saveToDisk({ action: 'add', entity: newFolder, storeName: DataStores.folders });
   }
 
   public createNote() {
     if (this.appConfig.minimized) {
       this.toggleView();
     }
-    this.newNote = { lines: [{}] };
-    this.addNotesModal.show();
+    this.notesList.addNotesModal.show();
   }
 
-  public saveNote() {
-    this.newNote.date = new Date(Date.now());
-    this.selectedFolder.notes.push(this.newNote);
-    this.addNotesModal.hide();
-    alert(crypto.AES.encrypt(JSON.stringify(this.newNote), 'key'));
+  public saveNotesUpdates(event) {
+
   }
 
-  private saveToDisk() {
-    Crossover.send<GenericData>(DataChannel.with(GenericData), { storeName: 'notes', data: this.folders, action: 'save' });
+  private saveToDisk(saveModel: GenericData) {
+    Crossover.send<GenericData>(DataChannel.with(GenericData), saveModel);
   }
 
   public deleteFolder(folder: Folder) {
@@ -132,8 +124,8 @@ export class RootComponent implements OnInit, AfterViewInit {
 
   public confirmDeleteFolder() {
     var index = this.folders.indexOf(this.tempDictionary.folderToDelete);
-    this.folders.splice(index, 1);
-    this.saveToDisk();
+    var deletedFolder = this.folders.splice(index, 1)[0];
+    this.saveToDisk({ action: 'delete', entity: deletedFolder, storeName: DataStores.folders });
     this.tempDictionary.folderToDelete = null;
     this.deleteFolderModal.hide();
   }
