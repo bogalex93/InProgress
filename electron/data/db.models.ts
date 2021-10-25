@@ -1,11 +1,15 @@
-import { Tables } from "./db";
 import { jsonProp, linkTable } from "./db-framework/rs-db.model-composer";
 
+export enum Tables {
+  folders = 'folders',
+  notes = 'notes'
+}
  
 @linkTable(Tables.folders)
 export class Folder {
     id: string;
     name: string;
+
     @jsonProp()
     notes: string;
     isDefault?: boolean;

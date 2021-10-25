@@ -127,11 +127,15 @@
                     <div style="display: flex; flex-direction: column;">
                         <h3>Type folder name: </h3>
                         <fieldset class="uk-fieldset">
-
                             <input class="uk-input uk-form-medium" #folderInput placeholder="folder name"
                                 (keyup)="folderInput.canSave = folderInput.value && folderInput.value.length > 2" />
                             <div class="uk-margin">
-                                <label><input class="uk-checkbox" #classifiedInput type="checkbox">Classified</label>
+                                <label>
+                                    <span>
+                                        Classified
+                                    </span>
+                                    <input #classifiedInput style="margin-left: 5px; border-radius: 3px; height: 18px; width: 18px;" class="uk-checkbox" type=checkbox>
+                                </label>                                
                             </div>
                         </fieldset>
                     </div>

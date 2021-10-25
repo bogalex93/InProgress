@@ -8,8 +8,9 @@ import { ConfigurationChannel, DataChannel } from '../crossover/crossover.channe
 import { DisplayInfo, AppConfig, GenericData } from '../crossover/crossover.models';
 import * as fs from 'fs';
 import * as Blob from 'cross-blob';
-import { db, Tables } from './data/db';
 import { v4 as uuid } from 'uuid';
+import { db } from './data/db';
+import { Tables } from 'data/db.models';
 
 let win: any;
 let display: Display;
@@ -66,8 +67,8 @@ function onStartup() {
 
 function registerEvents() {
   Crossover.handle<DisplayInfo>(ConfigurationChannel.with(DisplayInfo), async (e, m) => display.bounds);
-  Crossover.listen<GenericData>(DataChannel.with(GenericData), async (e, m) => await saveData(m));
-  Crossover.handle<GenericData>(DataChannel.with(GenericData), async (e, m) => await getData());
+  Crossover.listen<GenericData>(DataChannel.with(GenericData), (e, m) => saveData(m));
+  Crossover.handle<GenericData>(DataChannel.with(GenericData), async (e, m) => await getData(m));
 }
 
 function checkDataDir() {
@@ -82,7 +83,13 @@ async function saveData(genericData: GenericData) {
   try {
     if (genericData.action == 'add') {
       genericData.entity.id = uuid();
-      db[genericData.storeName as Tables].addEntity(genericData.entity);
+      db[genericData.dataStore as Tables].addEntity(genericData.entity);
+    }
+    if (genericData.action == 'update') {
+      db[genericData.dataStore as Tables].updateEntity(genericData.entity);
+    }
+    if (genericData.action == 'delete') {
+      db[genericData.dataStore as Tables].updateEntity(genericData.entity);
     }
   }
   catch (err) {
@@ -90,8 +97,8 @@ async function saveData(genericData: GenericData) {
   }
 }
 
-async function getData() {
-  var data = await db.folders.getData();
+async function getData(genericData: GenericData) {
+  var data = await db[genericData.dataStore as Tables].getData();
   return data;
 }
 
