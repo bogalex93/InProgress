@@ -8,7 +8,6 @@ export class ConfigurationChannel extends CrossoverChannel {
 export class InitializationChannel extends CrossoverChannel {
 }
 
-
 @crossoverChannel
 export class DataChannel extends CrossoverChannel {
 }

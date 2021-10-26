@@ -14,10 +14,9 @@
       </div>
       <div class="body">
         <div class="line" *ngFor="let line of note.lines; let lineIndex = index" [ngClass]="line.state">
-          <!-- <textarea style="min-height: 120px;" [(ngModel)]="newNote.content" placeholder="content"
-                            class="uk-textarea"></textarea> -->
+ 
           <span uk-icon="icon: minus; ratio: 1" class="bulet"></span>
-          <textarea type="text" #textEl (ngViewInit)="adaptHeight($event)" rows="1"
+          <textarea type="text" #textEl (ngViewInit)="adaptHeight($event)" rows="1" (blur)="emitUpdate(note)"
             [id]="'note-'+noteIndex + 'line-'+lineIndex" [(ngModel)]="line.content" (input)="adaptHeight(textEl)"
             [disabled]="line.state == noteStates.completed || line.state == noteStates.canceled" class="uk-input"
             placeholder="new line">
@@ -62,8 +61,7 @@
       </div>
       <div class="uk-modal-body">
         <div class="line" *ngFor="let line of newNote.lines">
-          <!-- <textarea style="min-height: 120px;" [(ngModel)]="newNote.content" placeholder="content"
-                  class="uk-textarea"></textarea> -->
+ 
           <span uk-icon="icon: pencil; ratio: 1.1"></span>
           <input type="text" [(ngModel)]="line.content" class="uk-input" placeholder="new line" />
           <span uk-icon="icon: trash; ratio: 1" class="icon-btn delete"

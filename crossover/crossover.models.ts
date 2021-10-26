@@ -17,5 +17,11 @@ export class AppConfig extends CrossoverModel {
 export class GenericData extends CrossoverModel {
   dataStore?: string;
   entity?: any;
-  action?: 'add' | 'get' | 'update' | 'delete'
+  action?: 'add' |  'update' | 'delete'
+}
+
+@crossoverModel
+export class ReadData extends CrossoverModel {
+  dataStore?: string;
+  filter?: any;
 }

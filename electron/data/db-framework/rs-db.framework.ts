@@ -4,11 +4,11 @@ import { entityModelDescriptor } from './rs-db.model-composer';
 var dbPath = path.join(__dirname, '../db.db3');
 var sqlClient = Knex({ client: 'sqlite3', connection: { filename: dbPath }, useNullAsDefault: true });
 
-export interface RsDbTable<T> extends Knex.QueryBuilder<any> {
+export interface RsDbTable<T> extends Knex.QueryBuilder<any, any> {
     removeEntity(id: string): Promise<any>;
     addEntity(entity: any): Promise<any>;
     updateEntity(entity: any): Promise<any>;
-    getData(): Promise<T[]>;
+    getData(filter?): Promise<T[]>;
     entityModelDescriptor: { type: new () => T, modelComposer: { name: string; isJson: boolean }[] };
     tableName: string;
 }
@@ -44,6 +44,11 @@ async function addEntity(this: Knex.QueryBuilder<any>, entity: any): Promise<any
 
 async function updateEntity(this: Knex.QueryBuilder<any>, entity: any): Promise<any> {
     try {
+        Object.keys(entity).forEach(k => {
+            if (typeof entity[k] === 'object') {
+                entity[k] = JSON.stringify(entity[k]);
+            }
+        });
         var res = await this.where({ id: entity.id }).update(entity);
         return res;
     }
@@ -53,9 +58,9 @@ async function updateEntity(this: Knex.QueryBuilder<any>, entity: any): Promise<
     }
 }
 
-async function getData<T>(this: RsDbTable<T>): Promise<T[]> {
+async function getData<T>(this: RsDbTable<T>, filter?): Promise<T[]> {
     try {
-        var query = this.select('*');
+        var query = filter ? this.select('*').where(filter) : this.select('*');
         var data = await query as any[];
         if (this.entityModelDescriptor) {
             data.forEach(item => {

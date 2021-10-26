@@ -5,7 +5,7 @@ import * as url from 'url';
 import { Crossover } from '../crossover/crossover-ipc.main';
 import { ConfigurationChannel, DataChannel } from '../crossover/crossover.channels';
 //import * as vibrancy from 'electron-acrylic-window';
-import { DisplayInfo, AppConfig, GenericData } from '../crossover/crossover.models';
+import { DisplayInfo, AppConfig, GenericData, ReadData } from '../crossover/crossover.models';
 import * as fs from 'fs';
 import * as Blob from 'cross-blob';
 import { v4 as uuid } from 'uuid';
@@ -47,7 +47,7 @@ function createWindow() {
 
 
   win.loadURL(appUrl);
-  //(<BrowserWindow>win).webContents.openDevTools();
+  (<BrowserWindow>win).webContents.openDevTools();
   win.on('closed', () => onClosed);
 };
 
@@ -68,7 +68,7 @@ function onStartup() {
 function registerEvents() {
   Crossover.handle<DisplayInfo>(ConfigurationChannel.with(DisplayInfo), async (e, m) => display.bounds);
   Crossover.listen<GenericData>(DataChannel.with(GenericData), (e, m) => saveData(m));
-  Crossover.handle<GenericData>(DataChannel.with(GenericData), async (e, m) => await getData(m));
+  Crossover.handle<GenericData>(DataChannel.with(ReadData), async (e, m) => await getData(m));
 }
 
 function checkDataDir() {
@@ -81,15 +81,15 @@ function checkDataDir() {
 
 async function saveData(genericData: GenericData) {
   try {
+    var res;
     if (genericData.action == 'add') {
-      genericData.entity.id = uuid();
-      db[genericData.dataStore as Tables].addEntity(genericData.entity);
+      res = await db[genericData.dataStore as Tables].addEntity(genericData.entity);
     }
     if (genericData.action == 'update') {
-      db[genericData.dataStore as Tables].updateEntity(genericData.entity);
+      res = await db[genericData.dataStore as Tables].updateEntity(genericData.entity);
     }
     if (genericData.action == 'delete') {
-      db[genericData.dataStore as Tables].updateEntity(genericData.entity);
+      res = await db[genericData.dataStore as Tables].removeEntity(genericData.entity.id);
     }
   }
   catch (err) {
@@ -97,8 +97,8 @@ async function saveData(genericData: GenericData) {
   }
 }
 
-async function getData(genericData: GenericData) {
-  var data = await db[genericData.dataStore as Tables].getData();
+async function getData(readModel: ReadData) {
+  var data = await db[readModel.dataStore as Tables].getData(readModel.filter);
   return data;
 }
 

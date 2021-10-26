@@ -46,7 +46,7 @@
             </div>
 
         </h2>
-        <notes-list  #notesList [(notes)]="selectedFolder.notes" (notesChange)="saveNotesUpdates($event)"></notes-list>
+        <notes-list  #notesList [(notes)]="notes" (noteUpdates)="saveNotesUpdates($event)"></notes-list>
     </div>
     <div class="menu-container">
         <div class="menu">

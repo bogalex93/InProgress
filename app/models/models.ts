@@ -3,7 +3,6 @@ import { NoteActions } from 'app/core/notes-list/note-actions';
 export class Folder {
   id?: string;
   name: string;
-  notes: Note[];
   isDefault?: boolean;
   selected?: boolean;
   classified?: boolean;
@@ -11,9 +10,9 @@ export class Folder {
 
 export class Note {
   id?: string;
+  folderId?: string;
   title?: string;
   lines?: NoteLine[];
-  content?: string;
   date?: Date;
   target?: Date;
   state?: NoteStates;

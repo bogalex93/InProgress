@@ -1,6 +1,6 @@
-import  "./db.models";
+import "./db.models";
 import { createRsTableSession } from "./db-framework/rs-db.framework";
-import { Folder, Tables, Note } from "./db.models";
+import { Folder, Note, Tables } from "./db.models";
 
 
 export const db = {
