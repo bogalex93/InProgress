@@ -1,6 +1,6 @@
 import Knex = require('Knex');
 import * as path from 'path';
-import { entityModelDescriptor } from './rs-db.model-composer';
+import { boolean, entityModelDescriptor } from './rs-db.model-composer';
 var dbPath = path.join(__dirname, '../db.db3');
 var sqlClient = Knex({ client: 'sqlite3', connection: { filename: dbPath }, useNullAsDefault: true });
 
@@ -9,7 +9,7 @@ export interface RsDbTable<T> extends Knex.QueryBuilder<any, any> {
     addEntity(entity: any): Promise<any>;
     updateEntity(entity: any): Promise<any>;
     getData(filter?): Promise<T[]>;
-    entityModelDescriptor: { type: new () => T, modelComposer: { name: string; isJson: boolean }[] };
+    entityModelDescriptor: { type: new () => T, modelComposer: { name: string; isJson: boolean, isBoolean: boolean }[] };
     tableName: string;
 }
 
@@ -67,6 +67,16 @@ async function getData<T>(this: RsDbTable<T>, filter?): Promise<T[]> {
                 this.entityModelDescriptor.modelComposer.forEach(p => {
                     if (p.isJson && item[p.name] != null && item[p.name] != undefined && item[p.name] != '') {
                         item[p.name] = JSON.parse(item[p.name]);
+                    }
+                    if (p.isBoolean) {        
+                        if(!item[p.name]){
+                            item[p.name] = false;
+                        }
+                        else if (item[p.name].length >= 0) {
+                            item[p.name] = false;
+                        } else {
+                            item[p.name] = Boolean(item[p.name]);
+                        }
                     }
                 });
             });

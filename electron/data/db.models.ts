@@ -1,4 +1,4 @@
-import { jsonProp, linkTable } from "./db-framework/rs-db.model-composer";
+import { prop, linkTable } from "./db-framework/rs-db.model-composer";
 
 export enum Tables {
   folders = 'folders',
@@ -9,11 +9,13 @@ export enum Tables {
 export class Folder {
   id: string;
   name: string;
-
-  @jsonProp()
+  @prop.json()
   notes: string;
+  @prop.boolean()
   isDefault?: boolean;
+  @prop.boolean()
   selected?: boolean;
+  @prop.boolean()
   classified?: boolean;
 }
 
@@ -22,7 +24,7 @@ export class Note {
   id: string;
   folderId?: string;
   title?: string;
-  @jsonProp()
+  @prop.json()
   lines?: string;
   date?: Date;
   target?: Date;

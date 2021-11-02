@@ -28,10 +28,14 @@ export class RootComponent implements OnInit, AfterViewInit {
   @UIkitComponent(uikit.modal)
   public deleteFolderModal: UIkitModalElement;
 
+  @ViewChild('cryptoFolderModalRef')
+  @UIkitComponent(uikit.modal)
+  public cryptoFolderModal: UIkitModalElement;
+
   @ViewChild('notesList') notesList: NotesListComponent;
 
   public modalVisible: boolean;
-  private defaultFolder = { id: uuid(), name: 'Generic', selected: true, isDefault: true };
+  private defaultFolder = <Folder>{ id: uuid(), name: 'Generic', selected: true, isDefault: true, classified: false };
   public folders: Folder[] = [];
   public notes: Note[] = [];
   public selectedFolder: Folder = this.defaultFolder;
@@ -62,11 +66,6 @@ export class RootComponent implements OnInit, AfterViewInit {
     if (Crossover.isElectronRunning) {
       this.electronWindow = Crossover.electron.remote.getCurrentWindow();
       this.appConfig.width = this.electronWindow.getBounds().width;
-      // this.electronWindow.on('close', (e) => {
-      //   e.preventDefault();
-      //   this.saveToDisk();
-      //   //setTimeout(() => this.electronWindow.close(), 500);
-      // });
       console.log(this.electronWindow.getBounds());
       this.display = await Crossover.get<DisplayInfo>(ConfigurationChannel.with(DisplayInfo));
       var folders = await Crossover.get<Folder[]>(DataChannel.with(ReadData), <ReadData>{ dataStore: DataStores.folders });
@@ -74,7 +73,7 @@ export class RootComponent implements OnInit, AfterViewInit {
         this.folders.push(this.defaultFolder);
         this.saveToDisk({ action: 'add', entity: this.defaultFolder, dataStore: DataStores.folders });
       }
-      else {        
+      else {
         this.folders = folders;
       }
 
@@ -86,13 +85,11 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   async ngAfterViewInit(): Promise<void> {
-
-    uikit.util.on(this.creteFolderModal.$el, ModalEvents.show, e => this.modalVisible = true);
-    uikit.util.on(this.creteFolderModal.$el, ModalEvents.hidden, e => this.modalVisible = false);
-    uikit.util.on(this.deleteFolderModal.$el, ModalEvents.show, e => this.modalVisible = true);
-    uikit.util.on(this.deleteFolderModal.$el, ModalEvents.hidden, e => this.modalVisible = false);
-    this.creteFolderModal.$el.style.right = '46px';
-    this.deleteFolderModal.$el.style.right = '46px';
+    (<UIkitModalElement[]>[this.notesList.addNotesModal, this.creteFolderModal, this.deleteFolderModal, this.cryptoFolderModal]).forEach(m => {
+      m.$el.style.right = '46px';
+      uikit.util.on(m.$el, ModalEvents.show, e => this.modalVisible = true);
+      uikit.util.on(m.$el, ModalEvents.hidden, e => this.modalVisible = false);
+    });
     (<HTMLElement>document.body).style.setProperty('--border-radius', '15px');
     //(<HTMLElement>this.elementRef.nativeElement).style.setProperty('--border-radius', '10px');
   }
@@ -106,16 +103,31 @@ export class RootComponent implements OnInit, AfterViewInit {
     this.notes = await Crossover.get<Note[]>(DataChannel.with(ReadData), <ReadData>{ dataStore: DataStores.notes, filter: { folderId: folder.id } });
     this.selectedFolder = folder;
     this.saveToDisk({ action: 'update', entity: folder, dataStore: DataStores.folders });
+    if (folder.classified && !folder.cryptoKey) {
+      this.cryptoFolderModal.show();
+    } else if (folder.cryptoKey) {
+      this.decryptFolder()
+    }
   }
 
-  public async saveFolder(folderNameInput: HTMLInputElement, checkedInput: HTMLInputElement) {
+  public decryptFolder(keyInput?: HTMLInputElement) {
+    if (keyInput) {
+      this.selectedFolder.cryptoKey = keyInput.value;
+      keyInput.value = '';
+    }
+    this.notes.forEach(n => this.decryptNote(n));
+    this.cryptoFolderModal.hide();
+  }
+
+  public async saveFolder(folderNameInput: HTMLInputElement, checkedInput: HTMLInputElement, pwdInput: HTMLInputElement) {
     var newFolder = <Folder>{ id: uuid(), name: folderNameInput.value, classified: checkedInput.checked, isDefault: false };
+    this.saveToDisk({ action: 'add', entity: newFolder, dataStore: DataStores.folders });
+    newFolder.cryptoKey = pwdInput.value;
     this.folders.push(newFolder);
     this.selectFolder(this.folders[this.folders.length - 1]);
     this.creteFolderModal.hide();
     checkedInput.checked = false;
     folderNameInput.value = '';
-    this.saveToDisk({ action: 'add', entity: newFolder, dataStore: DataStores.folders });
   }
 
   public createNote() {
@@ -126,8 +138,21 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   public saveNotesUpdates(ev: NoteEvent) {
-    ev.note.folderId = this.selectedFolder.id;
-    this.saveToDisk({ action: ev.eventType, entity: ev.note, dataStore: DataStores.notes });
+    var note = { ...ev.note, folderId: this.selectedFolder.id };
+    if (this.selectedFolder.classified) {
+      this.encryptNote(note);
+    }
+    this.saveToDisk({ action: ev.eventType, entity: note, dataStore: DataStores.notes });
+  }
+
+  private encryptNote(note: Note) {
+    note.title = crypto.AES.encrypt(note.title, this.selectedFolder.cryptoKey).toString();
+    note.lines.forEach(l => l.content = crypto.AES.encrypt(l.content, this.selectedFolder.cryptoKey).toString());
+  }
+
+  private decryptNote(note: Note) {
+    note.title = crypto.AES.decrypt(note.title, this.selectedFolder.cryptoKey).toString();
+    note.lines.forEach(l => l.content = crypto.AES.decrypt(l.content, this.selectedFolder.cryptoKey).toString());
   }
 
   private saveToDisk(saveModel: GenericData) {

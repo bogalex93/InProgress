@@ -11,7 +11,7 @@ export function linkTable(table: string) {
     };
 }
 
-export function jsonProp() {
+export function json() {
     return function (target: any, propertyKey: string) {
         var composer = modelComposer[target.constructor.name] || [];
         var propertyMeta = composer.find((p: { name: string; }) => p.name == propertyKey) || {};
@@ -24,6 +24,21 @@ export function jsonProp() {
     }
 }
 
+export function boolean() {
+    return function (target: any, propertyKey: string) {
+        var composer = modelComposer[target.constructor.name] || [];
+        var propertyMeta = composer.find((p: { name: string; }) => p.name == propertyKey) || {};
+        propertyMeta = {
+            name: propertyKey,
+            isBoolean: true
+        };
+        composer.push(propertyMeta);
+        modelComposer[target.constructor.name] = composer;
+    }
+}
+
+
+export const prop = { boolean, json };
 
 export interface DbEntity {
     id: string;

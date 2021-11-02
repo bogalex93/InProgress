@@ -6,6 +6,7 @@ export class Folder {
   isDefault?: boolean;
   selected?: boolean;
   classified?: boolean;
+  cryptoKey?: string;  
 }
 
 export class Note {

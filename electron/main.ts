@@ -47,7 +47,7 @@ function createWindow() {
 
 
   win.loadURL(appUrl);
-  (<BrowserWindow>win).webContents.openDevTools();
+  //(<BrowserWindow>win).webContents.openDevTools();
   win.on('closed', () => onClosed);
 };
 
