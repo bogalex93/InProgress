@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "_dist/angular-app",
+            "outputPath": "prod_build/angular-app",
             "index": "app/index.html",
             "main": "app/main.ts",
             "polyfills": "app/polyfills.ts",
@@ -88,17 +88,6 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "inprogress:build"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "app/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }

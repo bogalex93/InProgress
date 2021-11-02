@@ -6,12 +6,9 @@ import { Crossover } from 'crossover/crossover-ipc.renderer';
 import { ConfigurationChannel, DataChannel } from 'crossover/crossover.channels';
 import { AppConfig, DisplayInfo, GenericData, ReadData } from 'crossover/crossover.models';
 import * as lodash from 'lodash';
-import { ParsedEventType, ThrowStmt } from '@angular/compiler';
-import { app } from 'electron';
 import * as _ from 'lodash';
-import { NoteActions } from '../core/notes-list/note-actions';
 import * as crypto from "crypto-js";
-import { NoteEvent, NoteEvents, NotesListComponent } from 'app/core/notes-list/notes-list.component';
+import { NoteEvent,  NotesListComponent } from 'app/core/notes-list/notes-list.component';
 import { v4 as uuid } from 'uuid';
 const uikit: UIkit = (window as any).UIkit;
 

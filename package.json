@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "author": "Rom Dev Bogdan T. Alexandru",
     "description": "Personal organizer and task management",
-    "main": "_dist/electron/main.js",
+    "main": "prod_build/electron/main.js",
     "scripts": {
         "postinstall": "electron-builder install-app-deps",
         "ng": "ng",
@@ -13,7 +13,7 @@
         "app-compile": "ng build --base-href ./ && tsc --p electron",
         "electron-start": "tsc --p electron && electron .",
         "electron-compile": "tsc --p electron",
-        "electron-build": "npm run app-compile && electron-builder -wl"
+        "electron-build": "npm run app-compile && electron-builder -w"
     },
     "private": true,
     "dependencies": {
@@ -35,10 +35,10 @@
         "cross-blob": "^2.0.0",
         "crypto-js": "^4.0.0",
         "font-awesome": "^4.7.0",
-        "glasstron": "0.0.5",
+        "glasstron": "0.1.1",
         "jquery": "^3.5.1",
         "jquery-ui": "^1.12.1",
-        "knex": "~0.21.17",
+        "knex": "^0.21.21",
         "lodash": "^4.17.20",
         "rxjs": "~6.5.4",
         "sqlite3": "^5.0.2",

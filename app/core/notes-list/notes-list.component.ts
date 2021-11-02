@@ -1,14 +1,13 @@
-import { AfterContentInit, AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {  AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Folder, Note, NoteStates } from 'app/models/models';
 import { NoteActions } from 'app/core/notes-list/note-actions';
 import * as _ from 'lodash';
 import * as lodash from 'lodash';
 import { UIkitComponent } from 'app/shared/custom-decorators';
-import { ModalEvents, UIkit, UIkitModalElement } from 'app/shared/types/uikit.types';
+import {  UIkit, UIkitModalElement } from 'app/shared/types/uikit.types';
 const uikit: UIkit = (window as any).UIkit;
 export type NoteEvent = { eventType: NoteEvents, note: Note };
 import { v4 as uuid } from 'uuid';
-import * as crypto from 'crypto-js';
 @Component({
   selector: 'notes-list',
   templateUrl: './notes-list.component.html',

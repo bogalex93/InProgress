@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "_dist",
+    "outDir": "./prod_build/",
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
