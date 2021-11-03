@@ -1,5 +1,5 @@
-import { app, BrowserWindow, screen, BrowserWindowConstructorOptions, WebPreferences, Display, ipcMain } from 'electron';
-const glasstron = require('glasstron');
+import { app, screen, BrowserWindowConstructorOptions, WebPreferences, Display } from 'electron';
+import * as glasstron from 'glasstron'
 import * as path from 'path';
 import * as url from 'url';
 import { Crossover } from '../crossover/crossover-ipc.main';
@@ -7,8 +7,6 @@ import { ConfigurationChannel, DataChannel } from '../crossover/crossover.channe
 //import * as vibrancy from 'electron-acrylic-window';
 import { DisplayInfo, AppConfig, GenericData, ReadData } from '../crossover/crossover.models';
 import * as fs from 'fs';
-import * as Blob from 'cross-blob';
-import { v4 as uuid } from 'uuid';
 import { db } from './data/db';
 import { Tables } from 'data/db.models';
 
@@ -29,13 +27,14 @@ function createWindow() {
   let appUrl = isDev ? "http://localhost:4200/" : url.format(urlOptions);
 
   let webPreferences: WebPreferences = { nodeIntegration: true };
-  var iconPath = path.join(__dirname, `assets/in-progress.png`);
+  var iconPath = path.join(__dirname, `./assets/in-progress.png`);
   let windowOptions: BrowserWindowConstructorOptions = {
     transparent: true,
     frame: false,
     skipTaskbar: false,
     webPreferences: webPreferences,
     minimizable: false,
+    icon: iconPath
   };
   win = new glasstron.BrowserWindow(windowOptions);
   win.blurType = "blurbehind";

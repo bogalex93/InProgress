@@ -13,7 +13,8 @@
         "app-compile": "ng build --base-href ./ && tsc --p electron",
         "electron-start": "tsc --p electron && electron .",
         "electron-compile": "tsc --p electron",
-        "electron-build": "npm run app-compile && electron-builder -w"
+        "electron-build": "npm run app-compile && electron-builder -w",
+        "rebuild": "electron-rebuild -f -w sqlite3 knex"        
     },
     "private": true,
     "dependencies": {
@@ -61,6 +62,8 @@
         "electron-builder": "^22.9.1",
         "electron-installer-snap": "^5.1.0",
         "electron-packager": "^15.1.0",
+        "electron-rebuild": "^3.2.3",
+        "electron-winstaller": "^5.0.0",
         "ts-node": "~8.3.0",
         "tslib": "^2.0.0",
         "typescript": "~4.0.3"

@@ -3,6 +3,11 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./prod_build/",
+    "paths": {
+      "crypto": [
+        "node_modules/crypto-js"
+      ]
+    },
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
@@ -14,7 +19,7 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

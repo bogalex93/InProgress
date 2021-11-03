@@ -1,6 +1,6 @@
-import Knex = require('Knex');
+import * as Knex from 'knex';
 import * as path from 'path';
-import { boolean, entityModelDescriptor } from './rs-db.model-composer';
+import { entityModelDescriptor } from './rs-db.model-composer';
 var dbPath = path.join(__dirname, '../db.db3');
 var sqlClient = Knex({ client: 'sqlite3', connection: { filename: dbPath }, useNullAsDefault: true });
 
