@@ -135,7 +135,7 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   public saveNotesUpdates(ev: NoteEvent) {
-    var note = { ...ev.note, folderId: this.selectedFolder.id };
+    var note = { ... _.cloneDeep(ev.note), folderId: this.selectedFolder.id };
     if (this.selectedFolder.classified) {
       this.encryptNote(note);
     }
