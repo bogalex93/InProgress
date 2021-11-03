@@ -1,8 +1,8 @@
 import { prop, linkTable } from "./db-framework/rs-db.model-composer";
 
 export enum Tables {
-  folders = 'folders',
-  notes = 'notes'
+  folders = 'Folders',
+  notes = 'Notes'
 }
 
 @linkTable(Tables.folders)

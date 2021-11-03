@@ -1,4 +1,4 @@
-import { app, screen, BrowserWindowConstructorOptions, WebPreferences, Display } from 'electron';
+import { app, screen, BrowserWindowConstructorOptions, WebPreferences, Display, BrowserWindow , dialog } from 'electron';
 import * as glasstron from 'glasstron'
 import * as path from 'path';
 import * as url from 'url';
@@ -7,10 +7,13 @@ import { ConfigurationChannel, DataChannel } from '../crossover/crossover.channe
 //import * as vibrancy from 'electron-acrylic-window';
 import { DisplayInfo, AppConfig, GenericData, ReadData } from '../crossover/crossover.models';
 import * as fs from 'fs';
-import { db } from './data/db';
-import { Tables } from 'data/db.models';
+import { db } from './db/db';
+import { Tables } from 'db/db.models';
+const __workdir = path.join(__dirname, '../');
+const dbPath = path.join(__workdir , '/appdata/db.db3').replace('\\app.asar\\prod_build', '');
+db.connect(dbPath);
 
-let win: any;
+let win: BrowserWindow;
 let display: Display;
 let dockedBounds;
 let width;
@@ -36,17 +39,19 @@ function createWindow() {
     minimizable: false,
     icon: iconPath
   };
-  win = new glasstron.BrowserWindow(windowOptions);
-  win.blurType = "blurbehind";
+  win = new glasstron.BrowserWindow(windowOptions) as BrowserWindow;
+  (<any>win).blurType = "blurbehind";
   //              ^~~~~~~
   // Windows 10 1803+; for older versions you
   // might want to use 'blurbehind'
-  win.setBlur(true);
+  (<any>win).setBlur(true);
   win.setBounds(dockedBounds, true);
 
 
   win.loadURL(appUrl);
-  //(<BrowserWindow>win).webContents.openDevTools();
+  //win.webContents.openDevTools();
+  //dialog.showErrorBox('test', dbPath);
+
   win.on('closed', () => onClosed);
 };
 

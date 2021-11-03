@@ -1,8 +1,12 @@
 import * as Knex from 'knex';
+
 import * as path from 'path';
 import { entityModelDescriptor } from './rs-db.model-composer';
-var dbPath = path.join(__dirname, '../db.db3');
-var sqlClient = Knex({ client: 'sqlite3', connection: { filename: dbPath }, useNullAsDefault: true });
+
+let sqlClient: Knex<any, any>;
+export function configDb(dbOptions) {
+    sqlClient = Knex(dbOptions);
+}
 
 export interface RsDbTable<T> extends Knex.QueryBuilder<any, any> {
     removeEntity(id: string): Promise<any>;
@@ -68,8 +72,8 @@ async function getData<T>(this: RsDbTable<T>, filter?): Promise<T[]> {
                     if (p.isJson && item[p.name] != null && item[p.name] != undefined && item[p.name] != '') {
                         item[p.name] = JSON.parse(item[p.name]);
                     }
-                    if (p.isBoolean) {        
-                        if(!item[p.name]){
+                    if (p.isBoolean) {
+                        if (!item[p.name]) {
                             item[p.name] = false;
                         }
                         else if (item[p.name].length >= 0) {
