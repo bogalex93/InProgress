@@ -88,15 +88,9 @@ export class RootComponent implements OnInit, AfterViewInit {
       uikit.util.on(m.$el, ModalEvents.hidden, e => this.modalVisible = false);
     });
     (<HTMLElement>document.body).style.setProperty('--border-radius', '10px');
-    //(<HTMLElement>this.elementRef.nativeElement).style.setProperty('--border-radius', '10px');
-
-    // if (this.contentContainer.scrollHeight <= this.graphicProperties.display.workArea.height - 100) {
-    //   this.graphicProperties.appBounds.height = this.contentContainer.scrollHeight + 100;
-    //   this.electronWindow.setBounds(this.graphicProperties.appBounds);
-    // }
+    (<HTMLElement>this.elementRef.nativeElement).style.setProperty('--border-radius', '10px');
 
     const menuElement = document.getElementById('menu');
-    //const rootElement = document.getElementById('root');
     document.onmouseleave = e => this.contentContainer.style.left = this.contentContainer.clientWidth + 10 + 'px';
     menuElement.onmouseenter = e => this.contentContainer.style.left = '0';
   }

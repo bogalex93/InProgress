@@ -24,7 +24,7 @@ export class MainWindow {
     let windowOptions: BrowserWindowConstructorOptions = {
       transparent: true,
       frame: false,
-      skipTaskbar: false,
+      skipTaskbar: true,
       webPreferences: webPreferences,
       minimizable: false,
       icon: iconPath
@@ -52,7 +52,7 @@ export class MainWindow {
     const appWidth = defaultSizes[bounds.width] || 300;
     const appHeight = workArea.height / 2;
     const positionY = workArea.y + appHeight - (size.height - workArea.height - 30);
-    const positionX = workArea.x + bounds.width - appWidth - 10;
+    const positionX = (workArea.x + bounds.width - appWidth) - 10;
     const appBounds = { width: appWidth, height: appHeight, y: positionY, x: positionX };
     this.graphicProperties = {
       display: { id, size, workArea, bounds },

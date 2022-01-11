@@ -33,30 +33,6 @@
       margin-top: 12px;
     }
 
-    &.completed {
-      // border-left: 2px solid limegreen;
-      // border-top: 2px solid limegreen;
-      border-bottom: 2px solid limegreen;
-      border-right: 2px solid limegreen;
-      .line {
-        pointer-events: none;
-        cursor: default;
-      }
-      .title {
-        color: limegreen;
-      }
-    }
-
-    &.important {
-      // border-left: 2px solid limegreen;
-      // border-top: 2px solid limegreen;
-      .title {
-        color: red;
-      }
-      border-bottom: 2px solid red;
-      border-right: 2px solid red;
-    }
-
     .title-container {
       display: flex;
       justify-content: space-between;
@@ -64,6 +40,7 @@
         margin: 0;
         //color: white;
         color: $font-color;
+        font-weight: 600;
       }
 
       .meta {
@@ -150,7 +127,7 @@
           background: transparent;
           border: none;
           color: $font-color;
-          line-height: 16px;
+          line-height: 17px;
           font-size: 16px;
           height: min-content;
           display: inline-table;
@@ -189,6 +166,41 @@
       left: 0;
       right: 0;
     }
+
+    &.completed {
+      // border-left: 2px solid limegreen;
+      // border-top: 2px solid limegreen;
+      border-bottom: 2px solid limegreen;
+      border-right: 2px solid limegreen;
+      .line {
+        pointer-events: none;
+        cursor: default;
+      }
+      .title {
+        color: limegreen !important;
+      }
+    }
+
+    &.important {
+      // border-left: 2px solid limegreen;
+      // border-top: 2px solid limegreen;
+      .title {
+        color: red !important;
+      }
+      border-bottom: 2px solid red;
+      border-right: 2px solid red;
+    }
+
+    &.inProgress {
+      // border-left: 2px solid limegreen;
+      // border-top: 2px solid limegreen;
+      .title {
+        color: $color-info !important;
+      }
+      border-bottom: 2px solid $color-info;
+      border-right: 2px solid $color-info;
+    }
+
     &:hover {
       .actions {
         bottom: 10px;

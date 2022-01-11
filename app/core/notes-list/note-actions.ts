@@ -7,6 +7,9 @@ export class NoteActions {
 
   public completeLine(line: NoteLine) {
     line.state = NoteStates.completed;
+    if (this.note.lines.every(l => l.state == NoteStates.completed)) {
+      this.note.state = NoteStates.completed;
+    }
     this.onAction();
   }
 
@@ -17,6 +20,7 @@ export class NoteActions {
 
   public inProgressLine(line: NoteLine) {
     line.state = NoteStates.inProgress;
+    this.note.state = NoteStates.inProgress;
     this.onAction();
   }
 

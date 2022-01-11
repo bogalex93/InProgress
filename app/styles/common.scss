@@ -4,12 +4,11 @@
   filter: blur(3px);
 }
 
-
 button,
 .uk-input,
 .uk-textarea {
   border-radius: 5px !important;
-  &:focus{
+  &:focus {
     color: white;
   }
 }
@@ -18,7 +17,7 @@ button,
   background-color: transparent;
 
   .uk-modal-dialog {
-    background-color: rgba(black, 0.7);
+    background-color: $card-color;
     overflow: hidden;
     border-radius: $border-radius;
     transition: none !important;
@@ -64,18 +63,18 @@ button,
   background-color: $card-color;
   .uk-dropdown-nav > li {
     &:hover {
-     a {
+      a {
         color: white;
       }
     }
-    a.active{
+    a.active {
       color: $color-info;
     }
     & > a {
       color: lightgrey;
     }
 
-    &:not(:last-child){
+    &:not(:last-child) {
       border-bottom: 1px solid rgba($color: white, $alpha: 0.1);
     }
   }
@@ -103,8 +102,8 @@ button,
   }
 }
 
-.uk-icon.done{
-  polyline{
+.uk-icon.done {
+  polyline {
     stroke-width: 1.6 !important;
   }
   &:hover {

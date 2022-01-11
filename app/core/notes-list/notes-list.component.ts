@@ -1,10 +1,10 @@
-import {  AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Folder, Note, NoteStates } from 'app/models/models';
 import { NoteActions } from 'app/core/notes-list/note-actions';
 import * as _ from 'lodash';
 import * as lodash from 'lodash';
 import { UIkitComponent } from 'app/shared/custom-decorators';
-import {  UIkit, UIkitModalElement } from 'app/shared/types/uikit.types';
+import { UIkit, UIkitModalElement } from 'app/shared/types/uikit.types';
 const uikit: UIkit = (window as any).UIkit;
 export type NoteEvent = { eventType: NoteEvents, note: Note };
 import { v4 as uuid } from 'uuid';
@@ -41,7 +41,7 @@ export class NotesListComponent implements OnInit, AfterViewInit {
     var note = this.newNote;
     note.id = uuid();
     this._newNote = undefined;
-  
+
     this.notes.push(note);
     this.addNotesModal.hide();
     this.noteUpdates.emit({ eventType: NoteEvents.added, note: note });
@@ -54,7 +54,7 @@ export class NotesListComponent implements OnInit, AfterViewInit {
     this.noteUpdates.emit({ eventType: NoteEvents.updated, note: note });
   }
 
-  public emitUpdate(note: Note) {    
+  public emitUpdate(note: Note) {
     this.noteUpdates.emit({ eventType: NoteEvents.updated, note: note });
   }
 
