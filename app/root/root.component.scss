@@ -15,29 +15,6 @@ body,
   transition: filter 0.7s ease;
   box-sizing: border-box;
   position: relative;
-
-  .move-btn {
-    top: 5px;
-    left: 5px;
-    display: none;
-    color: white;
-    position: absolute;
-    width: 100%;
-    -webkit-app-region: drag;
-  }
-
-  &.minimized.widget {
-    border-radius: $border-radius;
-    background: $card-color;
-    position: relative;
-    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-
-    border: 1px solid rgba(0, 0, 0, 0.8);
-
-    .move-btn {
-      display: block;
-    }
-  }
 }
 
 .content-container {

@@ -1,6 +1,4 @@
 <div id="root" class="home-root">
-  <span class="move-btn" uk-icon="icon: move; ratio: 1"></span>
-
   <div id="content-container" #contentContainer class="content-container" *ngIf="selectedFolder" confirm-delete
     [ngClass]="{'blur': modalVisible}">
     <!-- <h2 class="folder-title">
@@ -120,7 +118,7 @@
       <div>
         <div class="uk-modal-header">
           <h2 *ngIf="tempDictionary.folderToDelete"><span uk-icon="icon: trash; ratio: 1.4"></span> Delete
-            folder {{'<'+tempDictionary.folderToDelete.name+'>'}} </h2>
+            folder {{tempDictionary.folderToDelete.name}} </h2>
         </div>
         <div class="uk-modal-body">
           <div style="display: flex; flex-direction: column;">
@@ -139,8 +137,8 @@
     <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
       <div>
         <div class="uk-modal-header">
-          <h2 *ngIf="tempDictionary.folderToDelete"><span uk-icon="icon: trash; ratio: 1.4"></span> Enter {{'
-            <'+tempDictionary.folderToDelete.name+'>'}} secret key:
+          <h2 *ngIf="tempDictionary.folderToDelete"><span uk-icon="icon: trash; ratio: 1.4"></span> Enter
+            {{tempDictionary.folderToDelete.name}} secret key:
           </h2>
         </div>
         <div class="uk-modal-body">

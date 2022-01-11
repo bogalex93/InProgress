@@ -84,7 +84,6 @@ export class RootComponent implements OnInit, AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     (<UIkitModalElement[]>[this.notesList.addNotesModal, this.creteFolderModal, this.deleteFolderModal, this.cryptoFolderModal]).forEach(m => {
-      m.$el.style.right = '46px';
       uikit.util.on(m.$el, ModalEvents.show, e => this.modalVisible = true);
       uikit.util.on(m.$el, ModalEvents.hidden, e => this.modalVisible = false);
     });
