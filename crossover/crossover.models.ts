@@ -1,10 +1,7 @@
+import { KeyValue } from '@angular/common';
+import { Display, Rectangle } from 'electron';
 import { CrossoverModel, crossoverModel } from './crossover-framework';
 
-@crossoverModel
-export class DisplayInfo extends CrossoverModel {
-  width: number;
-  height: number;
-}
 @crossoverModel
 export class AppConfig extends CrossoverModel {
   minimized?: boolean;
@@ -17,11 +14,18 @@ export class AppConfig extends CrossoverModel {
 export class GenericData extends CrossoverModel {
   dataStore?: string;
   entity?: any;
-  action?: 'add' |  'update' | 'delete'
+  action?: 'add' | 'update' | 'delete'
 }
 
 @crossoverModel
 export class ReadData extends CrossoverModel {
   dataStore?: string;
   filter?: any;
+}
+
+@crossoverModel
+export class GraphicProperties {
+  display?: { id, size: Electron.Size, workArea: Electron.Rectangle, bounds: Electron.Rectangle };
+  defaultSizes?: { [key: string]: number };
+  appBounds?: Rectangle;
 }

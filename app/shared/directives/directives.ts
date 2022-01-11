@@ -44,11 +44,7 @@ export class ConfirmDeleteDirective {
       this.onCancel.emit();
     }
   }
-
-
 }
-
-
 
 @Directive({
   selector: '[ngInit]'

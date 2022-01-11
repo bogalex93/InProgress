@@ -2,134 +2,153 @@
 
 body,
 :host {
-    --border-radius: 15px;
+  --border-radius: 10px;
 }
 
 .home-root {
-    height: 100%;
+  height: 100%;
+  width: 100%;
+  //background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+  //background-color: rgba(37, 37, 37, 0.5);
+  background: transparent;
+  overflow: hidden;
+  transition: filter 0.7s ease;
+  box-sizing: border-box;
+  position: relative;
+
+  .move-btn {
+    top: 5px;
+    left: 5px;
+    display: none;
+    color: white;
+    position: absolute;
     width: 100%;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
-    //background-color: rgba(37, 37, 37, 0.5);
-    overflow: hidden;
-    transition: filter 0.7s ease;
-    box-sizing: border-box;
+    -webkit-app-region: drag;
+  }
+
+  &.minimized.widget {
+    border-radius: $border-radius;
+    background: $card-color;
+    position: relative;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+    border: 1px solid rgba(0, 0, 0, 0.8);
 
     .move-btn {
-        top: 5px;
-        left: 5px;
-        display: none;
-        color: white;
-        position: absolute;
-        width: 100%;
-        -webkit-app-region: drag;        
+      display: block;
     }
-
-    &.minimized.widget {
-        border-radius: $border-radius;
-        background: $card-color;
-        position: relative;
-        text-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-
-        border: 1px solid rgba(0, 0, 0, 0.8);
-
-        .move-btn {
-            display: block;
-        }
-    }
+  }
 }
 
 .content-container {
-    position: fixed;
-    right: 46px;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    padding: 10px 8px 22px 8px;
-    overflow: hidden;
-    transition: filter 1s;
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  min-width: 100%;
+  bottom: 60px;
+  padding: 10px 0 10px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+  transition: all 0.5s ease;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
-    .folder-title {
-        color: white;
-        padding: 6.5px 20px;
-        margin: 0 0 20px 0;
-        background-color: $card-color;
-        min-width: 100%;
-        box-sizing: border-box;
-        border-radius: $border-radius;
-        display: flex;
-        justify-content: space-between;
-    }
+  .folder-title {
+    color: white;
+    padding: 6.5px 20px;
+    margin: 0 0 20px 0;
+    background-color: $card-color;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    min-width: 100%;
+    box-sizing: border-box;
+    border-radius: $border-radius;
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .menu-container {
-    box-sizing: border-box;
-    display: flex;
-    position: fixed;
-    right: 0;
-    top: 0;
-    width: fit-content;
+  position: fixed;
+  box-sizing: border-box;
+  display: flex;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: flex-end;
+  width: 100%;
+
+  .menu {
     background-color: $card-color;
-    justify-content: center;
-    height: 100%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-radius: $border-radius;
+    padding: 4px 4px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
 
-    .menu {
-        padding: 16px 2px;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(
+      150deg,
+      rgba(0, 0, 0, 0.787) 0%,
+      rgba(9, 9, 27, 0.883) 35%,
+      rgba(0, 69, 83, 0.884) 100%
+    );
 
-        .uk-dropdown {
-            border-radius: $border-radius;
-        }
-
-        button {
-            width: 44px;
-            padding: 8px;
-            border: none;
-            outline: none;
-            background: transparent;
-            cursor: pointer;
-            color: white;
-
-            &:not(:disabled):hover {
-                background-color: rgba(255, 255, 255, 0.1);
-                color: $color-info;
-            }
-        }
+    .uk-dropdown {
+      border-radius: $border-radius;
     }
+
+    button {
+      margin: 0 4px;
+      width: 40px;
+      padding: 6px;
+      border: none;
+      outline: none;
+      background: transparent;
+      cursor: pointer;
+      color: white;
+
+      &:not(:disabled):hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: $color-info;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+      }
+    }
+  }
 }
 
-
-
 .uk-modal-header h2 {
-    display: flex;
-    line-height: 28px;
+  display: flex;
+  line-height: 28px;
 }
 
 .minimized {
+  .menu-container {
+    top: 10px;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 8px;
+    height: calc(100% - 20px);
+  }
+
+  .content-container {
+    visibility: hidden;
+  }
+
+  &.widget {
     .menu-container {
-        top: 10px;
-        bottom: 10px;
-        right: 10px;
-        border-radius: 8px;
-        height: calc(100% - 20px);
-    }
+      background: transparent;
+      .menu {
+        padding: 10px 2px;
 
-    .content-container {
-        visibility: hidden;
-    }
-
-    &.widget {
-        .menu-container {
-            background: transparent;
-            .menu {
-                padding: 10px 2px;
-
-                button {
-                    text-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-                    width: 40px;
-                }
-            }
+        button {
+          text-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+          width: 40px;
         }
+      }
     }
+  }
 }

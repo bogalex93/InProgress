@@ -1,206 +1,162 @@
-<div class="home-root"
-    [ngClass]="{'minimized': appConfig.minimized, 'widget': aperenceIsWidget, 'sidebar': aperenceIsSidebar}">
-    <span class="move-btn" uk-icon="icon: move; ratio: 1"></span>
+<div id="root" class="home-root">
+  <span class="move-btn" uk-icon="icon: move; ratio: 1"></span>
 
-
-    <div *ngIf="appConfig.minimized && aperenceIsWidget"
-        style="position: absolute; top: 30px; left: 20%; color: white;">
-        <h4 class="folder-title" style="color: white; margin: 0;">
-            <div style="display: flex;"><span uk-icon="icon: folder; ratio: 1.6"></span> <span style="margin-left: 4px"
-                    [innerText]="selectedFolder.name"></span></div>
-        </h4>
+  <div id="content-container" #contentContainer class="content-container" *ngIf="selectedFolder" confirm-delete
+    [ngClass]="{'blur': modalVisible}">
+    <!-- <h2 class="folder-title">
+      <div style="display: flex;"><span uk-icon="icon: folder; ratio: 1.6"></span> <span style="margin-left: 4px"
+          [innerText]="selectedFolder.name"></span></div>
+      <div style="font-size: 11px; display: flex; flex-direction: column; line-height: 12px;">
         <div>
-            <div>
-                <span [innerText]="folderStats.notesCount"></span>
-                <span style="margin-left: 4px;">notes</span>
-            </div>
-            <div style="color: #2ca8ff;">
-                <span [innerText]="folderStats.inProgressNotes"></span>
-                <span style="margin-left: 4px;">in progress</span>
-            </div>
-            <div style="color: limegreen;">
-                <span [innerText]="folderStats.completedNotes"></span>
-                <span style="margin-left: 4px;">completed</span>
-            </div>
+          <span [innerText]="folderStats.notesCount"></span>
+          <span style="margin-left: 4px;">notes</span>
         </div>
-    </div>
-
-    <div id="content-container" class="content-container" *ngIf="selectedFolder" confirm-delete #folderEl
-        [ngClass]="{'blur': modalVisible}">
-        <h2 class="folder-title">
-            <div style="display: flex;"><span uk-icon="icon: folder; ratio: 1.6"></span> <span style="margin-left: 4px"
-                    [innerText]="selectedFolder.name"></span></div>
-            <div style="font-size: 11px; display: flex; flex-direction: column; line-height: 12px;">
-                <div>
-                    <span [innerText]="folderStats.notesCount"></span>
-                    <span style="margin-left: 4px;">notes</span>
-                </div>
-                <div style="color: #2ca8ff;">
-                    <span [innerText]="folderStats.inProgressNotes"></span>
-                    <span style="margin-left: 4px;">in progress</span>
-                </div>
-                <div style="color: limegreen;">
-                    <span [innerText]="folderStats.completedNotes"></span>
-                    <span style="margin-left: 4px;">completed</span>
-                </div>
-            </div>
-
-        </h2>
-        <notes-list #notesList [(notes)]="notes" [folder]="selectedFolder" (noteUpdates)="saveNotesUpdates($event)">
-        </notes-list>
-    </div>
-    <div class="menu-container">
-        <div class="menu">
-            <div class="uk-inline">
-                <button class="btn-new-note" (click)="toggleView()">
-                    <span *ngIf="appConfig.minimized" uk-tooltip="expand" uk-icon="icon: expand; ratio: 1.6"></span>
-                    <span *ngIf="!appConfig.minimized" uk-tooltip="collapse" uk-icon="icon: shrink; ratio: 1.6"></span>
-                </button>
-            </div>
-            <div class="uk-inline">
-                <button class="btn-new-note" (click)="createNote()" uk-tooltip="new note">
-                    <span uk-icon="icon: plus; ratio: 1.6"></span>
-                </button>
-            </div>
-            <div *ngIf="!appConfig.minimized" class="uk-inline">
-                <button [disabled]="appConfig.minimized" uk-tooltip="folders">
-                    <span uk-icon="icon: folder; ratio: 1.6"></span>
-                </button>
-                <div uk-dropdown="pos: left">
-                    <ul class="uk-nav uk-dropdown-nav">
-                        <li><a (click)="creteFolderModal.show()"><span uk-icon="icon: plus; ratio: 1"></span> New
-                                Folder</a></li>
-                        <li *ngFor="let folder of folders">
-                            <a [ngClass]="{'active': folder.selected}">
-                                <span (click)="selectFolder(folder)">
-                                    <span uk-icon="icon: folder; ratio: 1"></span> <span style="margin-left: 4px"
-                                        [innerText]="folder.name"></span>
-                                </span>
-                                <span *ngIf="folder.selected" style="float: right;"
-                                    uk-icon="icon: check; ratio: 1"></span>
-                                <span *ngIf="!folder.isDefault && !folder.selected" class="icon-btn delete"
-                                    style="float: right;" (click)="deleteFolder(folder)"
-                                    uk-icon="icon: trash; ratio: 1"></span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div *ngIf="!appConfig.minimized" class="uk-inline">
-                <button [disabled]="appConfig.minimized">
-                    <span uk-icon="icon: settings; ratio: 2"></span>
-                </button>
-                <div uk-dropdown="pos: left">
-                    <ul class="uk-nav uk-dropdown-nav settings-list">
-                        <li>
-                            <a>
-                                <span class="icon-btn delete" uk-icon="icon: minus; ratio: 0.8"
-                                    (click)="changeWindowSize(-20)"></span>
-                                Width: {{ this.appConfig.width }}px
-                                <span class="icon-btn" uk-icon="icon: plus; ratio: 0.8"
-                                    (click)="changeWindowSize(20)"></span>
-                            </a>
-                        </li>
-                        <li><a (click)="setMinimizedAperence(aperenceTypes.sidebar)">Minimized aperence: Sidebar <span
-                                    *ngIf="appConfig.minimizedAperence === aperenceTypes.sidebar" class="icon-btn"
-                                    uk-icon="icon: check; ratio: 0.8"></span></a></li>
-                        <li><a (click)="setMinimizedAperence(aperenceTypes.widget)">Minimized aperence: Wiged <span
-                                    *ngIf="appConfig.minimizedAperence === aperenceTypes.widget" class="icon-btn"
-                                    uk-icon="icon: check; ratio: 0.8"></span></a></li>
-                        <li><a (click)="appConfig.bluredBackground = !appConfig.bluredBackground">Blured background<span
-                                    *ngIf="appConfig.bluredBackground" class="icon-btn"
-                                    uk-icon="icon: check; ratio: 0.8"></span></a></li>
-                        <li><a (click)="close()">Close App <span class="icon-btn"
-                                    uk-icon="icon: close; ratio: 0.8"></span></a></li>
-                    </ul>
-                </div>
-            </div>
+        <div style="color: #2ca8ff;">
+          <span [innerText]="folderStats.inProgressNotes"></span>
+          <span style="margin-left: 4px;">in progress</span>
         </div>
-    </div>
-
-    <div id="create-folder-modal" class="uk-flex-top" #createFolderModalRef>
-        <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
-            <div class="add-note">
-                <div class="uk-modal-header">
-                    <h2><span uk-icon="icon: folder; ratio: 1.4"></span> New Folder</h2>
-                </div>
-                <div class="uk-modal-body">
-                    <div style="display: flex; flex-direction: column;">
-                        <h3>Type folder name: </h3>
-                        <fieldset class="uk-fieldset">
-                            <input class="uk-input uk-form-medium" #folderInput placeholder="folder name"
-                                (keyup)="folderInput.canSave = folderInput.value && folderInput.value.length > 2" />
-                            <div class="uk-margin">
-                                <label>
-                                    <input #classifiedInput (change)="pwdInput.visible = classifiedInput.checked"
-                                        style="margin-right: 5px; border-radius: 3px; height: 18px; width: 18px;"
-                                        class="uk-checkbox" type=checkbox>
-                                    <span>
-                                        Classified
-                                    </span>
-                                </label>
-                            </div>
-                            <div class="uk-margin">
-                                <input class="uk-input uk-form-medium" #pwdInput placeholder="folder password" [hidden]="!pwdInput.visible"
-                                    (keyup)="folderInput.canSave = pwdInput.value && pwdInput.value.length > 4" />
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
-                <div class="uk-modal-footer uk-text-right">
-                    <button class="uk-button uk-button-danger uk-modal-close  uk-button-small"
-                        type="button">Cancel</button>
-                    <button class="uk-button uk-button-primary  uk-button-small" [disabled]="!folderInput.canSave"
-                        (click)="saveFolder(folderInput, classifiedInput, pwdInput)">Save</button>
-                </div>
-            </div>
+        <div style="color: limegreen;">
+          <span [innerText]="folderStats.completedNotes"></span>
+          <span style="margin-left: 4px;">completed</span>
         </div>
-    </div>
-
-
-    <div id="delete-folder-modal" class="uk-flex-top" #deleteFolderModalRef>
-        <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
-            <div>
-                <div class="uk-modal-header">
-                    <h2 *ngIf="tempDictionary.folderToDelete"><span uk-icon="icon: trash; ratio: 1.4"></span> Delete
-                        folder {{'<'+tempDictionary.folderToDelete.name+'>'}} </h2>
-                </div>
-                <div class="uk-modal-body">
-                    <div style="display: flex; flex-direction: column;">
-                        <h4>Deleting the folder will permanently lose you notes</h4>
-                    </div>
-                </div>
-                <div class="uk-modal-footer uk-text-right">
-                    <button class="uk-button uk-button-danger uk-modal-close  uk-button-small"
-                        type="button">Cancel</button>
-                    <button class="uk-button uk-button-primary uk-button-small"
-                        (click)="confirmDeleteFolder()">Delete</button>
-                </div>
-            </div>
+      </div>
+    </h2> -->
+    <notes-list #notesList [(notes)]="notes" [folder]="selectedFolder" (noteUpdates)="saveNotesUpdates($event)">
+    </notes-list>
+  </div>
+  <div id="menu-container" class="menu-container">
+    <div id="menu" class="menu">
+      <div class="uk-inline">
+        <button class="btn-new-note" (click)="createNote()" uk-tooltip="new note">
+          <span uk-icon="icon: plus; ratio: 1.6"></span>
+        </button>
+      </div>
+      <div class="uk-inline">
+        <button uk-tooltip="folders">
+          <span uk-icon="icon: folder; ratio: 1.6"></span>
+        </button>
+        <div uk-dropdown="pos: top">
+          <ul class="uk-nav uk-dropdown-nav">
+            <li><a (click)="creteFolderModal.show()"><span uk-icon="icon: plus; ratio: 1"></span> New
+                Folder</a></li>
+            <li *ngFor="let folder of folders">
+              <a [ngClass]="{'active': folder.selected}">
+                <span (click)="selectFolder(folder)">
+                  <span uk-icon="icon: folder; ratio: 1"></span> <span style="margin-left: 4px"
+                    [innerText]="folder.name"></span>
+                </span>
+                <span *ngIf="folder.selected" style="float: right;" uk-icon="icon: check; ratio: 1"></span>
+                <span *ngIf="!folder.isDefault" class="icon-btn delete" style="float: right;"
+                  (click)="deleteFolder(folder)" uk-icon="icon: trash; ratio: 1"></span>
+              </a>
+            </li>
+          </ul>
         </div>
-    </div>
-
-    <div id="crypto-folder-modal" class="uk-flex-top" #cryptoFolderModalRef>
-        <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
-            <div>
-                <div class="uk-modal-header">
-                    <h2 *ngIf="tempDictionary.folderToDelete"><span uk-icon="icon: trash; ratio: 1.4"></span> Enter {{'
-                        <'+tempDictionary.folderToDelete.name+'>'}} secret key: </h2>
-                </div>
-                <div class="uk-modal-body">
-                    <div style="display: flex; flex-direction: column;">
-                        <input class="uk-input uk-form-medium" #folderCryptoKey placeholder="folder secret key" type="password"
-                            (keyup)="folderCryptoKey.canSave = folderCryptoKey.value && folderCryptoKey.value.length > 4" />
-                    </div>
-                </div>
-                <div class="uk-modal-footer uk-text-right">
-                    <button class="uk-button uk-button-danger uk-modal-close  uk-button-small"
-                        type="button">Cancel</button>
-                    <button class="uk-button uk-button-primary uk-button-small" [disabled]="!folderCryptoKey.canSave"
-                        (click)="decryptFolder(folderCryptoKey)">Save</button>
-                </div>
-            </div>
+      </div>
+      <div class="uk-inline">
+        <button>
+          <span uk-icon="icon: settings; ratio: 2"></span>
+        </button>
+        <div uk-dropdown="pos: top">
+          <ul class="uk-nav uk-dropdown-nav settings-list">
+            <li>
+              <a>
+                <span class="icon-btn delete" uk-icon="icon: minus; ratio: 0.8" (click)="changeWindowSize(-20)"></span>
+                Width: {{ this.graphicProperties.appBounds.width }}px
+                <span class="icon-btn" uk-icon="icon: plus; ratio: 0.8" (click)="changeWindowSize(20)"></span>
+              </a>
+            </li>
+            <li><a (click)="appConfig.bluredBackground = !appConfig.bluredBackground">Blured background<span
+                  *ngIf="appConfig.bluredBackground" class="icon-btn" uk-icon="icon: check; ratio: 0.8"></span></a></li>
+            <li><a (click)="close()">Close App <span class="icon-btn" uk-icon="icon: close; ratio: 0.8"></span></a></li>
+          </ul>
         </div>
+      </div>
     </div>
+  </div>
+
+  <div id="create-folder-modal" class="uk-flex-top" #createFolderModalRef>
+    <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
+      <div class="add-note">
+        <div class="uk-modal-header">
+          <h2><span uk-icon="icon: folder; ratio: 1.4"></span> New Folder</h2>
+        </div>
+        <div class="uk-modal-body">
+          <div style="display: flex; flex-direction: column;">
+            <h3>Type folder name: </h3>
+            <fieldset class="uk-fieldset">
+              <input class="uk-input uk-form-medium" #folderInput placeholder="folder name"
+                (keyup)="folderInput.canSave = folderInput.value && folderInput.value.length > 2" />
+              <div class="uk-margin">
+                <label>
+                  <input #classifiedInput (change)="pwdInput.visible = classifiedInput.checked"
+                    style="margin-right: 5px; border-radius: 3px; height: 18px; width: 18px;" class="uk-checkbox"
+                    type=checkbox>
+                  <span>
+                    Classified
+                  </span>
+                </label>
+              </div>
+              <div class="uk-margin">
+                <input class="uk-input uk-form-medium" #pwdInput placeholder="folder password"
+                  [hidden]="!pwdInput.visible"
+                  (keyup)="folderInput.canSave = pwdInput.value && pwdInput.value.length > 4" />
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+          <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button">Cancel</button>
+          <button class="uk-button uk-button-primary  uk-button-small" [disabled]="!folderInput.canSave"
+            (click)="saveFolder(folderInput, classifiedInput, pwdInput)">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="delete-folder-modal" class="uk-flex-top" #deleteFolderModalRef>
+    <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
+      <div>
+        <div class="uk-modal-header">
+          <h2 *ngIf="tempDictionary.folderToDelete"><span uk-icon="icon: trash; ratio: 1.4"></span> Delete
+            folder {{'<'+tempDictionary.folderToDelete.name+'>'}} </h2>
+        </div>
+        <div class="uk-modal-body">
+          <div style="display: flex; flex-direction: column;">
+            <h4>Deleting the folder will permanently lose you notes</h4>
+          </div>
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+          <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button">Cancel</button>
+          <button class="uk-button uk-button-primary uk-button-small" (click)="confirmDeleteFolder()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="crypto-folder-modal" class="uk-flex-top" #cryptoFolderModalRef>
+    <div class="uk-modal-dialog uk-margin-auto-vertical uk-animation-scale-up">
+      <div>
+        <div class="uk-modal-header">
+          <h2 *ngIf="tempDictionary.folderToDelete"><span uk-icon="icon: trash; ratio: 1.4"></span> Enter {{'
+            <'+tempDictionary.folderToDelete.name+'>'}} secret key:
+          </h2>
+        </div>
+        <div class="uk-modal-body">
+          <div style="display: flex; flex-direction: column;">
+            <input class="uk-input uk-form-medium" #folderCryptoKey placeholder="folder secret key" type="password"
+              (keyup)="folderCryptoKey.canSave = folderCryptoKey.value && folderCryptoKey.value.length > 4" />
+          </div>
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+          <button class="uk-button uk-button-danger uk-modal-close  uk-button-small" type="button"
+            (click)="selectFolder(folders[0])">Cancel</button>
+          <button class="uk-button uk-button-primary uk-button-small" [disabled]="!folderCryptoKey.canSave"
+            (click)="decryptFolder(folderCryptoKey)">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>

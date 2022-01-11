@@ -4,18 +4,24 @@ import { UIkitComponent } from 'app/shared/custom-decorators';
 import { DataStores, Folder, Note, NoteStates } from 'app/models/models';
 import { Crossover } from 'crossover/crossover-ipc.renderer';
 import { ConfigurationChannel, DataChannel } from 'crossover/crossover.channels';
-import { AppConfig, DisplayInfo, GenericData, ReadData } from 'crossover/crossover.models';
+import { AppConfig, GraphicProperties, GenericData, ReadData } from 'crossover/crossover.models';
 import * as lodash from 'lodash';
 import * as _ from 'lodash';
 import * as crypto from "crypto-js";
-import { NoteEvent,  NotesListComponent } from 'app/core/notes-list/notes-list.component';
+import { NoteEvent, NotesListComponent } from 'app/core/notes-list/notes-list.component';
 import { v4 as uuid } from 'uuid';
+import { enc } from 'crypto-js';
 const uikit: UIkit = (window as any).UIkit;
 
 @Component({ selector: 'app-root', templateUrl: './root.component.html', styleUrls: ['./root.component.scss'] })
 export class RootComponent implements OnInit, AfterViewInit {
 
   public lodash = lodash;
+
+  @ViewChild('contentContainer')
+  public contentContainerRef: ElementRef;
+
+  private get contentContainer(): HTMLElement { return this.contentContainerRef.nativeElement }
 
   @ViewChild('createFolderModalRef')
   @UIkitComponent(uikit.modal)
@@ -39,14 +45,12 @@ export class RootComponent implements OnInit, AfterViewInit {
 
   public console = console;
 
-  public appConfig: AppConfig = { minimized: false };
-  public display: DisplayInfo;
+  public appConfig: AppConfig = {};
+  public graphicProperties: GraphicProperties;
+  public display: { id: string, size: Electron.Size, bounds: Electron.Rectangle, workArea: Electron.Rectangle };
   public electronWindow: Electron.BrowserWindow;
   public tempDictionary: { folderToDelete?: Folder, positionInterval?: any } = {};
   public aperenceTypes = AperenceTypes;
-
-  public get aperenceIsWidget() { return this.appConfig.minimizedAperence === AperenceTypes.widget }
-  public get aperenceIsSidebar() { return this.appConfig.minimizedAperence === AperenceTypes.sidebar }
 
   public get folderStats() {
     return this.selectedFolder ? {
@@ -62,9 +66,8 @@ export class RootComponent implements OnInit, AfterViewInit {
   async ngOnInit(): Promise<void> {
     if (Crossover.isElectronRunning) {
       this.electronWindow = Crossover.electron.remote.getCurrentWindow();
-      this.appConfig.width = this.electronWindow.getBounds().width;
       console.log(this.electronWindow.getBounds());
-      this.display = await Crossover.get<DisplayInfo>(ConfigurationChannel.with(DisplayInfo));
+      this.graphicProperties = await Crossover.get(ConfigurationChannel.with(GraphicProperties));
       var folders = await Crossover.get<Folder[]>(DataChannel.with(ReadData), <ReadData>{ dataStore: DataStores.folders });
       if (folders.length == 0) {
         this.folders.push(this.defaultFolder);
@@ -74,11 +77,9 @@ export class RootComponent implements OnInit, AfterViewInit {
         this.folders = folders;
       }
 
-      this.setMinimizedAperence(AperenceTypes.widget);
     }
 
     this.selectFolder(this.folders.find(f => f.selected));
-
   }
 
   async ngAfterViewInit(): Promise<void> {
@@ -87,8 +88,18 @@ export class RootComponent implements OnInit, AfterViewInit {
       uikit.util.on(m.$el, ModalEvents.show, e => this.modalVisible = true);
       uikit.util.on(m.$el, ModalEvents.hidden, e => this.modalVisible = false);
     });
-    (<HTMLElement>document.body).style.setProperty('--border-radius', '15px');
+    (<HTMLElement>document.body).style.setProperty('--border-radius', '10px');
     //(<HTMLElement>this.elementRef.nativeElement).style.setProperty('--border-radius', '10px');
+
+    // if (this.contentContainer.scrollHeight <= this.graphicProperties.display.workArea.height - 100) {
+    //   this.graphicProperties.appBounds.height = this.contentContainer.scrollHeight + 100;
+    //   this.electronWindow.setBounds(this.graphicProperties.appBounds);
+    // }
+
+    const menuElement = document.getElementById('menu');
+    //const rootElement = document.getElementById('root');
+    document.onmouseleave = e => this.contentContainer.style.left = this.contentContainer.clientWidth + 10 + 'px';
+    menuElement.onmouseenter = e => this.contentContainer.style.left = '0';
   }
 
   public async selectFolder(folder: Folder) {
@@ -97,21 +108,22 @@ export class RootComponent implements OnInit, AfterViewInit {
       this.saveToDisk({ action: 'update', entity: f, dataStore: DataStores.folders });
     });
     folder.selected = true;
-    this.notes = await Crossover.get<Note[]>(DataChannel.with(ReadData), <ReadData>{ dataStore: DataStores.notes, filter: { folderId: folder.id } });
     this.selectedFolder = folder;
     this.saveToDisk({ action: 'update', entity: folder, dataStore: DataStores.folders });
-    if (folder.classified && !folder.cryptoKey) {
+    if (folder.classified) {
       this.cryptoFolderModal.show();
-    } else if (folder.cryptoKey) {
-      this.decryptFolder()
+    }
+    else {
+      this.notes = await Crossover.get<Note[]>(DataChannel.with(ReadData), <ReadData>{ dataStore: DataStores.notes, filter: { folderId: folder.id } });
     }
   }
 
-  public decryptFolder(keyInput?: HTMLInputElement) {
+  public async decryptFolder(keyInput?: HTMLInputElement) {
     if (keyInput) {
       this.selectedFolder.cryptoKey = keyInput.value;
       keyInput.value = '';
     }
+    this.notes = await Crossover.get<Note[]>(DataChannel.with(ReadData), <ReadData>{ dataStore: DataStores.notes, filter: { folderId: this.selectedFolder.id } });
     this.notes.forEach(n => this.decryptNote(n));
     this.cryptoFolderModal.hide();
   }
@@ -128,14 +140,12 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   public createNote() {
-    if (this.appConfig.minimized) {
-      this.toggleView();
-    }
     this.notesList.addNotesModal.show();
   }
 
   public saveNotesUpdates(ev: NoteEvent) {
-    var note = { ... _.cloneDeep(ev.note), folderId: this.selectedFolder.id };
+
+    var note = { ..._.cloneDeep(ev.note), folderId: this.selectedFolder.id };
     if (this.selectedFolder.classified) {
       this.encryptNote(note);
     }
@@ -148,8 +158,8 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   private decryptNote(note: Note) {
-    note.title = crypto.AES.decrypt(note.title, this.selectedFolder.cryptoKey).toString();
-    note.lines.forEach(l => l.content = crypto.AES.decrypt(l.content, this.selectedFolder.cryptoKey).toString());
+    note.title = crypto.AES.decrypt(note.title, this.selectedFolder.cryptoKey).toString(enc.Utf8);
+    note.lines.forEach(l => l.content = crypto.AES.decrypt(l.content, this.selectedFolder.cryptoKey).toString(enc.Utf8));
   }
 
   private saveToDisk(saveModel: GenericData) {
@@ -162,6 +172,9 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   public confirmDeleteFolder() {
+    if (this.tempDictionary.folderToDelete == this.selectedFolder) {
+      this.selectFolder(this.folders[0]);
+    }
     var index = this.folders.indexOf(this.tempDictionary.folderToDelete);
     var deletedFolder = this.folders.splice(index, 1)[0];
     this.saveToDisk({ action: 'delete', entity: deletedFolder, dataStore: DataStores.folders });
@@ -170,44 +183,7 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   public changeWindowSize(value) {
-    this.appConfig.width += value;
-    this.electronWindow.setBounds({ width: this.appConfig.width, height: this.display.height, x: this.display.width - this.appConfig.width, y: 0 });
-  }
-
-  public async toggleView() {
-    this.appConfig.minimized = !this.appConfig.minimized;
-
-    if (this.appConfig.minimized) {
-      this.electronWindow.setBounds(this.appConfig.minimizedBounds);
-      //(<any>this.electronWindow).setBlur(false);
-      this.tempDictionary.positionInterval = setInterval(e => this.appMoved(), 3000);
-    }
-    else {
-      this.electronWindow.setBounds({ width: this.appConfig.width, height: this.display.height, x: this.display.width - this.appConfig.width, y: 0 });
-      (<any>this.electronWindow).setBlur(true);
-      clearInterval(this.tempDictionary.positionInterval);
-    }
-  }
-
-  public setMinimizedAperence(aperence: AperenceTypes) {
-    this.appConfig.minimizedAperence = aperence;
-    if (aperence == AperenceTypes.widget) {
-      this.appConfig.minimizedBounds = { width: 250, height: 150, x: this.display.width - 450, y: 0 }
-    }
-    if (aperence == AperenceTypes.sidebar) {
-      var centerY = this.display.height / 2 - 150;
-      this.appConfig.minimizedBounds = { width: 50, height: 300, x: this.display.width - 50, y: centerY };
-    }
-  }
-
-  public appMoved() {
-    if (this.appConfig.minimized) {
-      var windowBounds = this.electronWindow.getBounds();
-      this.appConfig.minimizedBounds = windowBounds;
-    }
-    else {
-      clearInterval(this.tempDictionary.positionInterval);
-    }
+    this.electronWindow.setBounds(this.graphicProperties.appBounds);
   }
 
   public close() {

@@ -1,24 +1,37 @@
 @import "../../styles/variables.scss";
 .notes-list {
-  height: 100%;
-  width: 100%;
-  overflow-y: auto;
-  padding-right: 6px;
   padding-top: 6px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: flex-end;
+  min-height: 100%;
+  box-sizing: border-box;
+
   .note {
     min-height: 100px;
+    min-width: 100%;
     display: flex;
     flex-direction: column;
     padding: 16px;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.16);
     color: $font-color;
-    background-color: $card-color;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(
+      150deg,
+      rgba(0, 0, 0, 0.787) 0%,
+      rgba(9, 9, 27, 0.883) 35%,
+      rgba(0, 69, 83, 0.884) 100%
+    );
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     text-rendering: optimizelegibility;
     border-radius: $border-radius;
     position: relative;
     overflow: hidden;
+
+    &:not(:first-child) {
+      margin-top: 12px;
+    }
 
     &.completed {
       // border-left: 2px solid limegreen;
@@ -44,10 +57,6 @@
       border-right: 2px solid red;
     }
 
-    &:not(:first-child) {
-      margin-top: 6px;
-    }
-
     .title-container {
       display: flex;
       justify-content: space-between;
@@ -69,6 +78,7 @@
         }
       }
     }
+
     .body {
       padding-top: 6px;
       padding-bottom: 46px;
