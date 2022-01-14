@@ -42,7 +42,7 @@ export class MainWindow {
   onStartup() {
 
     const { id, size, workArea, bounds } = screen.getPrimaryDisplay();
-    const defaultSizes = { '3840': 495, '2560': 365, '1920': 320 };
+    const defaultSizes = { '3840': 495, '2560': 300, '1920': 260 };
     const appWidth = defaultSizes[bounds.width] || 300;
     const appHeight = workArea.height / 2;
     const positionY = workArea.y + appHeight - (size.height - workArea.height - 36);

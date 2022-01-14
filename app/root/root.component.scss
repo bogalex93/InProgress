@@ -58,21 +58,20 @@ body,
   width: 100%;
 
   .menu {
-    background-color: $card-color;
+    background: linear-gradient(0deg, rgba(15, 22, 33, 0.945) 0%, rgb(30, 45, 68) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     border-radius: $border-radius;
     padding: 4px 4px;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    transition: max-width 0.5s ease;
+    max-width: 48px;
 
-    background: rgb(2, 0, 36);
-    background: linear-gradient(
-      150deg,
-      rgba(0, 0, 0, 0.787) 0%,
-      rgba(9, 9, 27, 0.883) 35%,
-      rgba(0, 69, 83, 0.884) 100%
-    );
+    &:hover {
+      max-width: 60%;
+    }
 
     .uk-dropdown {
       border-radius: $border-radius;
