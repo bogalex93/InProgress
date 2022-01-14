@@ -1,5 +1,4 @@
 import { screen, BrowserWindowConstructorOptions, WebPreferences, Display, BrowserWindow } from 'electron';
-import * as glasstron from 'glasstron'
 import * as path from 'path';
 import * as url from 'url';
 import * as fs from 'fs';
@@ -20,25 +19,20 @@ export class MainWindow {
     let appUrl = isDev ? "http://localhost:4200/" : url.format(urlOptions);
 
     let webPreferences: WebPreferences = { nodeIntegration: true };
-    var iconPath = path.join(environment.workspaceDir, `./assets/in-progress.png`);
+    var iconPath = path.join(environment.workspaceDir, `../assets/in-progress.png`);
     let windowOptions: BrowserWindowConstructorOptions = {
       transparent: true,
       frame: false,
-      skipTaskbar: true,
+      skipTaskbar: false,
       webPreferences: webPreferences,
       minimizable: false,
-      icon: iconPath
+      icon: iconPath,
+      ...this.graphicProperties.appBounds
     };
-    this.win = new glasstron.BrowserWindow(windowOptions) as BrowserWindow;
-    //              ^~~~~~~
-    // Windows 10 1803+; for older versions you
-    // might want to use 'blurbehind'
-    // (<any>this.win).blurType = "blurbehind";
-    // (<any>this.win).setBlur(true);
-    this.win.setBounds(this.graphicProperties.appBounds, true);
-
+    this.win = new BrowserWindow(windowOptions);
 
     this.win.loadURL(appUrl);
+    this.win.show();
     //win.webContents.openDevTools();
     //dialog.showErrorBox('test', dbPath);
 
@@ -51,7 +45,7 @@ export class MainWindow {
     const defaultSizes = { '3840': 495, '2560': 365, '1920': 320 };
     const appWidth = defaultSizes[bounds.width] || 300;
     const appHeight = workArea.height / 2;
-    const positionY = workArea.y + appHeight - (size.height - workArea.height - 30);
+    const positionY = workArea.y + appHeight - (size.height - workArea.height - 36);
     const positionX = (workArea.x + bounds.width - appWidth) - 10;
     const appBounds = { width: appWidth, height: appHeight, y: positionY, x: positionX };
     this.graphicProperties = {

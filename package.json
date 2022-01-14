@@ -36,7 +36,6 @@
         "cross-blob": "^2.0.0",
         "crypto-js": "^4.0.0",
         "font-awesome": "^4.7.0",
-        "glasstron": "^0.1.1",
         "jquery": "^3.5.1",
         "jquery-ui": "^1.12.1",
         "knex": "^0.21.21",
