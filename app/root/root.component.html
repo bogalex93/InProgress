@@ -38,7 +38,7 @@
         <button uk-tooltip="folders">
           <span uk-icon="icon: folder; ratio: 1.6"></span>
         </button>
-        <div uk-dropdown="pos: top">
+        <div uk-dropdown="pos: top; mode:click">
           <ul class="uk-nav uk-dropdown-nav">
             <li><a (click)="creteFolderModal.show()"><span uk-icon="icon: plus; ratio: 1"></span> New
                 Folder</a></li>
@@ -60,7 +60,7 @@
         <button>
           <span uk-icon="icon: settings; ratio: 2"></span>
         </button>
-        <div uk-dropdown="pos: top">
+        <div uk-dropdown="pos: top; mode:click">
           <ul class="uk-nav uk-dropdown-nav settings-list">
             <li>
               <a>

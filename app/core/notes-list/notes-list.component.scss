@@ -12,7 +12,7 @@
     min-width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 16px;
+    padding: 16px 8px;
     box-sizing: border-box;
     color: $font-color;
     background: linear-gradient(0deg, rgba(15, 22, 33, 0.945) 0%, rgb(30, 45, 68) 100%);
@@ -30,9 +30,15 @@
     .title-container {
       display: flex;
       justify-content: space-between;
+      padding: 0 8px;
+      border-radius: 5px;
+      &:hover {
+        background-color: #ffffff1a !important;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        cursor: pointer;
+      }
       .title {
         margin: 0;
-        //color: white;
         color: $font-color;
         font-weight: 600;
       }
@@ -58,7 +64,14 @@
         display: flex;
         line-height: 16px;
         height: 16px;
-        padding: 3px 0px;
+        padding: 4px;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: #ffffff1a !important;
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+          cursor: pointer;
+        }
 
         &.completed {
           border-right: 2px solid limegreen;
@@ -72,7 +85,10 @@
           .uk-icon.bulet {
             color: limegreen;
           }
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
         }
+
         &.canceled {
           border-right: 2px solid lightgrey;
           .icon-btn.cancel {
@@ -85,7 +101,10 @@
           .uk-icon.bulet {
             color: lightgrey;
           }
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
         }
+
         &.inProgress {
           border-right: 2px solid $color-info;
           .icon-btn.in-progress {
@@ -98,10 +117,14 @@
           .uk-icon.bulet {
             color: $color-info;
           }
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
         }
+
         .icon-btn {
           visibility: hidden;
         }
+
         &:hover {
           .icon-btn {
             visibility: visible;
@@ -198,10 +221,10 @@
 }
 
 .add-note {
-  .line,
   .title {
     display: flex;
     margin-top: 6px;
+    margin-bottom: 12px;
 
     &:hover {
       .uk-icon:not(.delete) {
@@ -211,21 +234,40 @@
 
     input {
       height: 36px;
+      font-size: 18px;
       margin-left: -28px;
-      padding-left: 30px;
+      padding-left: 32px;
       margin-right: -26px;
       padding-right: 32px;
       border-radius: $border-radius;
     }
-  }
-  .line {
-    .uk-icon {
-      line-height: 36px;
-    }
-  }
-  .title {
+
     .uk-icon {
       line-height: 32px;
+    }
+  }
+
+  .line {
+    display: flex;
+    margin-top: 8px;
+
+    &:hover {
+      .uk-icon:not(.delete) {
+        color: $color-info;
+      }
+    }
+
+    input {
+      height: 28px;
+      margin-left: -28px;
+      padding-left: 32px;
+      margin-right: -26px;
+      padding-right: 32px;
+      border-radius: $border-radius;
+    }
+
+    .uk-icon {
+      line-height: 24px;
     }
   }
 }
