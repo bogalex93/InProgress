@@ -44,8 +44,8 @@ export class MainWindow {
     const { id, size, workArea, bounds } = screen.getPrimaryDisplay();
     const defaultSizes = { '3840': 495, '2560': 300, '1920': 260 };
     const appWidth = defaultSizes[bounds.width] || 300;
-    const appHeight = workArea.height / 2;
-    const positionY = workArea.y + appHeight - (size.height - workArea.height - 36);
+    const appHeight = workArea.height - 40;
+    const positionY = workArea.y + 20;
     const positionX = (workArea.x + bounds.width - appWidth) - 10;
     const appBounds = { width: appWidth, height: appHeight, y: positionY, x: positionX };
     this.graphicProperties = {

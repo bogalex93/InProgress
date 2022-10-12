@@ -8,8 +8,6 @@ body,
 .home-root {
   height: 100%;
   width: 100%;
-  //background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
-  //background-color: rgba(37, 37, 37, 0.5);
   background: transparent;
   overflow: hidden;
   transition: filter 0.7s ease;
@@ -28,6 +26,9 @@ body,
   overflow-x: hidden;
   overflow-y: auto;
   box-sizing: border-box;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+  padding: 20px;
+  border-radius: 10px;
   transition: all 0.5s ease;
   &::-webkit-scrollbar {
     display: none;
@@ -67,11 +68,7 @@ body,
     justify-content: space-between;
     flex-direction: row;
     transition: max-width 0.5s ease;
-    max-width: 48px;
-
-    &:hover {
-      max-width: 70%;
-    }
+    max-width: 100%;
 
     .uk-dropdown {
       border-radius: $border-radius;
