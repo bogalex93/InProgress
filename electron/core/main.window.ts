@@ -34,7 +34,6 @@ export class MainWindow {
     this.win.loadURL(appUrl);
     this.win.show();
     //win.webContents.openDevTools();
-    //dialog.showErrorBox('test', dbPath);
 
     this.win.on('closed', () => this.onClosed());
   };

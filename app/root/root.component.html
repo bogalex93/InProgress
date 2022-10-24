@@ -1,7 +1,7 @@
 <div id="root" class="home-root">
   <div id="content-container" #contentContainer class="content-container" *ngIf="selectedFolder" confirm-delete
     [ngClass]="{'blur': modalVisible}">
-    <!-- <h2 class="folder-title">
+    <h2 class="folder-title">
       <div style="display: flex;"><span uk-icon="icon: folder; ratio: 1.6"></span> <span style="margin-left: 4px"
           [innerText]="selectedFolder.name"></span></div>
       <div style="font-size: 11px; display: flex; flex-direction: column; line-height: 12px;">
@@ -18,8 +18,8 @@
           <span style="margin-left: 4px;">completed</span>
         </div>
       </div>
-    </h2> -->
-    <notes-list #notesList [(notes)]="notes" [folder]="selectedFolder" (noteUpdates)="saveNotesUpdates($event)">
+    </h2>
+    <notes-list #notesList [notes]="notes" [folder]="selectedFolder" (noteUpdates)="saveNotesUpdates($event)">
     </notes-list>
   </div>
   <div id="menu-container" class="menu-container">
