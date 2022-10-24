@@ -1,12 +1,11 @@
 @import "../../styles/variables.scss";
 .notes-list {
   padding-top: 6px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  min-height: 100%;
-  box-sizing: border-box;
 
+  min-height: calc(100% - 60px);
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding: 0 4px 0 4px;
   .note {
     min-height: 80px;
     min-width: 100%;
@@ -15,7 +14,8 @@
     padding: 16px 8px;
     box-sizing: border-box;
     color: $font-color;
-    background: linear-gradient(0deg, rgba(15, 22, 33, 0.945) 0%, rgb(30, 45, 68) 100%);
+    //background: linear-gradient(0deg, rgba(15, 22, 33, 0.945) 0%, rgb(30, 45, 68) 100%);
+    background: rgba(0, 0, 0, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     text-rendering: optimizelegibility;

@@ -176,6 +176,9 @@ export class RootComponent implements OnInit, AfterViewInit {
   }
 
   public changeWindowSize(value) {
+    this.graphicProperties.appBounds.width += value;
+    const workArea = this.graphicProperties.display.workArea;
+    this.graphicProperties.appBounds.x = (workArea.x + workArea.width - this.graphicProperties.appBounds.width) - 10
     this.electronWindow.setBounds(this.graphicProperties.appBounds);
   }
 
