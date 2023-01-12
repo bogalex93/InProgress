@@ -90,9 +90,7 @@ export class RootComponent implements OnInit, AfterViewInit {
     (<HTMLElement>document.body).style.setProperty('--border-radius', '10px');
     (<HTMLElement>this.elementRef.nativeElement).style.setProperty('--border-radius', '10px');
 
-    const menuElement = document.getElementById('menu');
-    document.onmouseleave = e => this.contentContainer.style.left = this.contentContainer.clientWidth + 10 + 'px';
-    menuElement.onmouseenter = e => this.contentContainer.style.left = '0';
+    //const menuElement = document.getElementById('menu');
   }
 
   public async selectFolder(folder: Folder) {

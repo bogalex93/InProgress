@@ -7,6 +7,7 @@ import { Crossover } from '../../crossover/crossover-ipc.main';
 import { ConfigurationChannel, DataChannel } from '../../crossover/crossover.channels';
 import { GenericData, GraphicProperties, ReadData } from '../../crossover/crossover.models';
 import { environment } from '../environment';
+const glasstron = require('glasstron');
 
 export class MainWindow {
   public win: BrowserWindow;
@@ -25,12 +26,13 @@ export class MainWindow {
       frame: false,
       skipTaskbar: false,
       webPreferences: webPreferences,
-      minimizable: false,
+      minimizable: true,
       icon: iconPath,
       ...this.graphicProperties.appBounds
     };
-    this.win = new BrowserWindow(windowOptions);
-
+    this.win = new glasstron.BrowserWindow(windowOptions);
+    (<any>this.win).blurType = "blurbehind";
+    (<any>this.win).setBlur(true);
     this.win.loadURL(appUrl);
     this.win.show();
     //win.webContents.openDevTools();
@@ -43,7 +45,7 @@ export class MainWindow {
     const { id, size, workArea, bounds } = screen.getPrimaryDisplay();
     const defaultSizes = { '3840': 495, '2560': 300, '1920': 260 };
     const appWidth = defaultSizes[bounds.width] || 300;
-    const appHeight = workArea.height - 40;
+    const appHeight = workArea.height - 200;
     const positionY = workArea.y + 20;
     const positionX = (workArea.x + bounds.width - appWidth) - 10;
     const appBounds = { width: appWidth, height: appHeight, y: positionY, x: positionX };

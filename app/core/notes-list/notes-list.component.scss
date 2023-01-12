@@ -15,8 +15,8 @@
     box-sizing: border-box;
     color: $font-color;
     //background: linear-gradient(0deg, rgba(15, 22, 33, 0.945) 0%, rgb(30, 45, 68) 100%);
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(#1f1f1f, 0.8);
+    //border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     text-rendering: optimizelegibility;
     border-radius: $border-radius;

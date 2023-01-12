@@ -13,6 +13,8 @@ body,
   transition: filter 0.7s ease;
   box-sizing: border-box;
   position: relative;
+  background: linear-gradient(90deg, rgba($color-info, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+  border-radius: 10px;
 }
 
 .content-container {
@@ -25,10 +27,8 @@ body,
   padding: 10px 0 10px 0;
   overflow-x: hidden;
   box-sizing: border-box;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
   padding: 10px;
   border-radius: 10px;
-  transition: all 0.5s ease;
   display: flex;
   flex-direction: column;
 
@@ -57,20 +57,20 @@ body,
   left: 0;
   right: 0;
   bottom: 0;
-  justify-content: flex-end;
+  justify-content: center;
   width: 100%;
 
   .menu {
-    background: linear-gradient(0deg, rgba(15, 22, 33, 0.945) 0%, rgb(30, 45, 68) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    // background: linear-gradient(0deg, rgba(15, 22, 33, 0.945) 0%, rgb(30, 45, 68) 100%);
+    // border: 1px solid rgba(255, 255, 255, 0.1);
+    // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     border-radius: $border-radius;
     padding: 4px 4px;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    transition: max-width 0.5s ease;
     max-width: 100%;
+    margin-bottom: 10px;
 
     .uk-dropdown {
       border-radius: $border-radius;
@@ -87,7 +87,7 @@ body,
       color: white;
 
       &:not(:disabled):hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background: rgba(#1f1f1f, 0.8);
         color: $color-info;
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
       }
@@ -111,19 +111,5 @@ body,
 
   .content-container {
     visibility: hidden;
-  }
-
-  &.widget {
-    .menu-container {
-      background: transparent;
-      .menu {
-        padding: 10px 2px;
-
-        button {
-          text-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-          width: 40px;
-        }
-      }
-    }
   }
 }
