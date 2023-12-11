@@ -7,7 +7,7 @@ import { Crossover } from '../../crossover/crossover-ipc.main';
 import { ConfigurationChannel, DataChannel } from '../../crossover/crossover.channels';
 import { GenericData, GraphicProperties, ReadData } from '../../crossover/crossover.models';
 import { environment } from '../environment';
-const glasstron = require('glasstron');
+//const glasstron = require('glasstron');
 
 export class MainWindow {
   public win: BrowserWindow;
@@ -30,9 +30,10 @@ export class MainWindow {
       icon: iconPath,
       ...this.graphicProperties.appBounds
     };
-    this.win = new glasstron.BrowserWindow(windowOptions);
-    (<any>this.win).blurType = "blurbehind";
-    (<any>this.win).setBlur(true);
+    this.win = new BrowserWindow(windowOptions);
+    // (<any>this.win).blurType = "blurbehind";
+    // (<any>this.win).setBlur(true);
+    this.win.setVibrancy('fullscreen-ui');
     this.win.loadURL(appUrl);
     this.win.show();
     //win.webContents.openDevTools();
