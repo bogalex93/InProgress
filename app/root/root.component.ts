@@ -65,8 +65,6 @@ export class RootComponent implements OnInit, AfterViewInit {
 
   async ngOnInit(): Promise<void> {
     if (Crossover.isElectronRunning) {
-      this.electronWindow = Crossover.electron.remote.getCurrentWindow();
-      console.log(this.electronWindow.getBounds());
       this.graphicProperties = await Crossover.get(ConfigurationChannel.with(GraphicProperties));
       var folders = await Crossover.get<Folder[]>(DataChannel.with(ReadData), <ReadData>{ dataStore: DataStores.folders });
       if (folders.length == 0) {
