@@ -18,16 +18,15 @@ export class MainWindow {
     let isDev = JSON.stringify(process.argv).indexOf('remote-debugging-port') >= 0;
     let appUrl = isDev ? "http://localhost:4200/" : url.format(urlOptions);
 
-    let webPreferences: WebPreferences = { nodeIntegration: true };
     var iconPath = path.join(environment.workspaceDir, `../assets/in-progress.png`);
     let windowOptions: BrowserWindowConstructorOptions = {
       transparent: true,
       frame: false,
       skipTaskbar: false,
-      webPreferences: webPreferences,
       minimizable: true,
+      webPreferences: { nodeIntegration: true, contextIsolation: true, preload: path.join(__dirname, 'preload.js') },
       titleBarStyle: "hidden",
-      //backgroundMaterial: "acrylic",
+      backgroundMaterial: "acrylic",
       icon: iconPath,
       ...this.graphicProperties.appBounds
     };

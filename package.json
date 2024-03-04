@@ -1,7 +1,7 @@
 {
   "name": "inprogress",
   "version": "0.0.0",
-  "author": "Rom Dev Bogdan T. Alexandru",
+  "author": "Bogdan Alexandru",
   "description": "Personal organizer and task management",
   "main": "prod_build/electron/main.js",
   "scripts": {
@@ -11,10 +11,21 @@
     "build": "ng build",
     "lint": "ng lint",
     "app-compile": "ng build --base-href ./ && tsc --p electron",
+    "electron-assets": "cpy ./data ./_dist/data",
     "electron-start": "tsc --p electron && electron .",
-    "electron-compile": "tsc --p electron",
-    "electron-build": "npm run app-compile && electron-builder -w",
-    "rebuild": "electron-rebuild -f -w sqlite3 knex"
+    "electron-compile": "npm run electron-assets && tsc --p electron",
+    "rebuild": "electron-rebuild -f -w sqlite3",
+    "build-prod": "npm run app-compile  &&  electron-builder -w",
+    "build:snap": "electron-installer-snap --src=prod/InProgress-linux-x64"
+  },
+  "build": {
+    "appId": "Video-Projector",
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {}
   },
   "private": true,
   "dependencies": {
@@ -27,7 +38,6 @@
     "@angular/platform-browser-dynamic": "16.1.3",
     "@angular/router": "16.1.3",
     "cross-blob": "^2.0.0",
-    "crypto-js": "^4.0.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
     "jquery-ui": "^1.12.1",
