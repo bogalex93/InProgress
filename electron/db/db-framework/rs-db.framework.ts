@@ -1,11 +1,11 @@
-import * as Knex from 'knex';
+import knex, { Knex } from 'knex'
 
 import * as path from 'path';
 import { entityModelDescriptor } from './rs-db.model-composer';
 
 let sqlClient: Knex<any, any>;
 export function configDb(dbOptions) {
-    sqlClient = Knex(dbOptions);
+    sqlClient = knex(dbOptions);
 }
 
 export interface RsDbTable<T> extends Knex.QueryBuilder<any, any> {
