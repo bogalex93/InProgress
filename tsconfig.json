@@ -26,7 +26,6 @@
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
-    "strictTemplates": true,
     "fullTemplateTypeCheck": true,
     "annotateForClosureCompiler": true,
     "strictInjectionParameters": true,

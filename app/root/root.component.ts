@@ -46,9 +46,8 @@ export class RootComponent implements OnInit, AfterViewInit {
   public console = console;
 
   public appConfig: AppConfig = {};
-  public graphicProperties: GraphicProperties;
+  public graphicProperties: GraphicProperties = {};
   public display: { id: string, size: Electron.Size, bounds: Electron.Rectangle, workArea: Electron.Rectangle };
-  public electronWindow: Electron.BrowserWindow;
   public tempDictionary: { folderToDelete?: Folder, positionInterval?: any } = {};
   public aperenceTypes = AperenceTypes;
 
@@ -175,11 +174,11 @@ export class RootComponent implements OnInit, AfterViewInit {
     this.graphicProperties.appBounds.width += value;
     const workArea = this.graphicProperties.display.workArea;
     this.graphicProperties.appBounds.x = (workArea.x + workArea.width - this.graphicProperties.appBounds.width) - 10
-    this.electronWindow.setBounds(this.graphicProperties.appBounds);
+    // this.electronWindow.setBounds(this.graphicProperties.appBounds);
   }
 
   public close() {
-    this.electronWindow.close();
+    // this.electronWindow.close();
   }
 
   public preventDefault(event: MouseEvent) {

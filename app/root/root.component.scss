@@ -9,11 +9,11 @@ body,
   height: 100%;
   width: 100%;
   background: transparent;
+  background: linear-gradient(90deg, rgba($color-info, 0.4) 0%, rgba(0, 0, 0, 0.96) 100%);
   overflow: hidden;
   transition: filter 0.7s ease;
   box-sizing: border-box;
   position: relative;
-  background: linear-gradient(90deg, rgba($color-info, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
   border-radius: 10px;
 }
 

@@ -26,14 +26,16 @@ export class MainWindow {
       minimizable: true,
       webPreferences: { nodeIntegration: true, contextIsolation: true, preload: path.join(__dirname, 'preload.js') },
       titleBarStyle: "hidden",
-      backgroundMaterial: "acrylic",
+      backgroundMaterial: "none",
       icon: iconPath,
       ...this.graphicProperties.appBounds
     };
     this.win = new BrowserWindow(windowOptions);
     this.win.loadURL(appUrl);
+    this.win.on('focus', () => this.win.setBackgroundColor('#00000000'))
+    this.win.on('blur', () => this.win.setBackgroundColor('#00000000'))
     this.win.show();
-    //win.webContents.openDevTools();
+    //this.win.webContents.openDevTools();
 
     this.win.on('closed', () => this.onClosed());
   };
@@ -41,7 +43,7 @@ export class MainWindow {
   onStartup() {
 
     const { id, size, workArea, bounds } = screen.getPrimaryDisplay();
-    const defaultSizes = { '3840': 495, '2560': 300, '1920': 260 };
+    const defaultSizes = { '3840': 600, '2560': 440, '1920': 320 };
     const appWidth = defaultSizes[bounds.width] || 300;
     const appHeight = workArea.height - 200;
     const positionY = workArea.y + 20;
