@@ -10,12 +10,13 @@
     "start": "ng serve",
     "build": "ng build",
     "lint": "ng lint",
-    "app-compile": "ng build --base-href ./ && tsc --p electron",
-    "electron-assets": "cpy ./appdata ./_dist/appdata",
+    "electron-appdata": "cpy ./appdata ./prod_build/appdata --flat",
+    "electron-assets": "cpy ./electron/assets ./prod_build/assets --flat",
     "electron-start": "tsc --p electron && electron .",
-    "electron-compile": "npm run electron-assets && tsc --p electron",
+    "electron-compile": "npm run electron-appdata && npm run electron-assets && tsc --p electron",
     "rebuild": "electron-rebuild -f -w sqlite3",
-    "build-prod": "npm run app-compile  &&  electron-builder -w",
+    "app-compile": "ng build --base-href ./ && npm run electron-compile",
+    "build-prod": "npm run app-compile && electron-builder -w",
     "build:snap": "electron-installer-snap --src=prod/InProgress-linux-x64"
   },
   "build": {

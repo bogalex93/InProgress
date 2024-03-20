@@ -1,7 +1,7 @@
 import { Tables } from '../db/db.models';
 import { db } from '../db/db';
 import { GenericData, ReadData } from '../../crossover/crossover.models';
-
+import { dialog } from 'electron';
 export class DataHandler {
 
   async saveData(genericData: GenericData) {
@@ -23,6 +23,7 @@ export class DataHandler {
   }
 
   async getData(readModel: ReadData) {
+    dialog.showErrorBox('readModel', JSON.stringify(readModel));
     var data = await db[readModel.dataStore as Tables].getData(readModel.filter);
     return data;
   }

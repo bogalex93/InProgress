@@ -1,4 +1,4 @@
-import { screen, BrowserWindowConstructorOptions, WebPreferences, Display, BrowserWindow } from 'electron';
+import { screen, BrowserWindowConstructorOptions, WebPreferences, Display, BrowserWindow, dialog } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as fs from 'fs';
@@ -19,19 +19,22 @@ export class MainWindow {
     let appUrl = isDev ? "http://localhost:4200/" : url.format(urlOptions);
 
     var iconPath = path.join(environment.workspaceDir, `../assets/in-progress.png`);
+    const preloadPath = path.join(environment.workspaceDir, '../assets/preload.js');
     let windowOptions: BrowserWindowConstructorOptions = {
       transparent: true,
       frame: false,
       skipTaskbar: false,
       minimizable: true,
-      webPreferences: { nodeIntegration: true, contextIsolation: true, preload: path.join(__dirname, 'preload.js') },
+      webPreferences: { nodeIntegration: true, contextIsolation: true, preload: preloadPath },
       titleBarStyle: "hidden",
       backgroundMaterial: "none",
       icon: iconPath,
       ...this.graphicProperties.appBounds
     };
+    dialog.showErrorBox('readModel', preloadPath);
     this.win = new BrowserWindow(windowOptions);
     this.win.loadURL(appUrl);
+
     this.win.on('focus', () => this.win.setBackgroundColor('#00000000'))
     this.win.on('blur', () => this.win.setBackgroundColor('#00000000'))
     this.win.show();
