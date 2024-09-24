@@ -5,8 +5,10 @@ export function crossoverModel(typeDef: any) {
 }
 
 export function crossoverChannel(typeDef: any) {
-    typeDef.channelID = uuidv4();
-    typeDef.with = mt => withType(typeDef, mt);
+    return function (target: any) {
+        typeDef.channelID = uuidv4();
+        typeDef.with = mt => withType(typeDef, mt);
+    }
 }
 
 function withType(typeDef: any, modelTypeDef: any) {
