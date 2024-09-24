@@ -9,12 +9,12 @@ body,
   height: 100%;
   width: 100%;
   background: transparent;
-  background: linear-gradient(90deg, rgba($color-info, 0.4) 0%, rgba(0, 0, 0, 0.96) 100%);
+  background: #000000a1;
   overflow: hidden;
   transition: filter 0.7s ease;
   box-sizing: border-box;
   position: relative;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 .content-container {

@@ -66,6 +66,7 @@ export class RootComponent implements OnInit, AfterViewInit {
     if (Crossover.isElectronRunning) {
       this.graphicProperties = await Crossover.get(ConfigurationChannel.with(GraphicProperties));
       var folders = await Crossover.get<Folder[]>(DataChannel.with(ReadData), <ReadData>{ dataStore: DataStores.folders });
+      this.console.log(DataChannel.with(ReadData));
       if (folders.length == 0) {
         this.folders.push(this.defaultFolder);
         this.saveToDisk({ action: 'add', entity: this.defaultFolder, dataStore: DataStores.folders });

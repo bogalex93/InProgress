@@ -20,6 +20,7 @@ export class MainWindow {
 
     var iconPath = path.join(environment.workspaceDir, `../assets/in-progress.png`);
     const preloadPath = path.join(environment.workspaceDir, '../assets/preload.js');
+    //dialog.showMessageBox(this.win, { message: preloadPath, title: 'Preload Path', type: 'info' });
     let windowOptions: BrowserWindowConstructorOptions = {
       transparent: true,
       frame: false,
@@ -29,16 +30,18 @@ export class MainWindow {
       titleBarStyle: "hidden",
       backgroundMaterial: "none",
       icon: iconPath,
-      ...this.graphicProperties.appBounds
+      ...this.graphicProperties.appBounds,
+      backgroundColor: '#00000000'
+
     };
-    dialog.showErrorBox('readModel', preloadPath);
     this.win = new BrowserWindow(windowOptions);
     this.win.loadURL(appUrl);
-
     this.win.on('focus', () => this.win.setBackgroundColor('#00000000'))
     this.win.on('blur', () => this.win.setBackgroundColor('#00000000'))
     this.win.show();
-    //this.win.webContents.openDevTools();
+    this.win.setBackgroundColor('#00000000');
+    this.win.focus();
+    this.win.webContents.openDevTools();
 
     this.win.on('closed', () => this.onClosed());
   };
@@ -48,7 +51,7 @@ export class MainWindow {
     const { id, size, workArea, bounds } = screen.getPrimaryDisplay();
     const defaultSizes = { '3840': 600, '2560': 440, '1920': 320 };
     const appWidth = defaultSizes[bounds.width] || 300;
-    const appHeight = workArea.height - 200;
+    const appHeight = workArea.height - 40;
     const positionY = workArea.y + 20;
     const positionX = (workArea.x + bounds.width - appWidth) - 10;
     const appBounds = { width: appWidth, height: appHeight, y: positionY, x: positionX };
@@ -70,14 +73,18 @@ export class MainWindow {
     const dataHandler = new DataHandler();
     Crossover.handle<GraphicProperties>(ConfigurationChannel.with(GraphicProperties), async (e, m) => this.graphicProperties);
     Crossover.listen<GenericData>(DataChannel.with(GenericData), (e, m) => dataHandler.saveData(m));
-    Crossover.handle<GenericData>(DataChannel.with(ReadData), async (e, m) => await dataHandler.getData(m));
+    Crossover.handle<GenericData>(DataChannel.with(ReadData), async (e, m) => {
+      dialog.showMessageBox(this.win, { message: 'Data Requested', title: 'Data Request', type: 'info' });
+      return await dataHandler.getData(m)
+    });
   }
 
   checkDataDir() {
-    const dataPath = path.join(environment.workspaceDir, '/appdata').replace('\\app.asar\\prod_build', '');
+    const dataPath = path.join(environment.workspaceDir, '../appdata').replace('\\app.asar\\prod_build', '');
+    //dialog.showMessageBox(this.win, { message: dataPath, title: 'Data Directory', type: 'info' });
     fs.opendir(dataPath, (err, dir) => {
       if (err) {
-        fs.mkdir(dataPath, () => console.log('appdata created'));
+        fs.mkdir(dataPath, () => dialog.showMessageBox(this.win, { message: 'Data directory created', title: 'Data Directory', type: 'info' }));
       }
     });
   }

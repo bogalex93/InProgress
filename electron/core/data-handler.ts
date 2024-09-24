@@ -23,7 +23,6 @@ export class DataHandler {
   }
 
   async getData(readModel: ReadData) {
-    dialog.showErrorBox('readModel', JSON.stringify(readModel));
     var data = await db[readModel.dataStore as Tables].getData(readModel.filter);
     return data;
   }
