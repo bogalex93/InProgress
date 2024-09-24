@@ -94,21 +94,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "inprogress:build:dev"
+            "buildTarget": "inprogress:build:dev"
           },
           "configurations": {
             "production": {
-              "browserTarget": "inprogress:build:production"
+              "buildTarget": "inprogress:build:production"
             },
             "dev": {
-              "browserTarget": "inprogress:build:dev"
+              "buildTarget": "inprogress:build:dev"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "inprogress:build"
+            "buildTarget": "inprogress:build"
           }
         }
       }
