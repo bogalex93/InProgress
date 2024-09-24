@@ -39,6 +39,7 @@
     "start": "electron ."
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "prod_build"
   ],
 }

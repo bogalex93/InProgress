@@ -5,13 +5,13 @@ export function crossoverModel(typeDef: any) {
 }
 
 export function crossoverChannel(typeDef: any) {
-    typeDef.channelName = uuidv4();
+    typeDef.channelID = uuidv4();
     typeDef.with = mt => withType(typeDef, mt);
 }
 
 function withType(typeDef: any, modelTypeDef: any) {
     var crossOverChannel = new typeDef();
-    crossOverChannel.channelID = typeDef.id;
+    crossOverChannel.channelID = typeDef.channelID;
     crossOverChannel.eventID = `${crossOverChannel.channelID}-${modelTypeDef.internal_type_id}`;
     return crossOverChannel;
 }
