@@ -15,12 +15,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": "prod_build/angular-app",
+            "outputPath": {
+              "base": "prod_build/angular-app"
+            },
             "index": "app/index.html",
-            "main": "app/main.ts",
-            "polyfills": "app/polyfills.ts",
+            "polyfills": [
+              "app/polyfills.ts"
+            ],
             "tsConfig": "app/tsconfig.json",
             "aot": true,
             "assets": ["app/favicon.ico", "app/assets"],
@@ -32,7 +35,8 @@
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/uikit/dist/js/uikit.min.js",
               "./node_modules/uikit/dist/js/uikit-icons.min.js"
-            ]
+            ],
+            "browser": "app/main.ts"
           },
           "configurations": {
             "production": {
@@ -47,8 +51,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -74,8 +76,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -92,7 +92,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "inprogress:build:dev"
           },
@@ -106,7 +106,7 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
             "buildTarget": "inprogress:build"
           }

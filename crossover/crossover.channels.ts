@@ -1,14 +1,14 @@
 import { crossoverChannel, CrossoverChannel } from './crossover-framework';
 
-@crossoverChannel
+@crossoverChannel('ConfigurationChannel')
 export class ConfigurationChannel extends CrossoverChannel {
 }
 
-@crossoverChannel
+@crossoverChannel('InitializationChannel')
 export class InitializationChannel extends CrossoverChannel {
 }
 
-@crossoverChannel
+@crossoverChannel('DataChannel')
 export class DataChannel extends CrossoverChannel {
 }
 

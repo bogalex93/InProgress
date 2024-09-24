@@ -1,14 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export function crossoverModel(typeDef: any) {
-    typeDef.internal_type_id = uuidv4();
+export function crossoverModel(name: string) {
+    return function (target: any) {
+        target.internal_type_id = name;
+    }
 }
 
-export function crossoverChannel(typeDef: any) {
+export function crossoverChannel(name: string) {
     return function (target: any) {
-        typeDef.channelID = uuidv4();
-        typeDef.with = mt => withType(typeDef, mt);
-    }
+        target.channelID = name;
+        target.with = mt => withType(target, mt);
+    };
 }
 
 function withType(typeDef: any, modelTypeDef: any) {
